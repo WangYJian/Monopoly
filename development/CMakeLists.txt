@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.25)
+project(development C)
+
+set(CMAKE_C_STANDARD 11)
+
+include_directories(.)
+
+add_executable(development
+        Game.c
+        Game.h
+        main.c
+        Map.c
+        Map.h
+        MapCell.c
+        MapCell.h
+        Player.c
+        Player.h
+        Property.c
+        Property.h
+        Tool.c
+        Tool.h)
