@@ -11,11 +11,9 @@ add_executable(development
         main.c
         Map.c
         Map.h
-        MapCell.c
-        MapCell.h
         Player.c
         Player.h
         Property.c
         Property.h
         Tool.c
-        Tool.h)
+        Tool.h test.c)

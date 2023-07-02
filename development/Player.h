@@ -1,16 +1,29 @@
 #ifndef DEVELOPMENT_PLAYER_H
 #define DEVELOPMENT_PLAYER_H
 
+#include "Property.h"
+#include "Tool.h"
+
 // 定义玩家的结构体
 typedef struct Player {
-    char name[50]; // 玩家名称
+    char name; // 玩家名称
     int id; // 玩家ID
     int points; // 玩家积分
     int cash; // 玩家现金
     int status; // 玩家状态：如正常、住院、坐牢等
+    int stop_rounds; // 停留在医院或监狱的回合数
     int position; // 玩家在地图上的位置
-    struct Property* properties; // 玩家拥有的土地
-    struct Tool* tools; // 玩家拥有的道具
+    Property* properties; // 玩家拥有的土地
+    // 炸弹、路障、机器娃娃、财神
+    Tool* bomb[10];
+    Tool* barrier[10];
+    Tool* robot[10];
+    Tool* god[10];
+    // 对应的道具数量、
+    int bomb_count;
+    int barrier_count;
+    int robot_count;
+    int god_count;
 } Player;
 
 // 方法

@@ -3,6 +3,7 @@
 
 #include "Player.h"
 
+typedef struct Player Player;
 // 定义土地的结构体
 typedef struct Property {
     int id; // 土地ID
