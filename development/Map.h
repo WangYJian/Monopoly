@@ -12,7 +12,6 @@ typedef struct Map {
     int id; // 地图单元ID
     char land_type; //地图的样式
     int is_tool; // 是否存放道具 0 无道具，1 防止路障
-    int is_player; // 是否存在玩家
     Property* property; // 如果有土地，土地的信息
     Tool* tool; // 如果有道具，道具的信息
     Player* player; // 如果有玩家，玩家的信息
