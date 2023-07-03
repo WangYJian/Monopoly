@@ -1,0 +1,10 @@
+t
+preset user AQS
+preset fund A 1000
+preset fund Q 2000
+preset fund S 3000
+preset credit A 10
+preset credit Q 20
+preset credit S 30
+e
+quit
