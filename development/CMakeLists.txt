@@ -1,19 +1,9 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.10)
 project(development C)
 
 set(CMAKE_C_STANDARD 11)
 
 include_directories(.)
+aux_source_directory("." src)
 
-add_executable(development
-        Game.c
-        Game.h
-        main.c
-        Map.c
-        Map.h
-        Player.c
-        Player.h
-        Property.c
-        Property.h
-        Tool.c
-        Tool.h test.c)
+add_executable(demo.exe ${src})
