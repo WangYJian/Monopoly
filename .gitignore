@@ -1,0 +1,7 @@
+development/build/
+development/cmake-build-debug/
+test_file/
+.vscode/
+test/
+
+*.DS_Store
