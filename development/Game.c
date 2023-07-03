@@ -13,7 +13,7 @@ void GameInitialize(struct Game* game){
     scanf("%d", &game->current_player_index);
     printf("地图初始化中\n");
     for(i = 0; i < MAP_SIZE; i++){
-        game->map[i] = malloc(sizeof(struct Map));
+        game->map[i] = malloc(sizeof(Map));
         game->map[i]->id = i;
         if(i == 0){
             game->map[i]->land_type = START;
@@ -24,7 +24,7 @@ void GameInitialize(struct Game* game){
             continue;
         }
         if(i == 14){
-
+            
         }
         
     }
