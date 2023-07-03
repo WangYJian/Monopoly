@@ -1,9 +1,10 @@
 #ifndef DEVELOPMENT_GAME_H
 #define DEVELOPMENT_GAME_H
+#include "map.h"
+#include "Player.h"
 
-
-typedef struct Player Player;
-typedef struct Map Map;
+// typedef struct Player Player;
+// typedef struct Map Map;
 
 #define MAP_SIZE 70 // 地图大小
 #define PLAYERS_SIZE 4 //最大玩家人数

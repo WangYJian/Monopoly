@@ -129,7 +129,7 @@ void GameDisplayMap(const struct Game* game){
         if(game->map[i]->is_player != -1){
             drawmap[0][i] = PlayerChar(game->map[i]->is_player);
         }else if(game->map[i]->land_type == SPACE && game->map[i]->is_tool)
-            drawmap[0][i] = Tool_char(game->map[i]->is_tool)
+            drawmap[0][i] = Tool_char(game->map[i]->is_tool);
         else
             drawmap[0][i] = game->map[i]->land_type;
     }
