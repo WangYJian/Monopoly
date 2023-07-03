@@ -1,11 +1,9 @@
 #ifndef DEVELOPMENT_GAME_H
 #define DEVELOPMENT_GAME_H
-#include "map.h"
-#include "Player.h"
-#include "Property.h"
 
-// typedef struct Player Player;
-// typedef struct Map Map;
+
+typedef struct Player Player;
+typedef struct Map Map;
 
 #define MAP_SIZE 70 // 地图大小
 #define PLAYERS_SIZE 4 //最大玩家人数
@@ -28,7 +26,7 @@ typedef struct Game {
     int current_player_index; // 当前行动的玩家的索引
 } Game;
 
-void GameInitialize(struct Game* game);  // 初始化游戏
+Game* GameInitialize(int initcash,int player_nums);  // 初始化游戏
 void GameAddPlayer(struct Game* game, struct Player* player);  // 向游戏添加玩家
 void GameRemovePlayer(struct Game* game, int playerID);  // 从游戏中移除玩家
 void GameStart(struct Game* game);  // 开始游戏

@@ -1,7 +1,10 @@
 #include "Game.h"
+#include "map.h"
+#include "Player.h"
+#include "Property.h"
 #include <stdio.h>
 #include <malloc.h>
-void GameInitialize(struct Game* game){
+Game* GameInitialize(int initcash,int player_nums){
     /*
     初始化游戏的函数要求，game已经在外部malloc
     1. 询问人数
@@ -10,11 +13,10 @@ void GameInitialize(struct Game* game){
     */
     int i = 0;
     Property* temp = NULL;
+    struct Game* game = malloc(sizeof(Game));
+    game->init_cash = initcash;
+    game->player_count = player_nums;
     game->current_player_index = 0;
-    printf("请输入游戏的人数: ");
-    scanf("%d", &game->player_count);
-    printf("请输入初始的金额: ");
-    scanf("%d",&game->init_cash);
     printf("初始化地图 ...\n");
     for(i = 0; i < MAP_SIZE; i++){
         game->map[i] = malloc(sizeof(Map));
@@ -56,7 +58,7 @@ void GameInitialize(struct Game* game){
     }
     printf("地图加载完成! \n");
     //system("cls");
-    GameStart(game);
+    return game;
 
     
 }
@@ -122,26 +124,7 @@ char Tool_char(int idx){
     }
     return ch;
 }
-char PlayerChar(int idx){
-    char ch;
-    switch (idx)
-    {
-    case 0:
-        ch = 'A';
-        break;
-    case 1:
-        ch = 'Q';
-        break;
-    case 2:
-        ch = 'S';
-        break;
-    
-    case 3:
-        ch = 'J';
-        break;
-    }
-    return ch;
-}
+
 void GameDisplayMap(const struct Game* game){
     /*
     仅仅显示地图
