@@ -2,14 +2,14 @@
 #define DEVELOPMENT_GAME_H
 
 
-#include "Player.h"
-#include "Map.h"
+typedef struct Player Player;
+typedef struct Map Map;
 
 #define MAP_SIZE 50 // 地图大小
 
 // 定义游戏的结构体
 typedef struct Game {
-    Player players[4]; // 游戏中的玩家
+    Player* players[4]; // 游戏中的玩家
     int player_count; // 游戏中的玩家数量
     Map* map[MAP_SIZE]; // 游戏地图
     int current_player_index; // 当前行动的玩家的索引

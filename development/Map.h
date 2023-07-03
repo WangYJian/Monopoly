@@ -1,9 +1,9 @@
 #ifndef DEVELOPMENT_MAP_H
 #define DEVELOPMENT_MAP_H
 
-#include "Property.h"
-#include "Tool.h"
-#include "Player.h"
+typedef struct Property Property;
+typedef struct Tool Tool;
+typedef struct Player Player;
 
 // 定义地图单元的结构体
 typedef struct Map {

@@ -8,7 +8,6 @@ include_directories(.)
 add_executable(development
         Game.c
         Game.h
-        main.c
         Map.c
         Map.h
         Player.c

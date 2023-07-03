@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "Game.h"
+#include "Tool.h"
+#include "Property.h"
+#include "Player.h"
+#include "Map.h"
 
 // 预设命令
 void preset_command(char* command) {
@@ -104,27 +108,27 @@ void dump_command(Game* game) {
 
     // 用户资金
     for (int i = 0; i < 4; i++) {
-        fprintf(file, "fund %c %d\n", game->players[i].name, game->players[i].cash);
+        fprintf(file, "fund %c %d\n", game->players[i]->name, game->players[i]->cash);
     }
 
     // 用户积分
     for (int i = 0; i < 4; i++) {
-        fprintf(file, "credit %c %d\n", game->players[i].name, game->players[i].points);
+        fprintf(file, "credit %c %d\n", game->players[i]->name, game->players[i]->points);
     }
 
     // 用户道具
     for (int i = 0; i < game->player_count; i++) {
-        if (game->players[i].bomb_count > 0) {
-            fprintf(file, "gift %c bomb %d\n", game->players[i].name, game->players[i].bomb_count);
+        if (game->players[i]->bomb_count > 0) {
+            fprintf(file, "gift %c bomb %d\n", game->players[i]->name, game->players[i]->bomb_count);
         }
-        if (game->players[i].barrier_count > 0) {
-            fprintf(file, "gift %c barrier %d\n", game->players[i].name, game->players[i].barrier_count);
+        if (game->players[i]->barrier_count > 0) {
+            fprintf(file, "gift %c barrier %d\n", game->players[i]->name, game->players[i]->barrier_count);
         }
-        if (game->players[i].robot_count > 0) {
-            fprintf(file, "gift %c robot %d\n", game->players[i].name, game->players[i].robot_count);
+        if (game->players[i]->robot_count > 0) {
+            fprintf(file, "gift %c robot %d\n", game->players[i]->name, game->players[i]->robot_count);
         }
-        if (game->players[i].god_count > 0) {
-            fprintf(file, "gift %c god %d\n", game->players[i].name, game->players[i].god_count);
+        if (game->players[i]->god_count > 0) {
+            fprintf(file, "gift %c god %d\n", game->players[i]->name, game->players[i]->god_count);
         }
 
     }
@@ -150,13 +154,13 @@ void dump_command(Game* game) {
     // 用户位置
     for (int i = 0; i < 4; i++) {
         // 如果用户停留天数大于0，输出用户位置，停留天数
-        if (game->players[i].stop_rounds > 0) {
-            fprintf(file, "userloc %c %d %d\n", game->players[i].name, game->players[i].position, game->players[i].stop_rounds);
+        if (game->players[i]->stop_rounds > 0) {
+            fprintf(file, "userloc %c %d %d\n", game->players[i]->name, game->players[i]->position, game->players[i]->stop_rounds);
         }
     }
 
     // 下一个用户
-    fprintf(file, "nextuser %c\n", game->players[game->current_player_index].name);
+    fprintf(file, "nextuser %c\n", game->players[game->current_player_index]->name);
     fclose(file);
 }
 

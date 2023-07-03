@@ -1,8 +1,8 @@
 #ifndef DEVELOPMENT_PLAYER_H
 #define DEVELOPMENT_PLAYER_H
 
-#include "Property.h"
-#include "Tool.h"
+typedef struct Property Property;
+typedef struct Tool Tool;
 
 // 定义玩家的结构体
 typedef struct Player {

@@ -1,7 +1,7 @@
 #ifndef DEVELOPMENT_TOOL_H
 #define DEVELOPMENT_TOOL_H
 
-#include "Player.h"
+typedef struct Player Player;
 
 // 定义道具的结构体
 typedef struct Tool {

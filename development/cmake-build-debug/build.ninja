@@ -56,22 +56,8 @@ build CMakeFiles/development.dir/Game.c.o: C_COMPILER__development_Debug /Users/
   OBJECT_DIR = CMakeFiles/development.dir
   OBJECT_FILE_DIR = CMakeFiles/development.dir
 
-build CMakeFiles/development.dir/main.c.o: C_COMPILER__development_Debug /Users/wangjian/code/C/dian/Monopoly/development/main.c || cmake_object_order_depends_target_development
-  DEP_FILE = CMakeFiles/development.dir/main.c.o.d
-  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -fcolor-diagnostics -std=gnu11
-  INCLUDES = -I/Users/wangjian/code/C/dian/Monopoly/development/.
-  OBJECT_DIR = CMakeFiles/development.dir
-  OBJECT_FILE_DIR = CMakeFiles/development.dir
-
 build CMakeFiles/development.dir/Map.c.o: C_COMPILER__development_Debug /Users/wangjian/code/C/dian/Monopoly/development/Map.c || cmake_object_order_depends_target_development
   DEP_FILE = CMakeFiles/development.dir/Map.c.o.d
-  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -fcolor-diagnostics -std=gnu11
-  INCLUDES = -I/Users/wangjian/code/C/dian/Monopoly/development/.
-  OBJECT_DIR = CMakeFiles/development.dir
-  OBJECT_FILE_DIR = CMakeFiles/development.dir
-
-build CMakeFiles/development.dir/MapCell.c.o: C_COMPILER__development_Debug /Users/wangjian/code/C/dian/Monopoly/development/MapCell.c || cmake_object_order_depends_target_development
-  DEP_FILE = CMakeFiles/development.dir/MapCell.c.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -fcolor-diagnostics -std=gnu11
   INCLUDES = -I/Users/wangjian/code/C/dian/Monopoly/development/.
   OBJECT_DIR = CMakeFiles/development.dir
@@ -113,7 +99,7 @@ build CMakeFiles/development.dir/test.c.o: C_COMPILER__development_Debug /Users/
 #############################################
 # Link the executable development
 
-build development: C_EXECUTABLE_LINKER__development_Debug CMakeFiles/development.dir/Game.c.o CMakeFiles/development.dir/main.c.o CMakeFiles/development.dir/Map.c.o CMakeFiles/development.dir/MapCell.c.o CMakeFiles/development.dir/Player.c.o CMakeFiles/development.dir/Property.c.o CMakeFiles/development.dir/Tool.c.o CMakeFiles/development.dir/test.c.o
+build development: C_EXECUTABLE_LINKER__development_Debug CMakeFiles/development.dir/Game.c.o CMakeFiles/development.dir/Map.c.o CMakeFiles/development.dir/Player.c.o CMakeFiles/development.dir/Property.c.o CMakeFiles/development.dir/Tool.c.o CMakeFiles/development.dir/test.c.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk
   OBJECT_DIR = CMakeFiles/development.dir
   POST_BUILD = :
