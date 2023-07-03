@@ -5,7 +5,7 @@
 typedef struct Player Player;
 typedef struct Map Map;
 
-#define MAP_SIZE 50 // 地图大小
+#define MAP_SIZE 70 // 地图大小
 
 // 定义游戏的结构体
 typedef struct Game {

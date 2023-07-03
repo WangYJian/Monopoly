@@ -1,0 +1,5 @@
+development/build/
+development/cmake-build-debug/
+test/
+
+*.DS_Store
