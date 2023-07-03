@@ -11,7 +11,7 @@ def input_test(file, demo:Popen):
     iter_f = iter(file)
     for line in iter_f:
         demo.stdin.write(line.encode())
-    # demo.stdin.write("dump")
+    demo.stdin.write("dump")
 
 def write_dump(demo:Popen, dump_file:io.TextIOWrapper):
     out, err = demo.communicate()
