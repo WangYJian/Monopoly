@@ -1,33 +1,31 @@
 #include "Game.h"
-
 #include <stdio.h>
 #include <malloc.h>
 void GameInitialize(struct Game* game){
     /*
-    åˆå§‹åŒ–æ¸¸æˆçš„å‡½æ•°è¦æ±‚ï¼Œgameå·²ç»åœ¨å¤–éƒ¨malloc
-    1. è¯¢é—®äººæ•°
-    2. åˆå§‹åŒ–æœ€å¼€å§‹æ¸¸ç©çš„ç©å®¶ç´¢å¼•
-    3. åˆå§‹åŒ–åœ°å›¾çš„æ•°æ®
+    ³õÊ¼»¯ÓÎÏ·µÄº¯ÊıÒªÇó£¬gameÒÑ¾­ÔÚÍâ²¿malloc
+    1. Ñ¯ÎÊÈËÊı
+    2. ³õÊ¼»¯×î¿ªÊ¼ÓÎÍæµÄÍæ¼ÒË÷Òı
+    3. ³õÊ¼»¯µØÍ¼µÄÊı¾İ
     */
     int i = 0;
     Property* temp = NULL;
     game->current_player_index = 0;
-    printf("Please enter players numbers: ");
+    printf("ÇëÊäÈëÓÎÏ·µÄÈËÊı: ");
     scanf("%d", &game->player_count);
-    printf("Please enter init cash: ");
+    printf("ÇëÊäÈë³õÊ¼µÄ½ğ¶î: ");
     scanf("%d",&game->init_cash);
-    printf("map init ...\n");
+    printf("³õÊ¼»¯µØÍ¼ ...\n");
     for(i = 0; i < MAP_SIZE; i++){
         game->map[i] = malloc(sizeof(Map));
         game->map[i]->id = i;
-        game->map[i]->is_player = -1;
-        
-        //åˆå§‹åŒ–åœ°çš®
+        game->map[i]->player = NULL;
+        //³õÊ¼»¯µØÆ¤
         temp = malloc(sizeof(Property));
         temp->id = i;
         temp->level = 0;
         temp->owner = NULL;
-        // TODO price å’Œ rent çš„åˆå§‹åŒ–
+        // TODO price ºÍ rent µÄ³õÊ¼»¯
         game->map[i]->property = temp;
         if(i == 0){
             game->map[i]->land_type = START;
@@ -56,7 +54,7 @@ void GameInitialize(struct Game* game){
             game->map[i]->land_type = MINERAL;
         }
     }
-    printf("done! \n");
+    printf("µØÍ¼¼ÓÔØÍê³É! \n");
     //system("cls");
     GameStart(game);
 
@@ -65,9 +63,9 @@ void GameInitialize(struct Game* game){
 
 void GameStart(struct Game* game){
     /*
-    å¼€å§‹æ¸¸æˆ
-    1. æ·»åŠ äººç‰©
-    2. è¿›å…¥ç¬¬ä¸€ä¸ªç©å®¶å›åˆ
+    ¿ªÊ¼ÓÎÏ·
+    1. Ìí¼ÓÈËÎï
+    2. ½øÈëµÚÒ»¸öÍæ¼Ò»ØºÏ
     */
     int i = 0;
     char name[4] = {'A','Q','S','J'};
@@ -86,7 +84,7 @@ void GameStart(struct Game* game){
         game->players[i]->points = 0;
     }
     GameDisplayMap(game);
-    // TODO è¿›å…¥ç©å®¶å›åˆ
+    // TODO ½øÈëÍæ¼Ò»ØºÏ
 }
 char level_char(int level){
     char ch;
@@ -146,11 +144,11 @@ char PlayerChar(int idx){
 }
 void GameDisplayMap(const struct Game* game){
     /*
-    ä»…ä»…æ˜¾ç¤ºåœ°å›¾
-    1. æ³¨æ„æ˜¾ç¤ºè¦†ç›–çš„ä¼˜å…ˆçº§
-    2. åœ°çš®é¢œè‰²ï¼Œtodo
-    ç¼–ç¨‹é€»è¾‘
-    å…ˆå°†å¯¹åº”å­—ç¬¦æ”¾åˆ°äºŒç»´æ•°ç»„å¯¹åº”çš„ä½ç½®ï¼Œç„¶åå°†è¿™äº›ä½ç½®æ‰“å°
+    ½ö½öÏÔÊ¾µØÍ¼
+    1. ×¢ÒâÏÔÊ¾¸²¸ÇµÄÓÅÏÈ¼¶
+    2. µØÆ¤ÑÕÉ«£¬todo
+    ±à³ÌÂß¼­
+    ÏÈ½«¶ÔÓ¦×Ö·û·Åµ½¶şÎ¬Êı×é¶ÔÓ¦µÄÎ»ÖÃ£¬È»ºó½«ÕâĞ©Î»ÖÃ´òÓ¡
     */
     int i = 0;
     int j = 0;
@@ -160,10 +158,10 @@ void GameDisplayMap(const struct Game* game){
             drawmap[i][j] = ' ';
         }
     }
-    // è¿™é‡Œæ‰“å°ç¬¬ä¸€è¡Œï¼Œå…¶ä¸­é™¤äº†14å·ï¼Œéƒ½å¯ä»¥æœ‰é“å…·
+    // ÕâÀï´òÓ¡µÚÒ»ĞĞ£¬ÆäÖĞ³ıÁË14ºÅ£¬¶¼¿ÉÒÔÓĞµÀ¾ß
     for(i = 0; i < 29; i++){
-        if(game->map[i]->is_player != -1){
-            drawmap[0][i] = PlayerChar(game->map[i]->is_player);
+        if(game->map[i]->player != NULL){
+            drawmap[0][i] = game->map[i]->player->name;
         }else if(game->map[i]->land_type == SPACE && game->map[i]->is_tool)
             drawmap[0][i] = Tool_char(game->map[i]->is_tool);
         else if(game->map[i]->land_type == SPACE && !game->map[i]->property->level){
@@ -175,10 +173,10 @@ void GameDisplayMap(const struct Game* game){
     for(i = 0; i < 8; i++)
         drawmap[i][29] = '\n';
 
-    // æ‰“å°å³è¾¹ï¼Œ
+    // ´òÓ¡ÓÒ±ß£¬
     for(i = 0; i < 8; i++){
-        if(game->map[28+i]->is_player != -1){
-            drawmap[i][28] = PlayerChar(game->map[28+i]->is_player);
+        if(game->map[28+i]->player != NULL){
+            drawmap[i][28] = game->map[28+i]->player->name;
         }else if(game->map[28+i]->is_tool && game->map[28+i]->land_type == SPACE)
             drawmap[i][28] = Tool_char(game->map[28+i]->is_tool);
         else if(!game->map[28+i]->property->level && game->map[28+i]->land_type == SPACE)
@@ -187,11 +185,11 @@ void GameDisplayMap(const struct Game* game){
             drawmap[i][28] = game->map[28+i]->land_type;
     }
 
-    //æ‰“å°ä¸‹è¾¹
+    //´òÓ¡ÏÂ±ß
     for(i = 28; i >=0; i--){
         j = 28 - i;
-        if(game->map[35+j]->is_player != -1){
-            drawmap[7][i] = PlayerChar(game->map[35+j]->is_player);
+        if(game->map[35+j]->player != NULL){
+            drawmap[7][i] = game->map[35+j]->player->name;
         }else if(game->map[35+j]->land_type == SPACE && game->map[35+j]->is_tool)
             drawmap[7][i] = Tool_char(game->map[35+j]->is_tool);
         else if(game->map[35+j]->land_type == SPACE && !game->map[35+j]->property->level)
@@ -200,11 +198,11 @@ void GameDisplayMap(const struct Game* game){
             drawmap[7][i] = game->map[35+j]->land_type;
     }
 
-    // æ‰“å°å·¦è¾¹,çŸ¿åŒºä¸èƒ½å¤Ÿä¹°åœ°çš®ï¼Œæ‰€ä»¥åªéœ€è¦ç®¡ä¸€éƒ¨åˆ†
+    // ´òÓ¡×ó±ß,¿óÇø²»ÄÜ¹»ÂòµØÆ¤£¬ËùÒÔÖ»ĞèÒª¹ÜÒ»²¿·Ö
     for(i = 6; i >= 1;i--){
         j = 7 - i;
-        if(game->map[63+j]->is_player != -1){
-            drawmap[i][0] = PlayerChar(game->map[63+j]->is_player);
+        if(game->map[63+j]->player != NULL){
+            drawmap[i][0] = game->map[63+j]->player->name;
         }else if(game->map[63+j]->land_type == SPACE && game->map[63+j]->is_tool)
             drawmap[i][0] = Tool_char(game->map[63+j]->is_tool);
         else
