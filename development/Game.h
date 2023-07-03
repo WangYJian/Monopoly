@@ -2,6 +2,7 @@
 #define DEVELOPMENT_GAME_H
 #include "map.h"
 #include "Player.h"
+#include "Property.h"
 
 // typedef struct Player Player;
 // typedef struct Map Map;

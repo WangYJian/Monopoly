@@ -1,4 +1,5 @@
 #include "Game.h"
+
 #include <stdio.h>
 #include <malloc.h>
 void GameInitialize(struct Game* game){
@@ -9,16 +10,25 @@ void GameInitialize(struct Game* game){
     3. 初始化地图的数据
     */
     int i = 0;
+    Property* temp = NULL;
     game->current_player_index = 0;
-    printf("请输入玩家人数：");
+    printf("Please enter players numbers: ");
     scanf("%d", &game->player_count);
-    printf("请输入期望的初始化资金：");
+    printf("Please enter init cash: ");
     scanf("%d",&game->init_cash);
-    printf("地图初始化中\n");
+    printf("map init ...\n");
     for(i = 0; i < MAP_SIZE; i++){
         game->map[i] = malloc(sizeof(Map));
         game->map[i]->id = i;
         game->map[i]->is_player = -1;
+        
+        //初始化地皮
+        temp = malloc(sizeof(Property));
+        temp->id = i;
+        temp->level = 0;
+        temp->owner = NULL;
+        // TODO price 和 rent 的初始化
+        game->map[i]->property = temp;
         if(i == 0){
             game->map[i]->land_type = START;
         }else if(i < 14){
@@ -46,8 +56,8 @@ void GameInitialize(struct Game* game){
             game->map[i]->land_type = MINERAL;
         }
     }
-    printf("初始化完成！\n");
-    system("cls");
+    printf("done! \n");
+    //system("cls");
     GameStart(game);
 
     
@@ -77,6 +87,26 @@ void GameStart(struct Game* game){
     }
     GameDisplayMap(game);
     // TODO 进入玩家回合
+}
+char level_char(int level){
+    char ch;
+    switch (level)
+    {
+    case 0:
+        ch = '0';
+        break;
+    case 1:
+        ch = '1';
+        break;
+    case 2:
+        ch = '2';
+        break;
+    
+    case 3:
+        ch = '3';
+        break;
+    }
+    return ch;
 }
 char Tool_char(int idx){
     char ch;
@@ -118,19 +148,28 @@ void GameDisplayMap(const struct Game* game){
     /*
     仅仅显示地图
     1. 注意显示覆盖的优先级
+    2. 地皮颜色，todo
     编程逻辑
     先将对应字符放到二维数组对应的位置，然后将这些位置打印
     */
     int i = 0;
-    
+    int j = 0;
     char drawmap[8][30];
+     for(i = 0; i < 8; i++){
+        for(j = 0; j < 30; j++){
+            drawmap[i][j] = ' ';
+        }
+    }
     // 这里打印第一行，其中除了14号，都可以有道具
     for(i = 0; i < 29; i++){
         if(game->map[i]->is_player != -1){
             drawmap[0][i] = PlayerChar(game->map[i]->is_player);
         }else if(game->map[i]->land_type == SPACE && game->map[i]->is_tool)
             drawmap[0][i] = Tool_char(game->map[i]->is_tool);
-        else
+        else if(game->map[i]->land_type == SPACE && !game->map[i]->property->level){
+            drawmap[0][i] = level_char(game->map[i]->property->level);
+        }
+        else 
             drawmap[0][i] = game->map[i]->land_type;
     }
     for(i = 0; i < 8; i++)
@@ -142,24 +181,28 @@ void GameDisplayMap(const struct Game* game){
             drawmap[i][28] = PlayerChar(game->map[28+i]->is_player);
         }else if(game->map[28+i]->is_tool && game->map[28+i]->land_type == SPACE)
             drawmap[i][28] = Tool_char(game->map[28+i]->is_tool);
+        else if(!game->map[28+i]->property->level && game->map[28+i]->land_type == SPACE)
+            drawmap[i][28] = level_char(game->map[28+i]->property->level);
         else
             drawmap[i][28] = game->map[28+i]->land_type;
     }
 
     //打印下边
     for(i = 28; i >=0; i--){
-        int j = 28 - i;
+        j = 28 - i;
         if(game->map[35+j]->is_player != -1){
             drawmap[7][i] = PlayerChar(game->map[35+j]->is_player);
         }else if(game->map[35+j]->land_type == SPACE && game->map[35+j]->is_tool)
             drawmap[7][i] = Tool_char(game->map[35+j]->is_tool);
+        else if(game->map[35+j]->land_type == SPACE && !game->map[35+j]->property->level)
+            drawmap[7][i] = level_char(game->map[35+j]->property->level);
         else
             drawmap[7][i] = game->map[35+j]->land_type;
     }
 
-    // 打印左边
-    for(i = 6; i >= 0;i--){
-        int j = 6 - i;
+    // 打印左边,矿区不能够买地皮，所以只需要管一部分
+    for(i = 6; i >= 1;i--){
+        j = 7 - i;
         if(game->map[63+j]->is_player != -1){
             drawmap[i][0] = PlayerChar(game->map[63+j]->is_player);
         }else if(game->map[63+j]->land_type == SPACE && game->map[63+j]->is_tool)
@@ -168,7 +211,7 @@ void GameDisplayMap(const struct Game* game){
             drawmap[i][0] = game->map[63+j]->land_type;
     }
 
-    int j = 0;
+
     for(i = 0; i < 8; i++){
         for(j = 0; j < 30; j++){
             printf("%c",drawmap[i][j]);
