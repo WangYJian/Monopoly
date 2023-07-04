@@ -1,8 +1,11 @@
 #ifndef DEVELOPMENT_PLAYER_H
 #define DEVELOPMENT_PLAYER_H
+
+#define BANKRUPT -1
 #define NORMAL 0
 #define INHOSPITAL 1
 #define INPRISON 2
+#define OUT 3
 
 #define GIFT_CASH 2000
 #define GIFT_POINTS 200
@@ -22,6 +25,7 @@ typedef struct Player {
     int position; // 玩家在地图上的位置
     int god_rounds; // 财神回合数
     // 炸弹、路障、机器娃娃
+
     Tool* bomb[10];
     Tool* barrier[10];
     Tool* robot[10];

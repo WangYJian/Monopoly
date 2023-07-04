@@ -1,8 +1,9 @@
-user ASQ
+user AQS
+preuser A
 Q
 alive 1
 money 1000
-point 0
+point 10
 item1 0
 item2 0
 item3 0
@@ -11,8 +12,8 @@ stop 0
 userloc 0
 A
 alive 1
-money 10000
-point 0
+money 2000
+point 20
 item1 0
 item2 0
 item3 0
@@ -21,7 +22,7 @@ stop 0
 userloc 0
 S
 alive 1
-money 1000
+money 3000
 point 0
 item1 0
 item2 0
@@ -31,7 +32,7 @@ stop 0
 userloc 0
 J
 alive 0
-money 1000
+money 10000
 point 0
 item1 0
 item2 0
@@ -40,4 +41,3 @@ buff 0
 stop 0
 userloc 0
 MAP
-mapuser 0 ASQ

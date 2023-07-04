@@ -1,5 +1,10 @@
-1000
-213
-set money A 10000
+10000
+1234
+set money Q 1000
+set money A 2000
+set money S 3000
+set point Q 10
+set point A 20
+step  5
 dump
 quit

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 development/build/
 development/.vscode/
 development/cmake-build-debug/
@@ -7,3 +8,6 @@ test_file/
 test/
 
 *.DS_Store
+=======
+.vscode
+>>>>>>> origin/ZH
