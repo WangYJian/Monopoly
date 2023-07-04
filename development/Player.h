@@ -4,6 +4,10 @@
 #define INHOSPITAL 1
 #define INPRISON 2
 
+#define GIFT_CASH 2000
+#define GIFT_POINTS 200
+#define GIFT_GOD_ROUND 5
+
 typedef struct Property Property;
 typedef struct Tool Tool;
 
@@ -16,17 +20,15 @@ typedef struct Player {
     int status; // 玩家状态：如正常、住院、坐牢等
     int stop_rounds; // 停留在医院或监狱的回合数
     int position; // 玩家在地图上的位置
-    Property* properties; // 玩家拥有的土地
-    // 炸弹、路障、机器娃娃、财神
+    int god_rounds; // 财神回合数
+    // 炸弹、路障、机器娃娃
     Tool* bomb[10];
     Tool* barrier[10];
     Tool* robot[10];
-    Tool* god[10];
     // 对应的道具数量、
     int bomb_count;
     int barrier_count;
     int robot_count;
-    int god_count;
 } Player;
 
 // 方法
@@ -41,5 +43,10 @@ void PlayerBuyTool(struct Player* player, int toolID);  // 玩家购买道具
 void PlayerUseTool(struct Player* player, int toolID, int targetLocation);  // 玩家使用道具
 void PlayerGoBankrupt(struct Player* player);  // 玩家破产
 void PlayerDisplayInfo(const struct Player* player);  // 显示玩家信息
+void PlayerGetBomb(struct Player* player); // 获取炸弹
+void PlayerGetBarrier(struct Player* player); // 获取路障
+void PlayerGetRobot(struct Player* player); // 获取机器娃娃
+void PlayerGiftHouse(struct Player* player);  //玩家遇到礼品屋
+void PlayerMineral(struct Player* player);   //玩家遇到矿地
 
 #endif
