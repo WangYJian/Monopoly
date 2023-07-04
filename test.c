@@ -139,6 +139,16 @@ int main() {
             sscanf(line, "set stop %c %d", &name, &n);
             GameGetPlayerByName(game, name)->stop_rounds = n;
         }
+
+        // dump 打印当前游戏状态
+        if (strncmp(line, "dump", 4) == 0) {
+
+        }
+
+        // quit 退出游戏
+
+
+
     }
 
     fclose(file);
