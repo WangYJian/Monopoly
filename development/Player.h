@@ -16,7 +16,6 @@ typedef struct Player {
     int status; // 玩家状态：如正常、住院、坐牢等
     int stop_rounds; // 停留在医院或监狱的回合数
     int position; // 玩家在地图上的位置
-    Property* properties; // 玩家拥有的土地
     // 炸弹、路障、机器娃娃、财神
     Tool* bomb[10];
     Tool* barrier[10];

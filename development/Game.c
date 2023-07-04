@@ -102,17 +102,17 @@ char player_char(char num){
     char ch;
     switch (num)
     {
-    case '0':
+    case '1':
         ch = 'A';
         break;
-    case '1':
+    case '2':
         ch = 'Q';
         break;
-    case '2':
+    case '3':
         ch = 'S';
         break;
     
-    case '3':
+    case '4':
         ch = 'J';
         break;
     }
@@ -239,6 +239,7 @@ Player* GameRollDice(struct Game* game, int dice_num){
     
     int pos_in_map = 0; // 也就是玩家从此出发偏移量
     Player* cur_player = game->players[player_id];
+    Map* cur_map = NULL;
     // 判断轮空
     if(cur_player->stop_rounds != 0){
         printf("当前你(%c)还处于轮空状态，无法行动，进入下一个玩家回合\n",cur_player->name);
@@ -249,7 +250,7 @@ Player* GameRollDice(struct Game* game, int dice_num){
     }
     
     //投掷色子
-    if(dice_num == NODICE)
+    if(dice_num != NODICE)
         actual_num = dice_num;
     else{
         srand((unsigned)time( NULL ) );
@@ -261,32 +262,46 @@ Player* GameRollDice(struct Game* game, int dice_num){
     for(i = 0; i < actual_num; i++){
         pos_in_map = cur_player->position;
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
-        
+        cur_map = game->map[pos_in_map+i];
          // 这里只考虑路障和炸弹
-        switch(game->map[pos_in_map+i]->is_tool)
+        switch(cur_map->is_tool)
         {
         case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
             break;
         case BARRIER: // 有路障
         {
-            game->map[pos_in_map+i]->is_tool = 0; // 踩掉了
-            free(game->map[pos_in_map+i]->tool);
-            game->map[pos_in_map+i]->tool = NULL;
+            cur_map->is_tool = 0; // 踩掉了
+            free(cur_map->tool);
+            cur_map->tool = NULL;
             cur_player->position += i;
             break;
         }
         case BOMB: // 有炸弹
         {
-            // TODO 添加status
+            //  添加status
             cur_player->status = INHOSPITAL;
-            game->map[pos_in_map+i]->is_tool = 0;
-            free(game->map[pos_in_map+i]->tool); // 删掉地图上的道具信息
-            game->map[pos_in_map+i]->tool = NULL;
+            cur_map->is_tool = 0;
+            free(cur_map->tool); // 删掉地图上的道具信息
+            cur_map->tool = NULL;
             cur_player->position = 14; // 进入医院
             cur_player->stop_rounds += 3; // 添加轮空
             break;
         }
-        // TODO 处理特殊地皮
+        // TODO 处理特殊地皮 ,继续使用cur_map
+        cur_map = game->map[cur_player->position]; // 玩家下一个位置
+        switch (cur_map->land_type)
+        {
+        case HOSPITAL:
+            /* code */
+            break;
+        case MINERAL:
+            break;
+        case MAGIC:
+            break;
+        default:
+            break;
+        }
+
         }
     }
     game->map[cur_player->position]->player = cur_player; // 在地图的位置上更新玩家显示
