@@ -1,54 +1,28 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include<malloc.h>
 #include "Game.h"
-#include"Map.h"
-#include"Player.h"
-
-
-
 
 int main() {
     Game* game;
-    Player* cur_player;
-    char nums[5];
+    int nums;
     int cash;
-    int dice_num; // è‰²å­çš„ç‚¹æ•°
     while(1){
-        int i = 0,err = 0;
-        printf("è¯·è¾“å…¥æ¸¸æˆçš„ç©å®¶: ");
-        scanf("%s", nums);
-        // printf("%d",strlen(nums));
-        if(strlen(nums) <= 4){
-            for(i = 0; i< strlen(nums); i++){
-                if(nums[i] >'4' || nums[i] < '1'){
-                    err = 1;
-                    break;
-                }
-            }
-            if(err != 1){
-                break;
-            }
-            else
-                printf("è¾“å…¥çš„æ•°å­—æœ‰è¯¯! è¯·é‡æ–°è¾“å…¥\n");
-        }
-        else
-            printf("è¾“å…¥äººæ•°è¶…äº†ï¼è¯·é‡æ–°è¾“å…¥\n");
+        printf("ÇëÊäÈëÓÎÏ·µÄÈËÊı: ");
+        scanf("%d", &nums);
+        if(nums <= 4)
+            break;
+        printf("ÊäÈëÈËÊı³¬ÁË£¡ÇëÖØĞÂÊäÈë\n");
     }
 
     
     while(1){
-        printf("è¯·è¾“å…¥åˆå§‹çš„é‡‘é¢: ");
+        printf("ÇëÊäÈë³õÊ¼µÄ½ğ¶î: ");
         scanf("%d",&cash);
         if(cash > 1000 && cash <= 50000)
             break;
-        printf("è¾“å…¥åˆå§‹åŒ–é‡‘é¢æœ‰è¯¯ï¼è¯·é‡æ–°è¾“å…¥\n");
+        printf("ÊäÈë³õÊ¼»¯½ğ¶îÓĞÎó£¡ÇëÖØĞÂÊäÈë\n");
     }
     game = GameInitialize(cash,nums);
-    cur_player = GameStart(game);
-    // cur_player->position = 23;
-    // game->map[cur_player->position]->player = cur_player;
-    // game->map[27]->player = game->players[game->current_player_index+1];
-    // GameDisplayMap(game);
+    GameDisplayMap(game);
     return 0;
 }
