@@ -4,6 +4,10 @@
 #define INHOSPITAL 1
 #define INPRISON 2
 
+#define GIFT_CASH 2000
+#define GIFT_POINTS 200
+#define GIFT_GOD_ROUND 5
+
 typedef struct Property Property;
 typedef struct Tool Tool;
 
@@ -42,5 +46,7 @@ void PlayerDisplayInfo(const struct Player* player);  // 显示玩家信息
 void PlayerGetBomb(struct Player* player); // 获取炸弹
 void PlayerGetBarrier(struct Player* player); // 获取路障
 void PlayerGetRobot(struct Player* player); // 获取机器娃娃
+void PlayerGiftHouse(struct Player* player);  //玩家遇到礼品屋
+void PlayerMineral(struct Player* player);   //玩家遇到矿地
 
 #endif
