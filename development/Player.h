@@ -1,5 +1,7 @@
 #ifndef DEVELOPMENT_PLAYER_H
 #define DEVELOPMENT_PLAYER_H
+
+#define BANKRUPT -1
 #define NORMAL 0
 #define INHOSPITAL 1
 #define INPRISON 2

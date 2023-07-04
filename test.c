@@ -9,6 +9,37 @@
 
 Game* game;
 
+// 输出玩家信息
+void print_player(char name, FILE* file) {
+    Player* player = GameGetPlayerByName(game, name);
+    if (player) {
+        fprintf(file, "alive %d\n", 0);
+        fprintf(file, "money %d\n", game->init_cash);
+        fprintf(file, "point %d\n", 0);
+        fprintf(file, "item1 %d\n", 0);
+        fprintf(file, "item2 %d\n", 0);
+        fprintf(file, "item3 %d\n", 0);
+        fprintf(file, "buff %d\n", 0);
+        fprintf(file, "stop %d\n", 0);
+        fprintf(file, "userloc %d\n", 0);
+    } else {
+        if (player->status == BANKRUPT) {
+            fprintf(file, "alive %d\n", 0);
+        } else {
+            fprintf(file, "alive %d\n", 1);
+        }
+        fprintf(file, "money %d\n", player->cash);
+        fprintf(file, "point %d\n", player->points);
+        fprintf(file, "item1 %d\n", player->barrier_count);
+        fprintf(file, "item2 %d\n", player->robot_count);
+        fprintf(file, "item3 %d\n", player->bomb_count);
+        fprintf(file, "buff %d\n", player->god_rounds);
+        fprintf(file, "stop %d\n", player->stop_rounds);
+        fprintf(file, "userloc %d\n", player->position);
+    }
+
+}
+
 int main() {
     char line[256];
     // 读取文件
@@ -142,13 +173,50 @@ int main() {
 
         // dump 打印当前游戏状态
         if (strncmp(line, "dump", 4) == 0) {
+            // 创建输出文件
+            FILE* output = fopen("output.txt", "w");
+            // 将游戏状态写入文件
+            // 将玩家名字写入文件
+            char names[5];
+            for (int i = 0; i < game->player_count; i++) {
+                names[i] = game->players[i]->name;
+            }
+            names[game->player_count] = '\0';
+            fprintf(output, "user %s\n", names);
 
+            // 目前玩家
+            fprintf(output, "preuser %c\n", game->players[game->current_player_index]->name);
+
+            // Q的状态
+            fprintf(output, "Q\n");
+            print_player('Q', output);
+
+            // A的状态
+            fprintf(output, "A\n");
+            print_player('A', output);
+
+            // S的状态
+            fprintf(output, "S\n");
+            print_player('S', output);
+
+            fprintf(output, "MAP\n");
+            for (int i = 0; i < 70; i++) {
+                if (game->map[i]->player_nums != 0) {
+                    // 获取所有玩家的名字
+                    char names[5];
+                    for (int j = 0; j < game->map[i]->player_nums; j++) {
+                        names[j] = game->map[i]->player[j]->name;
+                    }
+                    names[game->map[i]->player_nums] = '\0';
+                    fprintf(output, "mapuser %d %s\n", i, names);
+                }
+            }
         }
 
         // quit 退出游戏
-
-
-
+        if (strncmp(line, "quit", 4) == 0) {
+            break;
+        }
     }
 
     fclose(file);
