@@ -1,7 +1,5 @@
 1000
 213
 set money A 10000
-set money Q +1000
-set money S -100
 dump
 quit

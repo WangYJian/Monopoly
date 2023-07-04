@@ -1,7 +1,7 @@
 user ASQ
 Q
 alive 1
-money 2000
+money 1000
 point 0
 item1 0
 item2 0
@@ -21,7 +21,7 @@ stop 0
 userloc 0
 S
 alive 1
-money 900
+money 1000
 point 0
 item1 0
 item2 0
