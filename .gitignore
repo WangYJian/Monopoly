@@ -1,3 +1,4 @@
+
 development/build/
 development/.vscode/
 development/cmake-build-debug/
@@ -5,5 +6,3 @@ test_file/
 .vscode/
 *.exe
 test/
-.idea/
-*.DS_Store

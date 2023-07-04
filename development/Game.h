@@ -31,7 +31,7 @@ void GameAddPlayer(struct Game* game, struct Player* player);  // 向游戏添�
 void GameRemovePlayer(struct Game* game, int playerID);  // 从游戏中移除玩家
 Player* GameStart(struct Game* game);  // 开始游戏
 Player* GamePlayerRound(struct Game* game,struct Player* player,const char command[16]); // 进入某一个玩家的回合 然后询问玩家的操作,command用在测试人员中
-void GameEnd(struct Game* game);  // 结束游戏
+int GameEnd(struct Game* game);  // 结束游戏
 void GameDisplayMap(const struct Game* game);  // 显示游戏地图
 Player* GameGetPlayerByName(const struct Game* game, char name); // 通过玩家name获取玩家
 Player* GameRollDice(struct Game* game, int dice_num);  // 掷骰子

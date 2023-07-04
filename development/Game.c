@@ -27,8 +27,10 @@ Game* GameInitialize(int initcash,char* player_nums){
     for(i = 0; i < MAP_SIZE; i++){
         game->map[i] = malloc(sizeof(Map));
         game->map[i]->id = i;
-        //game->map[i]->player = NULL;
-        game->map[i]->player_nums = 0;
+        if(i == 0)
+            game->map[i]->player_nums = game->player_count;
+        else
+            game->map[i]->player_nums = 0;
         game->map[i]->tool = NULL;
         game->map[i]->is_tool = 0;
         //初始化地皮
@@ -82,6 +84,7 @@ Game* GameInitialize(int initcash,char* player_nums){
         game->players[i]->points = 0;
         // TODO 玩家的工具和其他指针的初始化
     }
+    printf("final");
     //system("cls");
     return game;
 
@@ -98,6 +101,9 @@ Player* GameStart(struct Game* game){
     GameDisplayMap(game);
     return game->players[0]; // 进入第一个玩家的回合,也就是返回这个玩家指针，放到roll里面
     // TODO 进入玩家回合
+}
+int GameEnd(struct Game* game){
+    return 1;
 }
 char player_char(char num){
     char ch;
@@ -157,7 +163,7 @@ char Tool_char(int idx){
     return ch;
 }
 
-void GameDisplayMap(const struct Game* game){
+void GameDisplayMap(const struct Game* game) {
     /*
     仅仅显示地图
     1. 注意显示覆盖的优先级
@@ -169,75 +175,82 @@ void GameDisplayMap(const struct Game* game){
     int j = 0;
     int player_on_map = 0;
     char drawmap[8][30];
-     for(i = 0; i < 8; i++){
-        for(j = 0; j < 30; j++){
+    for (i = 0; i < 8; i++) {
+        for (j = 0; j < 30; j++) {
             drawmap[i][j] = ' ';
         }
     }
     // 这里打印第一行，其中除了14号，都可以有道具
-    for(i = 0; i < 29; i++){
+    for (i = 0; i < 29; i++) {
         player_on_map = game->map[i]->player_nums;
-        if(player_on_map != 0){
-            drawmap[0][i] = game->map[i]->player[player_on_map-1]->name;
-        }else if(game->map[i]->land_type == SPACE && game->map[i]->is_tool)
+        if (player_on_map != 0) {
+            drawmap[0][i] = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
+        } else if (game->map[i]->land_type == SPACE && game->map[i]->is_tool)
             drawmap[0][i] = Tool_char(game->map[i]->is_tool);
-        else if(game->map[i]->land_type == SPACE && !game->map[i]->property->level){
+        else if (game->map[i]->land_type == SPACE && !game->map[i]->property->level) {
             drawmap[0][i] = level_char(game->map[i]->property->level);
-        }
-        else 
+        } else
             drawmap[0][i] = game->map[i]->land_type;
     }
-    for(i = 0; i < 8; i++)
+    for (i = 0; i < 8; i++)
         drawmap[i][29] = '\n';
 
     // 打印右边，
-    
-    for(i = 0; i < 8; i++){
-        player_on_map = game->map[28+i]->player_nums;
-        if(player_on_map != 0){
-            drawmap[i][28] = game->map[28+i]->player[player_on_map-1]->name;
-        }else if(game->map[28+i]->is_tool && game->map[28+i]->land_type == SPACE)
-            drawmap[i][28] = Tool_char(game->map[28+i]->is_tool);
-        else if(!game->map[28+i]->property->level && game->map[28+i]->land_type == SPACE)
-            drawmap[i][28] = level_char(game->map[28+i]->property->level);
+
+    for (i = 0; i < 8; i++) {
+        player_on_map = game->map[28 + i]->player_nums;
+        if (player_on_map != 0) {
+            drawmap[i][28] = game->map[28 + i]->player[player_on_map - 1]->name;
+        } else if (game->map[28 + i]->is_tool && game->map[28 + i]->land_type == SPACE)
+            drawmap[i][28] = Tool_char(game->map[28 + i]->is_tool);
+        else if (!game->map[28 + i]->property->level && game->map[28 + i]->land_type == SPACE)
+            drawmap[i][28] = level_char(game->map[28 + i]->property->level);
         else
-            drawmap[i][28] = game->map[28+i]->land_type;
+            drawmap[i][28] = game->map[28 + i]->land_type;
     }
 
     //打印下边
-    for(i = 28; i >=0; i--){
+    for (i = 28; i >= 0; i--) {
         j = 28 - i;
-        player_on_map = game->map[35+j]->player_nums;
-        if(player_on_map != 0){
-            drawmap[7][i] = game->map[35+j]->player[player_on_map]->name;
-        }else if(game->map[35+j]->land_type == SPACE && game->map[35+j]->is_tool)
-            drawmap[7][i] = Tool_char(game->map[35+j]->is_tool);
-        else if(game->map[35+j]->land_type == SPACE && !game->map[35+j]->property->level)
-            drawmap[7][i] = level_char(game->map[35+j]->property->level);
+        player_on_map = game->map[35 + j]->player_nums;
+        if (player_on_map != 0) {
+            drawmap[7][i] = game->map[35 + j]->player[player_on_map]->name;
+        } else if (game->map[35 + j]->land_type == SPACE && game->map[35 + j]->is_tool)
+            drawmap[7][i] = Tool_char(game->map[35 + j]->is_tool);
+        else if (game->map[35 + j]->land_type == SPACE && !game->map[35 + j]->property->level)
+            drawmap[7][i] = level_char(game->map[35 + j]->property->level);
         else
-            drawmap[7][i] = game->map[35+j]->land_type;
+            drawmap[7][i] = game->map[35 + j]->land_type;
     }
 
     // 打印左边,矿区不能够买地皮，所以只需要管一部分
-    for(i = 6; i >= 1;i--){
+    for (i = 6; i >= 1; i--) {
         j = 7 - i;
-        player_on_map = game->map[63+j]->player_nums;
-        if(player_on_map != 0){
-            drawmap[i][0] = game->map[63+j]->player[player_on_map]->name;
-        }else if(game->map[63+j]->land_type == SPACE && game->map[63+j]->is_tool)
-            drawmap[i][0] = Tool_char(game->map[63+j]->is_tool);
+        player_on_map = game->map[63 + j]->player_nums;
+        if (player_on_map != 0) {
+            drawmap[i][0] = game->map[63 + j]->player[player_on_map]->name;
+        } else if (game->map[63 + j]->land_type == SPACE && game->map[63 + j]->is_tool)
+            drawmap[i][0] = Tool_char(game->map[63 + j]->is_tool);
         else
-            drawmap[i][0] = game->map[63+j]->land_type;
+            drawmap[i][0] = game->map[63 + j]->land_type;
     }
 
 
-    for(i = 0; i < 8; i++){
-        for(j = 0; j < 30; j++){
-            printf("%c",drawmap[i][j]);
+    for (i = 0; i < 8; i++) {
+        for (j = 0; j < 30; j++) {
+            printf("%c", drawmap[i][j]);
         }
     }
-        
-    
+}
+
+// 通过名字获取玩家
+Player* GameGetPlayerByName(const struct Game* game, char name){
+    int i = 0;
+    for(i = 0; i < game->player_count; i++){
+        if(game->players[i]->name == name)
+            return game->players[i];
+    }
+    return NULL;
 }
 
 Player* GameRollDice(struct Game* game, int dice_num){
@@ -270,17 +283,23 @@ Player* GameRollDice(struct Game* game, int dice_num){
         pos_in_map = cur_player->position;
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
         cur_map = game->map[pos_in_map+i];
+        
          // 这里只考虑路障和炸弹
+         // TODO 一个地皮上有道具了就不能放了
         switch(cur_map->is_tool)
         {
         case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
+        {
+            pos_in_map = i+1;// 直接移动
             break;
+        }
+            
         case BARRIER: // 有路障
         {
             cur_map->is_tool = 0; // 踩掉了
             free(cur_map->tool);
             cur_map->tool = NULL;
-            cur_player->position += i;
+            pos_in_map = i+1;
             break;
         }
         case BOMB: // 有炸弹
@@ -290,32 +309,46 @@ Player* GameRollDice(struct Game* game, int dice_num){
             cur_map->is_tool = 0;
             free(cur_map->tool); // 删掉地图上的道具信息
             cur_map->tool = NULL;
-            cur_player->position = 14; // 进入医院
+            pos_in_map = 14; // 进入医院
             cur_player->stop_rounds += 3; // 添加轮空
             break;
         }
         // TODO 处理特殊地皮 ,继续使用cur_map
         cur_map = game->map[cur_player->position]; // 玩家下一个位置
+        // TODO 下面的玩家需要把踩到的地图块更新上面的玩家
         switch (cur_map->land_type)
         {
-        case HOSPITAL:
-            /* code */
-            break;
         case MINERAL:
-            break;
-        case MAGIC:
-            break;
-        case TOOL:
-            break;
-        case GIFT:
-            break;
-        default:
+        {
+            PlayerMineral(cur_player);
             break;
         }
-
+        case MAGIC:
+        {
+            PlayerMagic(cur_player);
+            break;
+        }
+        case TOOL:
+        {
+            PlayerTool(cur_player);
+            break;
+        }
+        case GIFT:
+        {
+            PlayerGiftHouse(cur_player);
+            break;
+        }
+        default: // 其他不作处理
+            break;
+        }
         }
     }
     // 添加玩家
+    cur_player->position += pos_in_map;
+    cur_map = game->map[cur_player->position];
+    printf("%d\n",pos_in_map);
+    // TODO 下面的玩家需要把踩到的地图块更新上面的玩家
+    AddPlayerMap(cur_map,cur_player); // 采用队列的形式添加
     //game->map[cur_player->position]->player[] = cur_player; // 在地图的位置上更新玩家显示
     GameDisplayMap(game); // 从新打印地图
     printf("你(%c)已经到达相应的位置，接下来请输入你需要进行的操作：\n",cur_player->name);
@@ -328,6 +361,7 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
         return NULL;
     }
     Player* player_next = NULL;
+    
     char real_command[16];
     int symbol = 0;
     int num[2] = {-1,-1},i = 0,j = 0;
@@ -362,41 +396,58 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
         
         }
         if(player->stop_rounds == 0){
+            int pos_for_tool = 0,tool_place = 0;
+            Tool* temp;
+            Map* cur_map;
+            if(num[0] != -1&&num[1] != -1){
+                pos_for_tool = num[0]*10 + num[1];
+            }else
+                pos_for_tool = num[0];
+            if(symbol){
+                pos_for_tool = -pos_for_tool;
+            }
+            tool_place = (player->position + pos_for_tool + MAP_SIZE)%MAP_SIZE;
+            cur_map = game->map[tool_place];
             if(strcmp(real_command,"query") == 0)
                 PlayerDisplayInfo(player);
             else if(strcmp(real_command,"roll") == 0){
                 GameRollDice(game,NODICE);
 
             }else if(strcmp(real_command,"bomb") == 0){
-                
-                // 
-                int pos_for_tool = 0,tool_place = 0;
-                Tool* temp;
-                
-                if(num[0] != -1&&num[1] != -1){
-                    pos_for_tool = num[0]*10 + num[1];
-                }else
-                    pos_for_tool = num[0];
-                if(symbol){
-                    pos_for_tool = -pos_for_tool;
-                }
-                tool_place = (player->position + pos_for_tool + MAP_SIZE)%MAP_SIZE;
-                if(game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type || game->map[tool_place]->player_nums!=0){
-                    printf("该地皮不能够放置道具，请重新指令！\n");
-                    continue;
-                }
-                // 使用toolactivate？判断地皮是不是普通的
-                temp = malloc(sizeof(Tool));
-                temp->id = BOMB;
-                strcpy(temp->name,"bomb");
-                temp->points = 50;
-                temp->owner = player;
-                player->bomb[player->bomb_count++] = temp;
+                PlayerUseTool(player,BOMB,tool_place);
+                // 下面这一片可以直接放到使用道具中去
+                // if(game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type || game->map[tool_place]->player_nums!=0){
+                //     printf("该地皮不能够放置道具，请重新指令！\n");
+                //     continue;
+                // }
+                // // 使用toolactivate？判断地皮是不是普通的
+                // temp = malloc(sizeof(Tool));
+                // temp->id = BOMB;
+                // strcpy(temp->name,"bomb");
+                // temp->points = 50;
+                // temp->owner = player;
+                // player->bomb[player->bomb_count++] = temp;
 
-                game->map[tool_place]->is_tool = 1;
-                game->map[tool_place]->tool = temp; // 这里直接通过配合bomb——count和bomb来实现？，或者这个炸弹都初始化为空
+                // game->map[tool_place]->is_tool = 1;
+                // game->map[tool_place]->tool = temp; // 这里直接通过配合bomb——count和bomb来实现？，或者这个炸弹都初始化为空
             }else if(strcmp(real_command,"barrier") == 0){
+                PlayerUseTool(player,BARRIER,tool_place);
+                
+            }else if(strcmp(real_command,"sell") == 0){
+                PlayerSellProperty(player,cur_map);
 
+            }else if(strcmp(real_command,"help") == 0){
+                PlayerHelp();
+            }else if(strcmp(real_command,"quit") == 0){
+                printf("玩家%c退出回合",player->name);
+                loop = 0;
+            }else if(strcmp(real_command,"buy") == 0){
+                PlayerBuyLand(player,cur_map);
+            }else if(strcmp(real_command,"robot") == 0){
+                PlayerUseTool(player,ROBOT,tool_place);
+            }
+            else{
+                printf("未解析的外部命令！");
             }
 
         }else{

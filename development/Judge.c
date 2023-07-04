@@ -6,47 +6,47 @@
 #include <stdio.h>
 int IsInPrison(struct Game* game)
 {
-    if(game->players[game->current_player_index]->position != 49)//Íæ¼Ò´¦ÓÚ·Ç¼àÓü
+    if(game->players[game->current_player_index]->position != 49)//çŽ©å®¶å¤„äºŽéžç›‘ç‹±
     {    
         printf("Safe\n");
     }
-    else if(game->players[game->current_player_index]->position == 49)//Íæ¼Ò´¦ÓÚ¼àÓü
+    else if(game->players[game->current_player_index]->position == 49)//çŽ©å®¶å¤„äºŽç›‘ç‹±
     {
-        if(game->players[game->current_player_index]->stop_rounds)//ÈÔÔÚ¼àÓüÖÐ
+        if(game->players[game->current_player_index]->stop_rounds)//ä»åœ¨ç›‘ç‹±ä¸­
         {
             game->players[game->current_player_index]->stop_rounds--;
-            printf("Íæ¼Ò%c±¾»ØºÏÔÚ¼àÓüÖÐ£¬Ê£ÓàÂÖ¿Õ»ØºÏÊý£º%d\n",game->players[game->current_player_index]->name,game->players[game->current_player_index]->stop_rounds);
-            if(!game->players[game->current_player_index]->stop_rounds)//Ó¦¸Ã³öÓü
+            printf("çŽ©å®¶%cæœ¬å›žåˆåœ¨ç›‘ç‹±ä¸­ï¼Œå‰©ä½™è½®ç©ºå›žåˆæ•°ï¼š%d\n",game->players[game->current_player_index]->name,game->players[game->current_player_index]->stop_rounds);
+            if(!game->players[game->current_player_index]->stop_rounds)//åº”è¯¥å‡ºç‹±
             {
                 game->players[game->current_player_index]->status = NORMAL;
-                printf("Íæ¼Ò%cÏÂ»ØºÏ¼´½«³öÓü£¬¿ÉÒÔÕý³£ÐÐ¶¯\n",game->players[game->current_player_index]->name);
+                printf("çŽ©å®¶%cä¸‹å›žåˆå³å°†å‡ºç‹±ï¼Œå¯ä»¥æ­£å¸¸è¡ŒåŠ¨\n",game->players[game->current_player_index]->name);
             }
         }
-        else //²»ÔÚ¼àÓüÖÐ£¬×øÀÎ2»ØºÏ
+        else //ä¸åœ¨ç›‘ç‹±ä¸­ï¼Œåç‰¢2å›žåˆ
         {
             game->players[game->current_player_index]->stop_rounds = 2;
             game->players[game->current_player_index]->status = INPRISON;
-            printf("¼Ä£¡Íæ¼Ò%c±¾»ØºÏ½øÈë¼àÓüÖÐ£¬Ê£ÓàÂÖ¿Õ»ØºÏÊý£º%d\n",game->players[game->current_player_index]->name,game->players[game->current_player_index]->stop_rounds);
+            printf("å¯„ï¼çŽ©å®¶%cæœ¬å›žåˆè¿›å…¥ç›‘ç‹±ä¸­ï¼Œå‰©ä½™è½®ç©ºå›žåˆæ•°ï¼š%d\n",game->players[game->current_player_index]->name,game->players[game->current_player_index]->stop_rounds);
         }
     }    
 }
 
 int IsInHospital(struct Game* game)
 {
-    if(game->players[game->current_player_index]->position != 14)//Íæ¼Ò´¦ÓÚ·ÇÒ½Ôº
+    if(game->players[game->current_player_index]->position != 14)//çŽ©å®¶å¤„äºŽéžåŒ»é™¢
     {    
 
     }
-    else if(game->players[game->current_player_index]->position == 14)//Íæ¼Ò´¦ÓÚÒ½Ôº
+    else if(game->players[game->current_player_index]->position == 14)//çŽ©å®¶å¤„äºŽåŒ»é™¢
     {
-        if(game->players[game->current_player_index]->stop_rounds)//Íæ¼Ò´¦ÓÚ×¡Ôº×´Ì¬
+        if(game->players[game->current_player_index]->stop_rounds)//çŽ©å®¶å¤„äºŽä½é™¢çŠ¶æ€
         {
             game->players[game->current_player_index]->stop_rounds--;
-            printf("Íæ¼Ò%c±¾»ØºÏÔÚÒ½ÔºÖÐ£¬Ê£ÓàÂÖ¿Õ»ØºÏÊý£º%d\n",game->players[game->current_player_index]->name,game->players[game->current_player_index]->stop_rounds);
-            if(!game->players[game->current_player_index]->stop_rounds)//Ó¦¸Ã³öÔº
+            printf("çŽ©å®¶%cæœ¬å›žåˆåœ¨åŒ»é™¢ä¸­ï¼Œå‰©ä½™è½®ç©ºå›žåˆæ•°ï¼š%d\n",game->players[game->current_player_index]->name,game->players[game->current_player_index]->stop_rounds);
+            if(!game->players[game->current_player_index]->stop_rounds)//åº”è¯¥å‡ºé™¢
             {
                 game->players[game->current_player_index]->status = NORMAL;
-                printf("Íæ¼Ò%cÏÂ»ØºÏ¼´½«³öÔº£¬¿ÉÒÔÕý³£ÐÐ¶¯\n",game->players[game->current_player_index]->name);
+                printf("çŽ©å®¶%cä¸‹å›žåˆå³å°†å‡ºé™¢ï¼Œå¯ä»¥æ­£å¸¸è¡ŒåŠ¨\n",game->players[game->current_player_index]->name);
             }
         }
     }
@@ -54,7 +54,7 @@ int IsInHospital(struct Game* game)
 
 int IsInMine(struct Game* game)
 {
-    if(game->players[game->current_player_index]->position >=64 || game->players[game->current_player_index]->position<=69)//Íæ¼Ò´¦ÓÚ¿óµØ
+    if(game->players[game->current_player_index]->position >=64 || game->players[game->current_player_index]->position<=69)//çŽ©å®¶å¤„äºŽçŸ¿åœ°
     {    
         switch (game->players[game->current_player_index]->position)
         {
@@ -89,7 +89,7 @@ int IsInBomb(struct Game* game)
         game->players[game->current_player_index]->position = 14;
         game->players[game->current_player_index]->stop_rounds = 3;
         game->players[game->current_player_index]->status = INHOSPITAL;
-        printf("Íæ¼Ò%c±»Õ¨ÉË£¡¼´½«ËÍÍùÒ½Ôº......Í¬Ê±ÂÖ¿Õ3»ØºÏ\n",game->players[game->current_player_index]->name);
+        printf("çŽ©å®¶%cè¢«ç‚¸ä¼¤ï¼å³å°†é€å¾€åŒ»é™¢......åŒæ—¶è½®ç©º3å›žåˆ\n",game->players[game->current_player_index]->name);
     }
 }
 

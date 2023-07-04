@@ -5,6 +5,9 @@
 #include"Map.h"
 #include"Player.h"
 
+
+
+
 int main() {
     Game* game;
     Player* cur_player;
@@ -43,6 +46,12 @@ int main() {
     }
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);
+    while(1){
+        printf("11\n");
+        GameRollDice(game,NODICE);
+        if(GameEnd(game))
+            break;
+    }
     // cur_player->position = 23;
     // game->map[cur_player->position]->player = cur_player;
     // game->map[27]->player = game->players[game->current_player_index+1];
