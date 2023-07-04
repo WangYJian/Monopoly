@@ -40,10 +40,10 @@ void print_player(char name, FILE* file) {
 
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     char line[256];
     // 读取文件
-    FILE *file = fopen("test.txt", "r");
+    FILE *file = fopen("/Users/wangjian/code/C/dian/Monopoly/test_file/input/input_0", "r");
     if (file == NULL) {
         printf("Error: unable to open test.txt\n");
         return 1;
@@ -152,8 +152,8 @@ int main() {
             char name;
             int n;
             sscanf(line, "set pos %c %d", &name, &n);
-            game->map[n]->player = GameGetPlayerByName(game, name);
-            game->map[n]->player->position = n;
+            //game->map[n]->player = GameGetPlayerByName(game, name);
+            //game->map[n]->player->position = n;
         }
 
         // step [n] 让当前玩家向前移动n格,范围为[0,70),效果就是一个能指定步数的roll,step后就不能roll
@@ -174,7 +174,7 @@ int main() {
         // dump 打印当前游戏状态
         if (strncmp(line, "dump", 4) == 0) {
             // 创建输出文件
-            FILE* output = fopen("output.txt", "w");
+            FILE* output = fopen("/Users/wangjian/code/C/dian/Monopoly/test_file/dump/dump_0", "w");
             // 将游戏状态写入文件
             // 将玩家名字写入文件
             char names[5];

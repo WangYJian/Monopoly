@@ -27,7 +27,7 @@ Game* GameInitialize(int initcash,char* player_nums){
     for(i = 0; i < MAP_SIZE; i++){
         game->map[i] = malloc(sizeof(Map));
         game->map[i]->id = i;
-        game->map[i]->player = NULL;
+        game->map[i]->player_nums = 0;
         game->map[i]->tool = NULL;
         game->map[i]->is_tool = 0;
         //初始化地皮
@@ -107,17 +107,17 @@ char player_char(char num){
     char ch;
     switch (num)
     {
-    case '0':
+    case '1':
         ch = 'A';
         break;
-    case '1':
+    case '2':
         ch = 'Q';
         break;
-    case '2':
+    case '3':
         ch = 'S';
         break;
     
-    case '3':
+    case '4':
         ch = 'J';
         break;
     }
@@ -180,8 +180,8 @@ void GameDisplayMap(const struct Game* game){
     }
     // 这里打印第一行，其中除了14号，都可以有道具
     for(i = 0; i < 29; i++){
-        if(game->map[i]->player != NULL){
-            drawmap[0][i] = game->map[i]->player->name;
+        if(game->map[i]->player_nums != 0){
+            drawmap[0][i] = game->map[i]->player[game->map[i]->player_nums -1]->name;
         }else if(game->map[i]->land_type == SPACE && game->map[i]->is_tool)
             drawmap[0][i] = Tool_char(game->map[i]->is_tool);
         else if(game->map[i]->land_type == SPACE && !game->map[i]->property->level){
@@ -195,8 +195,8 @@ void GameDisplayMap(const struct Game* game){
 
     // 打印右边，
     for(i = 0; i < 8; i++){
-        if(game->map[28+i]->player != NULL){
-            drawmap[i][28] = game->map[28+i]->player->name;
+        if(game->map[28+i]->player_nums != 0){
+            drawmap[i][28] = game->map[28+i]->player[game->map[28+i]->player_nums -1]->name;
         }else if(game->map[28+i]->is_tool && game->map[28+i]->land_type == SPACE)
             drawmap[i][28] = Tool_char(game->map[28+i]->is_tool);
         else if(!game->map[28+i]->property->level && game->map[28+i]->land_type == SPACE)
@@ -208,8 +208,8 @@ void GameDisplayMap(const struct Game* game){
     //打印下边
     for(i = 28; i >=0; i--){
         j = 28 - i;
-        if(game->map[35+j]->player != NULL){
-            drawmap[7][i] = game->map[35+j]->player->name;
+        if(game->map[35+j]->player_nums != 0){
+            drawmap[7][i] = game->map[35+j]->player[game->map[35+j]->player_nums -1]->name;
         }else if(game->map[35+j]->land_type == SPACE && game->map[35+j]->is_tool)
             drawmap[7][i] = Tool_char(game->map[35+j]->is_tool);
         else if(game->map[35+j]->land_type == SPACE && !game->map[35+j]->property->level)
@@ -221,8 +221,8 @@ void GameDisplayMap(const struct Game* game){
     // 打印左边,矿区不能够买地皮，所以只需要管一部分
     for(i = 6; i >= 1;i--){
         j = 7 - i;
-        if(game->map[63+j]->player != NULL){
-            drawmap[i][0] = game->map[63+j]->player->name;
+        if(game->map[63+j]->player_nums != 0){
+            drawmap[i][0] = game->map[63+j]->player[game->map[63+j]->player_nums -1]->name;
         }else if(game->map[63+j]->land_type == SPACE && game->map[63+j]->is_tool)
             drawmap[i][0] = Tool_char(game->map[63+j]->is_tool);
         else
@@ -240,7 +240,7 @@ void GameDisplayMap(const struct Game* game){
 // 通过名字获取玩家
 Player* GameGetPlayerByName(const struct Game* game, char name){
     int i = 0;
-    for(i = 0; i < 4; i++){
+    for(i = 0; i < game->player_count; i++){
         if(game->players[i]->name == name)
             return game->players[i];
     }
@@ -303,7 +303,7 @@ Player* GameRollDice(struct Game* game, int dice_num){
         // TODO 处理特殊地皮
         }
     }
-    game->map[cur_player->position]->player = cur_player; // 在地图的位置上更新玩家显示
+    //game->map[cur_player->position]->player = cur_player; // 在地图的位置上更新玩家显示
     GameDisplayMap(game); // 从新打印地图
     printf("你(%c)已经到达相应的位置，接下来请输入你需要进行的操作：\n",cur_player->name);
     return cur_player; // 这个玩家投完色子之后，返回当前玩家
