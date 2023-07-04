@@ -98,3 +98,4 @@ void PlayerMineral(struct Player* player)
             break;
     }
 }
+void PlayerDisplayInfo(const struct Player* player){}

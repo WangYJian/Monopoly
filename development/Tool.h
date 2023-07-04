@@ -3,9 +3,6 @@
 
 #define NOTOOL 0
 #define BARRIER 1
-
-
-
 #define ROBOT 2
 #define BOMB 3
 
