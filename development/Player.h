@@ -1,5 +1,8 @@
 #ifndef DEVELOPMENT_PLAYER_H
 #define DEVELOPMENT_PLAYER_H
+#define NORMAL 0
+#define INHOSPITAL 1
+#define INPRISON 2
 
 typedef struct Property Property;
 typedef struct Tool Tool;

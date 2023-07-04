@@ -1,8 +1,9 @@
 #ifndef DEVELOPMENT_TOOL_H
 #define DEVELOPMENT_TOOL_H
-
+#define NOTOOL 0
+#define BARRIER 1
+#define BOMB 2
 typedef struct Player Player;
-
 // 定义道具的结构体
 typedef struct Tool {
     int id; // 道具ID

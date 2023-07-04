@@ -72,7 +72,7 @@ Game* GameInitialize(int initcash,char* player_nums){
         game->players[i]->barrier_count = 0;
         game->players[i]->robot_count = 0;
         game->players[i]->god_count = 0;
-        game->players[i]->status = 0;
+        game->players[i]->status = NORMAL;
         game->players[i]->stop_rounds = 0;
         game->players[i]->position = 0;
         game->players[i]->cash = game->init_cash;
@@ -247,7 +247,7 @@ Player* GameRollDice(struct Game* game, int dice_num){
         player_id = game->current_player_index;
         return game->players[player_id]; // 返回下一个玩家
     }
-
+    
     //投掷色子
     if(dice_num == NODICE)
         actual_num = dice_num;
@@ -265,9 +265,9 @@ Player* GameRollDice(struct Game* game, int dice_num){
          // 这里只考虑路障和炸弹
         switch(game->map[pos_in_map+i]->is_tool)
         {
-        case 0: // 啥都没有 TODO 考虑特殊地皮
+        case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
             break;
-        case 1: // 有路障
+        case BARRIER: // 有路障
         {
             game->map[pos_in_map+i]->is_tool = 0; // 踩掉了
             free(game->map[pos_in_map+i]->tool);
@@ -275,8 +275,10 @@ Player* GameRollDice(struct Game* game, int dice_num){
             cur_player->position += i;
             break;
         }
-        case 2: // 有炸弹
+        case BOMB: // 有炸弹
         {
+            // TODO 添加status
+            cur_player->status = INHOSPITAL;
             game->map[pos_in_map+i]->is_tool = 0;
             free(game->map[pos_in_map+i]->tool); // 删掉地图上的道具信息
             game->map[pos_in_map+i]->tool = NULL;
@@ -284,6 +286,7 @@ Player* GameRollDice(struct Game* game, int dice_num){
             cur_player->stop_rounds += 3; // 添加轮空
             break;
         }
+        // TODO 处理特殊地皮
         }
     }
     game->map[cur_player->position]->player = cur_player; // 在地图的位置上更新玩家显示
@@ -338,6 +341,7 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
                 GameRollDice(game,NODICE);
 
             }else if(strcmp(real_command,"bomb") == 0){
+                // 
                 int pos_for_tool = 0,tool_place = 0;
                 Tool* temp;
                 if(num[0]&&num[1]){
@@ -350,7 +354,7 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
                 tool_place = (player->position + pos_for_tool + MAP_SIZE)%MAP_SIZE;
                 
                 // 使用toolactivate？
-            
+
                 temp = malloc(sizeof(Tool));
                 temp->id = 3;
                 strcpy(temp->name,"bomb");
