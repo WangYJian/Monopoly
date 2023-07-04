@@ -12,7 +12,7 @@ Game* game;
 // 输出玩家信息
 void print_player(char name, FILE* file) {
     Player* player = GameGetPlayerByName(game, name);
-    if (player) {
+    if (!player) {
         fprintf(file, "alive %d\n", 0);
         fprintf(file, "money %d\n", game->init_cash);
         fprintf(file, "point %d\n", 0);
@@ -22,6 +22,7 @@ void print_player(char name, FILE* file) {
         fprintf(file, "buff %d\n", 0);
         fprintf(file, "stop %d\n", 0);
         fprintf(file, "userloc %d\n", 0);
+        return;
     } else {
         if (player->status == BANKRUPT) {
             fprintf(file, "alive %d\n", 0);
@@ -41,9 +42,23 @@ void print_player(char name, FILE* file) {
 }
 
 int main(int argc, char* argv[]) {
+    // 通过参数获取测试文件路径和输出文件路径
+    char* input_file_path = argv[1];
+    char* output_file_path = argv[2];
+
+    //input_file_path = "/Users/wangjian/code/C/dian/Monopoly/test_file/input/input_0";
+    //output_file_path = "/Users/wangjian/code/C/dian/Monopoly/test_file/output/output_0";
+
+
+    // 字符串读入到log文件中
+    FILE* log = fopen("/Users/wangjian/code/C/dian/Monopoly/test_file/log", "w");
+    fprintf(log, "input_file_path: %s\n", input_file_path);
+    fprintf(log, "output_file_path: %s\n", output_file_path);
+
+
     char line[256];
     // 读取文件
-    FILE *file = fopen("/Users/wangjian/code/C/dian/Monopoly/test_file/input/input_0", "r");
+    FILE *file = fopen(input_file_path, "r");
     if (file == NULL) {
         printf("Error: unable to open test.txt\n");
         return 1;
@@ -65,6 +80,7 @@ int main(int argc, char* argv[]) {
 
 
     while (fgets(line, sizeof(line), file)) {
+        fprintf(log, "line: %s\n", line);
         // 删除换行符
         line[strcspn(line, "\n")] = 0;
 
@@ -174,7 +190,7 @@ int main(int argc, char* argv[]) {
         // dump 打印当前游戏状态
         if (strncmp(line, "dump", 4) == 0) {
             // 创建输出文件
-            FILE* output = fopen("/Users/wangjian/code/C/dian/Monopoly/test_file/dump/dump_0", "w");
+            FILE* output = fopen(output_file_path, "w");
             // 将游戏状态写入文件
             // 将玩家名字写入文件
             char names[5];
