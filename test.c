@@ -58,6 +58,8 @@ int main() {
             GameSetItem(game, name, item, num);
         }
 
+        //
+
     }
 
     fclose(file);
