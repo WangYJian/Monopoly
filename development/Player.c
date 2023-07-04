@@ -45,7 +45,7 @@ void PlayerGiftHouse(Player* player)
         printf("%c获得200点数！\n",player->name);
     }
     else if (gift_id == 3){
-        player->god_count = GIFT_GOD_ROUND;
+        player->god_round = GIFT_GOD_ROUND;
         printf("%c财神附体！\n",player->name);
     }
     printf("%c退出了礼品屋.\n",player->name);
