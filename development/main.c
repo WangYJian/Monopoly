@@ -1,28 +1,31 @@
 #include <stdio.h>
 #include<malloc.h>
+#include <string.h>
 #include "Game.h"
 
 int main() {
     Game* game;
-    int nums;
+    Player* cur_player;
+    char nums[5];
     int cash;
+    int dice_num; // è‰²å­çš„ç‚¹æ•°
     while(1){
-        printf("ÇëÊäÈëÓÎÏ·µÄÈËÊı: ");
-        scanf("%d", &nums);
-        if(nums <= 4)
+        printf("è¯·è¾“å…¥æ¸¸æˆçš„äººæ•°: ");
+        scanf("%s", nums);
+        if(strlen(nums) <= 4)
             break;
-        printf("ÊäÈëÈËÊı³¬ÁË£¡ÇëÖØĞÂÊäÈë\n");
+        printf("è¾“å…¥äººæ•°è¶…äº†ï¼è¯·é‡æ–°è¾“å…¥\n");
     }
 
     
     while(1){
-        printf("ÇëÊäÈë³õÊ¼µÄ½ğ¶î: ");
+        printf("è¯·è¾“å…¥åˆå§‹çš„é‡‘é¢: ");
         scanf("%d",&cash);
         if(cash > 1000 && cash <= 50000)
             break;
-        printf("ÊäÈë³õÊ¼»¯½ğ¶îÓĞÎó£¡ÇëÖØĞÂÊäÈë\n");
+        printf("è¾“å…¥åˆå§‹åŒ–é‡‘é¢æœ‰è¯¯ï¼è¯·é‡æ–°è¾“å…¥\n");
     }
     game = GameInitialize(cash,nums);
-    GameDisplayMap(game);
+    cur_player = GameStart(game);
     return 0;
 }
