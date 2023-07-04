@@ -199,6 +199,10 @@ int main(int argc, char* argv[]) {
             fprintf(output, "S\n");
             print_player('S', output);
 
+            // J的状态
+            fprintf(output, "J\n");
+            print_player('J', output);
+
             fprintf(output, "MAP\n");
             for (int i = 0; i < 70; i++) {
                 if (game->map[i]->player_nums != 0) {
