@@ -109,3 +109,4 @@ void PlayerDisplayInfo(const Player* player){
     printf("机器娃娃: %d个\n", player->robot_count);
     printf("财神附体: %d轮\n", player->god_rounds);
 }
+
