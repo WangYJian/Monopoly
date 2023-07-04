@@ -27,4 +27,5 @@ void DelPlayerMap(Map* map,Player* player){
             }
         }
     }
+    map->player_nums--;
 }
