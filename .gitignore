@@ -6,3 +6,5 @@ test_file/
 .vscode/
 *.exe
 test/
+*.py
+.idea/
