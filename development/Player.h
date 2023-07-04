@@ -1,6 +1,10 @@
 #ifndef DEVELOPMENT_PLAYER_H
 #define DEVELOPMENT_PLAYER_H
 
+#define GIFT_CASH 2000
+#define GIFT_POINTS 200
+#define GIFT_GOD_ROUND 5
+
 typedef struct Property Property;
 typedef struct Tool Tool;
 
@@ -38,5 +42,7 @@ void PlayerBuyTool(struct Player* player, int toolID);  // 玩家购买道具
 void PlayerUseTool(struct Player* player, int toolID, int targetLocation);  // 玩家使用道具
 void PlayerGoBankrupt(struct Player* player);  // 玩家破产
 void PlayerDisplayInfo(const struct Player* player);  // 显示玩家信息
+void PlayerGiftHouse(struct Player* player);  //玩家遇到礼品屋
+void PlayerMineral(struct Player* player);   //玩家遇到矿地
 
 #endif

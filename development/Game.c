@@ -60,7 +60,7 @@ Game* GameInitialize(int initcash,int player_nums){
     //system("cls");
     return game;
 
-    
+
 }
 
 void GameStart(struct Game* game){
@@ -101,7 +101,7 @@ char level_char(int level){
     case 2:
         ch = '2';
         break;
-    
+
     case 3:
         ch = '3';
         break;
@@ -150,7 +150,7 @@ void GameDisplayMap(const struct Game* game){
         else if(game->map[i]->land_type == SPACE && !game->map[i]->property->level){
             drawmap[0][i] = level_char(game->map[i]->property->level);
         }
-        else 
+        else
             drawmap[0][i] = game->map[i]->land_type;
     }
     for(i = 0; i < 8; i++)
@@ -198,6 +198,6 @@ void GameDisplayMap(const struct Game* game){
             printf("%c",drawmap[i][j]);
         }
     }
-        
-    
+
+
 }
