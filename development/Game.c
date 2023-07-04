@@ -7,7 +7,7 @@
 #include<string.h>
 #include <time.h>
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 char player_char(char num);
 
 Game* GameInitialize(int initcash,char* player_nums){
@@ -40,23 +40,28 @@ Game* GameInitialize(int initcash,char* player_nums){
         if(i == 0){
             game->map[i]->land_type = START;
         }else if(i < 14){
+            game->map[i]->property = PropertyInitialize(i, 100); // 初始化地皮
             game->map[i]->land_type = SPACE;
             continue;
         }else if(i == 14){
             game->map[i]->land_type = HOSPITAL;
         }else if(i < 28){
+            game->map[i]->property = PropertyInitialize(i, 100); // 初始化地皮
             game->map[i]->land_type = SPACE;
         }else if(i == 28){
             game->map[i]->land_type = TOOL;
         }else if(i < 35){
+            game->map[i]->property = PropertyInitialize(i, 500); // 初始化地皮
             game->map[i]->land_type = SPACE;
         }else if(i == 35){
             game->map[i]->land_type = GIFT;
         }else if(i < 49){
+            game->map[i]->property = PropertyInitialize(i, 300); // 初始化地皮
             game->map[i]->land_type = SPACE;
         }else if(i == 49){
             game->map[i]->land_type = PRISON;
         }else if(i < 63){
+            game->map[i]->property = PropertyInitialize(i, 300); // 初始化地皮
             game->map[i]->land_type = SPACE;
         }else if(i == 63){
             game->map[i]->land_type = MAGIC;
@@ -71,7 +76,7 @@ Game* GameInitialize(int initcash,char* player_nums){
         game->players[i]->bomb_count = 0;
         game->players[i]->barrier_count = 0;
         game->players[i]->robot_count = 0;
-        game->players[i]->god_count = 0;
+        game->players[i]->god_rounds = 0;
         game->players[i]->status = 0;
         game->players[i]->stop_rounds = 0;
         game->players[i]->position = 0;
@@ -232,17 +237,14 @@ void GameDisplayMap(const struct Game* game){
     }
 }
 
-void GameSetMoney(struct Game* game, char name, int money){
-    /*
-        设置玩家的金钱
-    */
+// 通过名字获取玩家
+Player* GameGetPlayerByName(const struct Game* game, char name){
     int i = 0;
-    for(i = 0; i < game->player_count; i++){
-        if(game->players[i]->name == name){
-            game->players[i]->cash = money;
-            break;
-        }
+    for(i = 0; i < 4; i++){
+        if(game->players[i]->name == name)
+            return game->players[i];
     }
+    return NULL;
 }
 
 Player* GameRollDice(struct Game* game, int dice_num){
