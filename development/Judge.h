@@ -1,6 +1,7 @@
 #ifndef JUDGE_H_
 #define JUDGE_H_
-#include "Game.h"
+
+typedef struct Game Game;
 
 //玩家状态
 #define NORMAL 0

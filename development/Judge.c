@@ -1,5 +1,8 @@
 #include "Judge.h"
 #include "Game.h"
+#include "Player.h"
+#include "Property.h"
+#include "Map.h"
 #include <stdio.h>
 int IsInPrison(struct Game* game)
 {
