@@ -88,6 +88,7 @@ void GameStart(struct Game* game){
     GameDisplayMap(game);
     // TODO 进入玩家回合
 }
+
 char level_char(int level){
     char ch;
     switch (level)
@@ -198,6 +199,17 @@ void GameDisplayMap(const struct Game* game){
             printf("%c",drawmap[i][j]);
         }
     }
-        
-    
+}
+
+void GameSetMoney(struct Game* game, char name, int money){
+    /*
+    设置玩家的金钱
+    */
+    int i = 0;
+    for(i = 0; i < game->player_count; i++){
+        if(game->players[i]->name == name){
+            game->players[i]->cash = money;
+            break;
+        }
+    }
 }

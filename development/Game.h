@@ -33,5 +33,7 @@ void GameStart(struct Game* game);  // 开始游戏
 void GameEnd(struct Game* game);  // 结束游戏
 void GameDisplayMap(const struct Game* game);  // 显示游戏地图
 void GameRollDice(struct Game* game);  // 掷骰子
+void GameSetMoney(struct Game* game, char name, int money);  // 设置玩家的资金
+
 
 #endif
