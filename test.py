@@ -1,7 +1,9 @@
 from subprocess import *
+import pandas as pd
 import os
 import io
 import re
+import time
 
 test_input_dir = "./test_file/input"
 test_output_dir = "./test_file/output"
@@ -11,7 +13,7 @@ def input_test(file, demo:Popen):
     iter_f = iter(file)
     for line in iter_f:
         demo.stdin.write(line.encode())
-    demo.stdin.write("dump")
+    demo.stdin.write("dump".encode())
 
 def write_dump(demo:Popen, dump_file:io.TextIOWrapper):
     out, err = demo.communicate()
@@ -29,12 +31,14 @@ def input_all_test_file(in_dir, out_dir):
     in_files = os.listdir(in_dir)
     for file_name in in_files:
         suffix = re.sub("[A-Za-z]", "", file_name)
-        dump_file = open(dump_dir+"/out"+suffix, "w+")
+        dump_file_name = dump_dir+"/out"+suffix
+        dump_file = open(dump_file_name, "w+")
         dump_file.truncate(0)
-        demo = Popen("test.exe", stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-        in_file = open(in_dir+"/"+file_name, "r")
-        input_test(in_file, demo)
-        write_dump(demo, dump_file)
+        demo = Popen(["test.exe", in_dir+"/"+file_name, dump_file_name], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+        time.sleep(0.1)
+        # in_file = open(in_dir+"/"+file_name, "r")
+        # input_test(in_file, demo)
+        # write_dump(demo, dump_file)
         out_file_name = "output"+suffix
         out_file = open(out_dir+"/"+out_file_name, "r")
         dump_file.seek(0,0)
@@ -45,7 +49,6 @@ def input_all_test_file(in_dir, out_dir):
         dump_file.close()
         demo.kill()
         demo.wait()
-        in_file.close()
         out_file.close()
 
 if(os.path.exists(dump_dir) != True):

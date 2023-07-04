@@ -196,17 +196,23 @@ void execute_command(char* command) {
 }
 
 // 主函数
-int main() {
+int main(int argv, char* argc[]) {
     char command[100];
     int cnt = 0;
-    while((command[cnt] = getchar())) {
+    FILE* in_file = fopen(argc[1], "r");
+    FILE* out_file = fopen(argc[2], "w+"); 
+    // fprintf(out_file, "infile:%s\n", argc[1]);
+    // fprintf(out_file, "outfile:%s\n", argc[2]);
+    // fflush(out_file);
+    while((command[cnt] = getc(in_file))!=EOF) {
         // 对每一行命令进行操作
         if(command[cnt] != '\n'){
             ++cnt;
         }
         else{
             command[cnt] = '\0';
-            printf("%s\n", command);
+            fprintf(out_file, "%s\n", command);
+            fflush(out_file);
             cnt = 0;
         }
     }
