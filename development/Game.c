@@ -739,7 +739,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     printf("该地皮不是你的，请重新指令！\n");
                     continue;
                 }
-                PlayerSellProperty(player, game->map[sell_place]);
+                PlayerSellProperty(player, game->map[sell_place]->property);
             } else if (strcmp(real_command, "help") == 0) {
                 if (num[0] != -1 || num[1] != -1) {
                     // 只要有一个加了数字

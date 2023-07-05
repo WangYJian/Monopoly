@@ -39,12 +39,12 @@ int main(int argc, char* argv[]) {
             printf("输入数字有误! 请重新输入(2-4)\n");
     }
 
-    char* input = NULL;
+    char input[100];
     size_t size = 0;
 
     while (1) {
         printf("请输入初始金额(1000-50000): ");
-        if (getline(&input, &size, stdin) == -1) {
+        if (fgets(input, 100, stdin) == NULL) {
             // 处理输入错误或结束的情况
             printf("无效输入！请重新输入(1000-50000)\n");
             continue;
@@ -58,8 +58,6 @@ int main(int argc, char* argv[]) {
     }
 
     printf("初始金额为：%d\n", cash);
-
-    free(input); 
 
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);
