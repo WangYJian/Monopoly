@@ -33,7 +33,7 @@ int main() {
             printf("输入人数超了！请重新输入\n");
     }
 
-    
+
     while(1){
         printf("请输入初始的金额: ");
         scanf("%d",&cash);
@@ -56,3 +56,4 @@ int main() {
     // GameDisplayMap(game);
     return 0;
 }
+
