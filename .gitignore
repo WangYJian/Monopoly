@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4fcff1b5f101a89f51e78cfb7f1c0dd16a54a453
 development/build/
 development/.vscode/
 development/cmake-build-debug/
@@ -5,5 +9,10 @@ test_file/
 .vscode/
 *.exe
 test/
+<<<<<<< HEAD
 
 *.DS_Store
+=======
+*.py
+.idea/
+>>>>>>> 4fcff1b5f101a89f51e78cfb7f1c0dd16a54a453
