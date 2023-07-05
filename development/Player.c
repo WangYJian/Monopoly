@@ -129,6 +129,7 @@ void PlayerUseBombOrBarrier(struct Player* player, int toolID, Map* map){
         if (player->bomb_count > 0) {
             // 玩家有炸弹
             map->tool = player->bomb[player->bomb_count - 1];
+            map->is_tool = BOMB;
             player->bomb_count--;
         }
     } else if (toolID == BARRIER) {
@@ -136,6 +137,7 @@ void PlayerUseBombOrBarrier(struct Player* player, int toolID, Map* map){
         if (player->barrier_count > 0) {
             // 玩家有路障
             map->tool = player->barrier[player->barrier_count - 1];
+            map->is_tool = BARRIER;
             player->barrier_count--;
         }
     }

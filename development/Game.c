@@ -193,7 +193,7 @@ char Tool_char(int idx) {
         case 1:
             ch = '#';
             break;
-        case 2:
+        case 3:
             ch = '@';
             break;
         default:
@@ -225,7 +225,7 @@ void GameDisplayMap(const struct Game *game) {
         player_on_map = game->map[i]->player_nums;
         if (player_on_map != 0) {
             drawmap[0][i] = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
-        } else if (game->map[i]->land_type == SPACE && game->map[i]->is_tool)
+        } else if (game->map[i]->is_tool)
             drawmap[0][i] = Tool_char(game->map[i]->is_tool);
         else if (game->map[i]->land_type == SPACE && !game->map[i]->property->level) {
             drawmap[0][i] = level_char(game->map[i]->property->level);
@@ -241,7 +241,7 @@ void GameDisplayMap(const struct Game *game) {
         player_on_map = game->map[28 + i]->player_nums;
         if (player_on_map != 0) {
             drawmap[i][28] = game->map[28 + i]->player[player_on_map - 1]->name;
-        } else if (game->map[28 + i]->is_tool && game->map[28 + i]->land_type == SPACE)
+        } else if (game->map[28 + i]->is_tool)
             drawmap[i][28] = Tool_char(game->map[28 + i]->is_tool);
         else if (!game->map[28 + i]->property->level && game->map[28 + i]->land_type == SPACE)
             drawmap[i][28] = level_char(game->map[28 + i]->property->level);
@@ -255,7 +255,7 @@ void GameDisplayMap(const struct Game *game) {
         player_on_map = game->map[35 + j]->player_nums;
         if (player_on_map != 0) {
             drawmap[7][i] = game->map[35 + j]->player[player_on_map - 1]->name;
-        } else if (game->map[35 + j]->land_type == SPACE && game->map[35 + j]->is_tool)
+        } else if (game->map[35 + j]->is_tool)
             drawmap[7][i] = Tool_char(game->map[35 + j]->is_tool);
         else if (game->map[35 + j]->land_type == SPACE && !game->map[35 + j]->property->level)
             drawmap[7][i] = level_char(game->map[35 + j]->property->level);
@@ -269,7 +269,7 @@ void GameDisplayMap(const struct Game *game) {
         player_on_map = game->map[63 + j]->player_nums;
         if (player_on_map != 0) {
             drawmap[i][0] = game->map[63 + j]->player[player_on_map - 1]->name;
-        } else if (game->map[63 + j]->land_type == SPACE && game->map[63 + j]->is_tool)
+        } else if (game->map[63 + j]->is_tool)
             drawmap[i][0] = Tool_char(game->map[63 + j]->is_tool);
         else
             drawmap[i][0] = game->map[63 + j]->land_type;
@@ -320,8 +320,9 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     // 下面只写了投色子之后需要走的步数，后序还需要添加一个读取指令的东西
     pos_in_map = cur_player->position;
     pos_next_map = cur_player->position + actual_num; // 这里进行一个初始化，然后后面要是又特殊的情况就修改
+    int flag = 0;
     for (i = 0; i < actual_num; i++) {
-        pos_next_map = pos_in_map + i + 1;
+        pos_next_map = (pos_in_map + i + 1) % 70;
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
         cur_map = game->map[pos_next_map];
 
@@ -331,13 +332,14 @@ Player *GameRollDice(struct Game *game, int dice_num) {
             case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
                 break;
 
-
             case BARRIER: // 有路障
             {
                 cur_map->is_tool = 0; // 踩掉了
                 free(cur_map->tool);
                 cur_map->tool = NULL;
                 pos_next_map = i + 1;
+                flag = 1;
+                printf("你踩到了路障，无法前进\n");
                 break;
             }
             case BOMB: // 有炸弹
@@ -349,31 +351,13 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 cur_map->tool = NULL;
                 pos_next_map = 14; // 进入医院
                 cur_player->stop_rounds += 3; // 添加轮空
+                flag = 1;
+                printf("你踩到了炸弹，进入医院休息三天\n");
                 break;
             }
         }
-        // TODO 处理特殊地皮 ,继续使用cur_map
-        // cur_map = game->map[pos_next_map]; // 玩家下一个位置
-        // TODO 下面的玩家需要把踩到的地图块更新上面的玩家
-        switch (cur_map->land_type) {
-            case MINERAL: {
-                PlayerMineral(cur_player);
-                break;
-            }
-            case MAGIC: {
-                PlayerMagic(cur_player);
-                break;
-            }
-            case TOOL: {
-                PlayerTool(cur_player);
-                break;
-            }
-            case GIFT: {
-                PlayerGiftHouse(cur_player);
-                break;
-            }
-            default: // 其他不作处理
-                break;
+        if (flag) {
+            break;
         }
     }
     // 添加玩家
@@ -386,7 +370,9 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     DelPlayerMap(pre_map, cur_player); // 在之前地图上删掉这个玩家
     //game->map[cur_player->position]->player[] = cur_player; // 在地图的位置上更新玩家显示
     GameDisplayMap(game); // 从新打印地图
-    printf("你(%c)已经到达相应的位置。\n", cur_player->name);
+    if (!flag) {
+        printf("你(%c)已经到达相应的位置。\n", cur_player->name);
+    }
     return cur_player; // 这个玩家投完色子之后，返回当前玩家
 }
 
@@ -396,6 +382,15 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         return NULL;
     }
     Player *player_next = NULL;
+
+    // 如果轮空或者破产，就直接进入下一个玩家
+    if (player->status == BANKRUPT || player->stop_rounds != 0) {
+        printf("当前你(%c)还处于轮空状态，还剩余%d轮，无法行动，进入下一个玩家回合\n", player->name, player->stop_rounds);
+        player->stop_rounds--;
+        game->current_player_index = (++game->current_player_index) % 4;
+        player_next = game->players[game->current_player_index];
+        return player_next; // 返回下一个玩家
+    }
 
     char real_command[16];
     int symbol = 0;
@@ -488,6 +483,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             int n;
             sscanf(line, "set bomb %d", &n);
             game->map[n]->tool = BombInitialize(NULL);
+            game->map[n]->is_tool = BOMB;
             continue;
         }
 
@@ -496,6 +492,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             int n;
             sscanf(line, "set barrier %d", &n);
             game->map[n]->tool = BarrierInitialize(NULL);
+            game->map[n]->is_tool = BARRIER;
             continue;
         }
 
@@ -567,11 +564,6 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         int n = 0;
         while ((ch = line[n++]) != '\n') {
             if (ch >= '0' && ch <= '9') {
-                if (num[1] != -1 && num[0] != 1) {
-                    printf("输入的数字有问题！请重新输入！\n");
-                    wrong_input = 1;
-                    break;
-                }
                 if (i > 1) {
                     printf("输入的数字个数非法请重新输入！\n");
                     wrong_input = 1;
@@ -675,15 +667,14 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     printf("你没有炸弹，无法使用该道具！\n");
                     continue;
                 }
-                // 获取相对位置
-                if (num[1] == -1) {
-                    pos_for_tool = num[0];
-                } else {
-                    pos_for_tool = num[0] * 10 + num[1];
+                if ((symbol && pos_for_tool < -10) || !symbol && pos_for_tool > 10) {
+                    printf("指令超过范围，请重新输入！\n");
+                    wrong_input = 1;
+                    continue;
                 }
                 tool_place = (player->position + pos_for_tool + MAP_SIZE) % MAP_SIZE;
                 // 判断地皮是否可以放置道具
-                if (game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type ||
+                if (game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type == PRISON ||
                     game->map[tool_place]->player_nums != 0) {
                     printf("该地皮不能够放置道具，请重新指令！\n");
                     continue;
@@ -701,10 +692,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     continue;
                 }
                 // 获取相对位置
-                if (num[1] == -1) {
-                    pos_for_tool = num[0];
-                } else {
-                    pos_for_tool = num[0] * 10 + num[1];
+                if ((symbol && pos_for_tool < -10) || !symbol && pos_for_tool > 10) {
+                    printf("指令超过范围，请重新输入！\n");
+                    wrong_input = 1;
+                    continue;
                 }
                 tool_place = (player->position + pos_for_tool + MAP_SIZE) % MAP_SIZE;
                 // 判断地皮是否可以放置道具
