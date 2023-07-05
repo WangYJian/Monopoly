@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "map.h"
+#include "Map.h"
 #include "Tool.h"
 #include "Player.h"
 #include "Property.h"

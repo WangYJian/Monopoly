@@ -65,9 +65,6 @@ int main() {
         // printf("11\n");
 
         cur_player = GamePlayerRound(game,cur_player,NOCOMMAND);
-        if(i > 2)
-            break;
-        i++;
     }
     // cur_player->position = 23;
     // game->map[cur_player->position]->player = cur_player;
