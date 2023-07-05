@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Player.h"
+#include "Property.h"
 #include "Tool.h"
 #include "Map.h"
 
@@ -121,16 +122,46 @@ void PlayerPrison(struct Player* player){
 void PlayerMagic(struct Player* player){
     printf("need to be fill\n"); // TODO
 }
-void PlayerUseTool(struct Player* player, int toolID, int targetLocation){
-    printf("%c use %d in %d\n", player->name,toolID,targetLocation);
+void PlayerUseBombOrBarrier(struct Player* player, int toolID, Map* map){
+    // 玩家使用道具
+    if (toolID == BOMB) {
+        // 玩家使用炸弹
+        if (player->bomb_count > 0) {
+            // 玩家有炸弹
+            map->tool = player->bomb[player->bomb_count - 1];
+            player->bomb_count--;
+        }
+    } else if (toolID == BARRIER) {
+        // 玩家使用路障
+        if (player->barrier_count > 0) {
+            // 玩家有路障
+            map->tool = player->barrier[player->barrier_count - 1];
+            player->barrier_count--;
+        }
+    }
 }
 
-void PlayerBuyLand(struct Player* player, Map* landID){
-    printf("玩家购买土地\n");
+void PlayerBuyProperty(struct Player* player, Property *property){
+    property->owner = player;
+    player->cash -= property->price;
 }
 
-void PlayerSellProperty(struct Player* player, Map* landID){
-    printf("玩家售卖土地\n");
+void PlayerSellProperty(struct Player* player, Property *property){
+    property->owner = NULL;
+    player->cash += 2 * property->value;
+    property->level = 0;
+    property->value = property->price;
+}
+
+// 升级地产
+void PlayerUpgradeProperty(struct Player* player, Property *property){
+    if (property->level <= 3) {
+        if (player->cash >= property->price) {
+            player->cash -= property->price;
+            property->level++;
+            property->value += property->price;
+        }
+    }
 }
 
 void PlayerHelp(){
