@@ -40,7 +40,7 @@ void print_player(char name, FILE* file) {
     }
 
 }
-/*
+
 int main(int argc, char* argv[]) {
     // 通过参数获取测试文件路径和输出文件路径
     char* input_file_path = argv[1];
@@ -246,4 +246,3 @@ int main(int argc, char* argv[]) {
     fclose(file);
     return 0;
 }
- */
