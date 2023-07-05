@@ -44,23 +44,27 @@ Game* GameInitialize(int initcash,char* player_nums){
             game->map[i]->land_type = START;
         }else if(i < 14){
             game->map[i]->land_type = SPACE;
-            continue;
+            game->map[i]->property->price = 200;
         }else if(i == 14){
             game->map[i]->land_type = HOSPITAL;
         }else if(i < 28){
             game->map[i]->land_type = SPACE;
+            game->map[i]->property->price = 200;
         }else if(i == 28){
             game->map[i]->land_type = TOOL;
         }else if(i < 35){
             game->map[i]->land_type = SPACE;
+            game->map[i]->property->price = 500;
         }else if(i == 35){
             game->map[i]->land_type = GIFT;
         }else if(i < 49){
             game->map[i]->land_type = SPACE;
+            game->map[i]->property->price = 300;
         }else if(i == 49){
             game->map[i]->land_type = PRISON;
         }else if(i < 63){
             game->map[i]->land_type = SPACE;
+            game->map[i]->property->price = 300;
         }else if(i == 63){
             game->map[i]->land_type = MAGIC;
         }else if(i< 70){
