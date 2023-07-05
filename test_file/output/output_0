@@ -1,21 +1,45 @@
-user AQS
-map 3 A 2
-map 4 Q 3
-fund A 1000
-fund Q 2000
-fund S 3000
-credit A 10
-credit Q 20
-credit S 30
-gift A barrier 2
-gift A robot 3
-gift Q barrier 2
-gift Q robot 3
-gift S barrier 2
-gift S robot 3
-barrier in 5
-barrier in 6
-userloc A 20 2
-userloc Q 20
-userloc S 18
-nextuser Q
+user QASJ
+preuser A
+Q
+alive 1
+money 1000
+point 10
+item1 0
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 5
+A
+alive 1
+money 2000
+point 20
+item1 0
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 0
+S
+alive 1
+money 3000
+point 0
+item1 0
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 0
+J
+alive 1
+money 10000
+point 0
+item1 0
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 0
+MAP
+mapuser 0 ASJ
+mapuser 5 Q
