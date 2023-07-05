@@ -75,4 +75,3 @@ int main() {
     // GameDisplayMap(game);
     return 0;
 }
-
