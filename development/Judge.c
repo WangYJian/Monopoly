@@ -93,6 +93,39 @@ int IsInBomb(struct Game* game)
     }
 }
 
+int IsBankrupt(struct Game *game)
+{
+    if(game->players[game->current_player_index]->cash < 0)
+    {
+        game->player_count -- ;
+        game->players[game->current_player_index]->status = OUT;//出局标志
+        printf("玩家%c破产！其资产将被收回......\n",game->players[game->current_player_index]->name);
+        for(int i = 0 ; i < MAP_SIZE ; i++)
+        {
+            if(game->map[i]->property->owner == &game->players[game->current_player_index] )//如果该块地的所有者是破产者，则这块地被收回
+            {
+                game->map[i]->property->level = 0;//初始化为空地
+            }
+        }
+    }
+}
+
+int IsGameOver(struct Game *game)
+{
+    char winner_real_name;
+    if(game->player_count == 1)
+    {
+        printf("游戏结束!\n");
+        for(int i = 0 ; i < 4; i++)
+        {
+            winner_real_name = (game->players[i]->status != OUT ? game->players[i]->name : winner_real_name );
+        }
+        printf("获胜者是%c\n",winner_real_name);
+        
+    }
+}
+
+
 int JudgeStatus(struct Game* game)
 {
     IsInPrison(game);
@@ -101,4 +134,3 @@ int JudgeStatus(struct Game* game)
     //IsInSpace(game);
     IsInBomb(game);
 }
-
