@@ -75,6 +75,7 @@ def input_all_test_file(in_dir, out_dir, name_append):
             demo.kill()
             demo.wait()
             out_file.close()
+            
 
 if os.path.exists(dump_dir) != True:
     os.mkdir(dump_dir)
