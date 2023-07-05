@@ -19,9 +19,9 @@ int main() {
         scanf("%s", nums);
         fflush(stdin);
         // printf("%d",strlen(nums));
-        if(strlen(nums) <= 4){
+        if(strlen(nums) <= 4 && strlen(nums) >= 2){
             for(i = 0; i< strlen(nums); i++){
-                if(nums[i] >'4' || nums[i] <= '1'){
+                if(nums[i] >'4' || nums[i] < '1'){
                     err = 1;
                     break;
                 }
@@ -60,12 +60,14 @@ int main() {
 
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);
+    int i = 0;
     while(1){
         // printf("11\n");
-        GameRollDice(game,4);
-        GamePlayerRound(game,cur_player,NOCOMMAND);
-        if(GameEnd(game))
+
+        cur_player = GamePlayerRound(game,cur_player,NOCOMMAND);
+        if(i > 2)
             break;
+        i++;
     }
     // cur_player->position = 23;
     // game->map[cur_player->position]->player = cur_player;
