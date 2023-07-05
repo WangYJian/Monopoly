@@ -10,7 +10,6 @@ add_executable(development.exe
         Game.h
         Judge.c
         Judge.h
-        main.c
         Map.c
         Map.h
         Player.c
@@ -18,4 +17,4 @@ add_executable(development.exe
         Property.c
         Property.h
         Tool.c
-        Tool.h )
+        Tool.h test.c)
