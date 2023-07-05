@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(.)
 
-add_executable(development.exe
+add_executable(development
         Game.c
         Game.h
         Judge.c
@@ -17,4 +17,4 @@ add_executable(development.exe
         Property.c
         Property.h
         Tool.c
-        Tool.h main.c)
+        Tool.h test.c)

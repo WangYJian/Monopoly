@@ -4,10 +4,10 @@ import io
 import re
 import time
 
-test_input_dir = "./test_file/input"
-test_output_dir = "./test_file/output"
-dump_dir = "./test_file/dump"
-test_obj = "test.exe"
+test_input_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/input"
+test_output_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/output"
+dump_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/dump"
+test_obj = "/Users/wangjian/code/C/dian/Monopoly/development/cmake-build-debug/development"
 
 def input_test(file, demo: Popen):
     iter_f = iter(file)

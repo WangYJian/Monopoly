@@ -1,2 +1,3 @@
-input_file_path: /Users/wangjian/code/C/dian/Monopoly/test_file/input/input_0
-output_file_path: /Users/wangjian/code/C/dian/Monopoly/test_file/output/output_0
+input_file_path: (null)
+output_file_path: PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/wangjian/.cargo/bin:/Users/wangjian/Library/Application Support/JetBrains/Toolbox/scripts
+argc: 1
