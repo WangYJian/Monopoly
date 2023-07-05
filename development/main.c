@@ -5,9 +5,6 @@
 #include"Map.h"
 #include"Player.h"
 
-
-
-
 int main() {
     Game* game;
     Player* cur_player;
@@ -47,8 +44,9 @@ int main() {
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);
     while(1){
-        printf("11\n");
-        GameRollDice(game,NODICE);
+        // printf("11\n");
+        GameRollDice(game,4);
+        GamePlayerRound(game,cur_player,NOCOMMAND);
         if(GameEnd(game))
             break;
     }

@@ -82,9 +82,10 @@ Game* GameInitialize(int initcash,char* player_nums){
         game->players[i]->name = player_char(player_nums[i]);
         game->players[i]->id = i;
         game->players[i]->points = 0;
+        game->map[0]->player[i] = game->players[i];
         // TODO 玩家的工具和其他指针的初始化
     }
-    printf("final");
+    // printf("final");
     //system("cls");
     return game;
 
@@ -257,9 +258,9 @@ Player* GameRollDice(struct Game* game, int dice_num){
     int actual_num = 0;
     int i = 0,player_id = game->current_player_index;
     
-    int pos_in_map = 0; // 也就是玩家从此出发偏移量
+    int pos_in_map = 0,pos_next_map = 0; // 也就是玩家从此出发偏移量
     Player* cur_player = game->players[player_id];
-    Map* cur_map = NULL;
+    Map* cur_map = NULL, *pre_map = NULL;
     // 判断轮空
     if(cur_player->stop_rounds != 0){
         printf("当前你(%c)还处于轮空状态，无法行动，进入下一个玩家回合\n",cur_player->name);
@@ -278,9 +279,10 @@ Player* GameRollDice(struct Game* game, int dice_num){
         printf("当前你色子的点数为: %d\n",actual_num);
     }
     // 下面只写了投色子之后需要走的步数，后序还需要添加一个读取指令的东西
-
+    pos_in_map = cur_player->position;
+    pos_next_map = actual_num; // 这里进行一个初始化，然后后面要是又特殊的情况就修改
     for(i = 0; i < actual_num; i++){
-        pos_in_map = cur_player->position;
+
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
         cur_map = game->map[pos_in_map+i];
         
@@ -289,17 +291,15 @@ Player* GameRollDice(struct Game* game, int dice_num){
         switch(cur_map->is_tool)
         {
         case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
-        {
-            pos_in_map = i+1;// 直接移动
             break;
-        }
+
             
         case BARRIER: // 有路障
         {
             cur_map->is_tool = 0; // 踩掉了
             free(cur_map->tool);
             cur_map->tool = NULL;
-            pos_in_map = i+1;
+            pos_next_map = i+1;
             break;
         }
         case BOMB: // 有炸弹
@@ -309,7 +309,7 @@ Player* GameRollDice(struct Game* game, int dice_num){
             cur_map->is_tool = 0;
             free(cur_map->tool); // 删掉地图上的道具信息
             cur_map->tool = NULL;
-            pos_in_map = 14; // 进入医院
+            pos_next_map = 14; // 进入医院
             cur_player->stop_rounds += 3; // 添加轮空
             break;
         }
@@ -344,11 +344,13 @@ Player* GameRollDice(struct Game* game, int dice_num){
         }
     }
     // 添加玩家
-    cur_player->position += pos_in_map;
+    pre_map = game->map[pos_in_map];
+    cur_player->position += pos_next_map;
     cur_map = game->map[cur_player->position];
-    printf("%d\n",pos_in_map);
+    // printf("%d\n",pos_in_map);
     // TODO 下面的玩家需要把踩到的地图块更新上面的玩家
     AddPlayerMap(cur_map,cur_player); // 采用队列的形式添加
+    DelPlayerMap(pre_map,cur_player); // 在该地图上删掉这个玩家
     //game->map[cur_player->position]->player[] = cur_player; // 在地图的位置上更新玩家显示
     GameDisplayMap(game); // 从新打印地图
     printf("你(%c)已经到达相应的位置，接下来请输入你需要进行的操作：\n",cur_player->name);
@@ -368,15 +370,17 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
     char ch;
     int loop = 1;
     while(loop){
-        if(command != NULL){
+        if(strcmp(command,NOCOMMAND) != 0){
             strcpy(real_command,command);
             loop = 0;
         }
         else{
             printf("%c> ", player->name);
             i = 0;
+            j = 0;
             symbol = 0;
-            while(ch = getchar()!= '\n'){
+            fflush(stdin); // 读取上一个空的
+            while((ch = getchar())!= '\n'){
                 if(ch >= '0'&& ch <= '9'){
                     num[i] = ch -48;
                     i++;
