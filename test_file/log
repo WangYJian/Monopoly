@@ -1,17 +1,2 @@
 input_file_path: /Users/wangjian/code/C/dian/Monopoly/test_file/input/input_0
 output_file_path: /Users/wangjian/code/C/dian/Monopoly/test_file/output/output_0
-line: set money Q 1000
-
-line: set money A 2000
-
-line: set money S 3000
-
-line: set point Q 10
-
-line: set point A 20
-
-line: step  5
-
-line: dump
-
-line: quit
