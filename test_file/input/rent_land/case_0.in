@@ -1,6 +1,5 @@
 1000
 1324
-set money Q 1000   
 set money J 5000
 set pos Q 1
 set pos S 30
@@ -16,3 +15,4 @@ step 2
 step 4
 dump
 quit
+//collect rent success
