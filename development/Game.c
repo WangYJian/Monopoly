@@ -505,6 +505,12 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
                 }
                 PlayerHelp();
             }else if(strcmp(real_command,"robot") == 0){
+                if(num[0] != -1 || num[1] != -1){
+                    // 只要有一个加了数字
+                    printf("该指令不能附带数字，请重新输入!\n");
+                    num[0] = -1, num[1] = -1;
+                    continue;
+                }
                 PlayerUseTool(player,ROBOT,tool_place);
             }
             else{
