@@ -47,6 +47,7 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, suffix) -> boo
     return True
 
 
+
 def input_all_test_file(in_dir, out_dir, name_append):
     print("\n\n\n")
     print("test "+name_append)
