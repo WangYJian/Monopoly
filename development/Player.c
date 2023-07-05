@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "Player.h"
 #include "Tool.h"
+#include "Map.h"
 
 // 获取炸弹
 void PlayerGetBomb(Player* player){
@@ -98,3 +99,40 @@ void PlayerMineral(struct Player* player)
             break;
     }
 }
+
+// 显示玩家信息
+void PlayerDisplayInfo(const Player* player){
+    printf("玩家%c的信息:\n", player->name);
+    printf("现金: %d元\n", player->cash);
+    printf("点数: %d点\n", player->points);
+    printf("炸弹: %d个\n", player->bomb_count);
+    printf("路障: %d个\n", player->barrier_count);
+    printf("机器娃娃: %d个\n", player->robot_count);
+    printf("财神附体: %d轮\n", player->god_rounds);
+}
+
+void PlayerTool(struct Player* player){
+    printf("need to be fill"); // TODO
+};
+void PlayerPrison(struct Player* player){
+    printf("need to be fill\n"); // TODO
+};
+
+void PlayerMagic(struct Player* player){
+    printf("need to be fill\n"); // TODO
+}
+void PlayerUseTool(struct Player* player, int toolID, int targetLocation){
+    printf("%c use %d in %d\n", player->name,toolID,targetLocation);
+}
+
+void PlayerBuyLand(struct Player* player, Map* landID){
+    printf("玩家购买土地\n");
+}
+
+void PlayerSellProperty(struct Player* player, Map* landID){
+    printf("玩家售卖土地\n");
+}
+
+void PlayerHelp(){
+    printf("help doc to fill\n");
+};
