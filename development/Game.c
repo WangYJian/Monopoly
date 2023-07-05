@@ -287,7 +287,8 @@ Player* GameRollDice(struct Game* game, int dice_num){
     pos_in_map = cur_player->position;
     pos_next_map =cur_player->position + actual_num; // 这里进行一个初始化，然后后面要是又特殊的情况就修改
     for(i = 0; i < actual_num; i++) {
-        pos_next_map = pos_in_map + i+1;
+        pos_next_map = (pos_in_map + i+1)%70;
+
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
         cur_map = game->map[pos_next_map];
 
