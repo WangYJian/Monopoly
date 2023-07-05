@@ -113,7 +113,7 @@ void PlayerDisplayInfo(const Player* player){
 }
 
 void PlayerTool(struct Player* player){
-    printf("need to be fill"); // TODO
+    //
 };
 void PlayerPrison(struct Player* player){
     printf("need to be fill\n"); // TODO

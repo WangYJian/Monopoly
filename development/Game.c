@@ -12,6 +12,38 @@
 
 char player_char(char num);
 
+// 输出玩家信息
+void print_player(Game *game, char name, FILE* file) {
+    Player* player = GameGetPlayerByName(game, name);
+    if (!player) {
+        fprintf(file, "alive %d\n", 0);
+        fprintf(file, "money %d\n", game->init_cash);
+        fprintf(file, "point %d\n", 0);
+        fprintf(file, "item1 %d\n", 0);
+        fprintf(file, "item2 %d\n", 0);
+        fprintf(file, "item3 %d\n", 0);
+        fprintf(file, "buff %d\n", 0);
+        fprintf(file, "stop %d\n", 0);
+        fprintf(file, "userloc %d\n", 0);
+        return;
+    } else {
+        if (player->status == BANKRUPT) {
+            fprintf(file, "alive %d\n", 0);
+        } else {
+            fprintf(file, "alive %d\n", 1);
+        }
+        fprintf(file, "money %d\n", player->cash);
+        fprintf(file, "point %d\n", player->points);
+        fprintf(file, "item1 %d\n", player->barrier_count);
+        fprintf(file, "item2 %d\n", player->robot_count);
+        fprintf(file, "item3 %d\n", player->bomb_count);
+        fprintf(file, "buff %d\n", player->god_rounds);
+        fprintf(file, "stop %d\n", player->stop_rounds);
+        fprintf(file, "userloc %d\n", player->position);
+    }
+
+}
+
 Game *GameInitialize(int initcash, char *player_nums) {
     /*
     初始化游戏的函数要求，game已经在外部malloc
@@ -374,14 +406,166 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     int pos_for_tool = 0, tool_place = 0;
     int is_dig = 0; // 用来指定是不是有数字量
     while (loop) {
-
         printf("%c> ", player->name);
         i = 0;
         j = 0;
         symbol = 0;
-        fflush(stdin); // 读取上一个空的
         // TODO 读取处理问题
-        while ((ch = getchar()) != '\n') {
+        char line[100];
+        fflush(stdin);
+        fgets(line, 100, stdin);
+        // set money [Q|A|S|J] [value] 设置玩家的资金
+        if (strncmp(line, "set money", 9) == 0) {
+            char name;
+            int value;
+            sscanf(line, "set money %c %d", &name, &value);
+            GameGetPlayerByName(game, name)->cash = value;
+            continue;
+        }
+        // set point [Q|A|S|J] [value] 设置玩家的点数
+        else if (strncmp(line, "set point", 9) == 0) {
+            char name;
+            int value;
+            sscanf(line, "set point %c %d", &name, &value);
+            GameGetPlayerByName(game, name)->points = value;
+            continue;
+        }
+        // set item [Q|A|S|J] [(item)1|2|3] [num] 设置玩家的道具数量
+        else if (strncmp(line, "set item", 8) == 0) {
+            char name;
+            int item;
+            int num;
+            sscanf(line, "set item %c %d %d", &name, &item, &num);
+            Player* player = GameGetPlayerByName(game, name);
+            if (item == 1) {
+                while (player->barrier_count < num) {
+                    PlayerGetBarrier(player);
+                }
+            } else if (item == 2) {
+                while (player->robot_count < num) {
+                    PlayerGetRobot(player);
+                }
+            } else if (item == 3) {
+                while (player->bomb_count < num) {
+                    PlayerGetBomb(player);
+                }
+            }
+            continue;
+        }
+
+        // set buff [Q|A|S|J] [n] 设置财神财神效果回合数
+        else if (strncmp(line, "set buff", 8) == 0) {
+            char name;
+            int n;
+            sscanf(line, "set buff %c %d", &name, &n);
+            GameGetPlayerByName(game, name)->god_rounds = n;
+            continue;
+        }
+
+        // set map [n] [Q|A|S|J] [level] 设置可购买的地皮n属于某玩家并有level等级(0|1|2|3)的房产
+        else if (strncmp(line, "set map", 7) == 0) {
+            int n;
+            char name;
+            int level;
+            sscanf(line, "set map %d %c %d", &n, &name, &level);
+            PropertySetOwner(game->map[n]->property, GameGetPlayerByName(game, name));
+            for (int i = 0; i < level; i++) {
+                PropertyUpgrade(game->map[n]->property);
+            }
+            continue;
+        }
+
+        // set unmap [n] 将可购买的地皮n设置为未购买状态
+        else if (strncmp(line, "set unmap", 9) == 0) {
+            int n;
+            sscanf(line, "set unmap %d", &n);
+            PropertySetOwner(game->map[n]->property, NULL);
+            continue;
+        }
+
+        // set bomb [n] 在可放置炸弹的地皮n上放置炸弹
+        else if (strncmp(line, "set bomb", 8) == 0) {
+            int n;
+            sscanf(line, "set bomb %d", &n);
+            game->map[n]->tool = BombInitialize(NULL);
+            continue;
+        }
+
+        // set barrier [n] 在可放置障碍的地皮n上放置障碍
+        else if (strncmp(line, "set barrier", 11) == 0) {
+            int n;
+            sscanf(line, "set barrier %d", &n);
+            game->map[n]->tool = BarrierInitialize(NULL);
+            continue;
+        }
+
+        // set pos [Q|A|S|J] [n] 将玩家移动到地皮n
+        else if (strncmp(line, "set pos", 7) == 0) {
+            char name;
+            int n;
+            sscanf(line, "set pos %c %d", &name, &n);
+            //game->map[n]->player = GameGetPlayerByName(game, name);
+            //game->map[n]->player->position = n;
+            continue;
+        }
+
+        // set stop [Q|A|S|J] [n] 设置玩家停留时间
+        else if (strncmp(line, "set stop", 8) == 0) {
+            char name;
+            int n;
+            sscanf(line, "set stop %c %d", &name, &n);
+            GameGetPlayerByName(game, name)->stop_rounds = n;
+            continue;
+        }
+
+        // dump 打印当前游戏状态
+        else if (strncmp(line, "dump", 4) == 0) {
+            // 创建输出文件
+            FILE* output = fopen(game->output_file_path, "w");
+            // 将游戏状态写入文件
+            // 将玩家名字写入文件
+            char names[5];
+            for (int i = 0; i < game->player_count; i++) {
+                names[i] = game->players[i]->name;
+            }
+            names[game->player_count] = '\0';
+            fprintf(output, "user %s\n", names);
+
+            // 目前玩家
+            fprintf(output, "preuser %c\n", game->players[game->current_player_index]->name);
+
+            // Q的状态
+            fprintf(output, "Q\n");
+            print_player(game, 'Q', output);
+
+            // A的状态
+            fprintf(output, "A\n");
+            print_player(game, 'A', output);
+
+            // S的状态
+            fprintf(output, "S\n");
+            print_player(game, 'S', output);
+
+            // J的状态
+            fprintf(output, "J\n");
+            print_player(game, 'J', output);
+
+            fprintf(output, "MAP\n");
+            for (int i = 0; i < 70; i++) {
+                if (game->map[i]->player_nums != 0) {
+                    // 获取所有玩家的名字
+                    char names[5];
+                    for (int j = 0; j < game->map[i]->player_nums; j++) {
+                        names[j] = game->map[i]->player[j]->name;
+                    }
+                    names[game->map[i]->player_nums] = '\0';
+                    fprintf(output, "mapuser %d %s\n", i, names);
+                }
+            }
+            continue;
+        }
+        int n = 0;
+        while ((ch = line[n++]) != '\n') {
             if (ch >= '0' && ch <= '9') {
                 if (num[1] != -1 && num[0] != 1) {
                     printf("输入的数字有问题！请重新输入！\n");
@@ -416,8 +600,9 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             wrong_input = 0;
             continue;
         } // 检测问题
+
         // 上面读取完了指令
-        if (player->stop_rounds == 0) {
+        if (player->stop_rounds == 0 && player->status == NORMAL) {
             pos_for_tool = 0, tool_place = 0;
             is_dig = 0;
             Tool *temp;
@@ -457,6 +642,24 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 }
                 GameRollDice(game, NODICE);
                 // TODO
+                printf("玩家%c退出回合\n", player->name);
+                loop = 0;
+                game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
+                player_next = game->players[game->current_player_index]; // 进入下一个玩家的回合
+            } else if (strcmp(real_command, "step") == 0) {
+                // 获取数字
+                if (!is_dig) {
+                    printf("该指令需要附带数字，请重新输入!\n");
+                    num[0] = -1, num[1] = -1;
+                    continue;
+                }
+                int step;
+                if (num[1] == -1) {
+                    step = num[0];
+                } else {
+                    step = num[0] * 10 + num[1];
+                }
+                GameRollDice(game, step);
                 printf("玩家%c退出回合\n", player->name);
                 loop = 0;
                 game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
@@ -629,6 +832,7 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
                 // 支付钱
                 player->cash -= map->property->price / 2;
                 map->property->owner->cash += map->property->price / 2;
+                printf("你支付了%d元给%c\n", map->property->price / 2, map->property->owner->name);
             }
         }
     }
@@ -638,11 +842,15 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
     }
     // 如果是道具屋
     else if (map->land_type == TOOL) {
-        //PlayerToolHouse(player);
+        PlayerTool(player);
     }
     // 如果是矿场
     else if (map->land_type == MINERAL) {
         PlayerMineral(player);
+    }
+    // 如果是监狱
+    else if (map->land_type == PRISON) {
+        PlayerPrison(player);
     }
 }
 

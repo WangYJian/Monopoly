@@ -27,6 +27,7 @@ typedef struct Game {
     int init_cash; // 初始化资金
     Map* map[MAP_SIZE]; // 游戏地图
     int current_player_index; // 当前行动的玩家的索引
+    char* output_file_path ;
 } Game;
 
 Game* GameInitialize(int initcash,char* player_nums);  // 初始化游戏

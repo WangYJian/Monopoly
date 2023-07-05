@@ -6,8 +6,11 @@
 #include"Map.h"
 #include"Player.h"
 
-int main() {
+int main(int argc, char* argv[]) {
     Game* game;
+    if (argc == 2) {
+        game->output_file_path = argv[1];
+    }
     Player* cur_player;
     char nums[5];
     int cash;
@@ -15,7 +18,7 @@ int main() {
     int dice_num; // 色子的点数
     while(1){
         int i = 0,err = 0;
-        printf("请输入玩家人数(2-4): ");
+        printf("选择角色编号(1~4): ");
         scanf("%s", nums);
         fflush(stdin);
         // printf("%d",strlen(nums));
