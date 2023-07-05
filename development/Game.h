@@ -16,7 +16,7 @@ typedef struct Map Map;
 #define MINERAL '$'     // mineral area
 #define START 's'       // start area
 #define NODICE -1 // 不需要外部输入色子
-
+#define NOCOMMAND "NULL" // 没有指令
 // 定义游戏的结构体
 typedef struct Game {
     Player* players[PLAYERS_SIZE]; // 游戏中的玩家

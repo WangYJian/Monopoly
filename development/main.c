@@ -5,9 +5,6 @@
 #include"Map.h"
 #include"Player.h"
 
-
-
-
 int main() {
     Game* game;
     Player* cur_player;
@@ -36,7 +33,7 @@ int main() {
             printf("输入人数超了！请重新输入\n");
     }
 
-    
+
     while(1){
         printf("请输入初始的金额: ");
         scanf("%d",&cash);
@@ -47,8 +44,9 @@ int main() {
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);
     while(1){
-        printf("11\n");
-        GameRollDice(game,NODICE);
+        // printf("11\n");
+        GameRollDice(game,4);
+        GamePlayerRound(game,cur_player,NOCOMMAND);
         if(GameEnd(game))
             break;
     }
@@ -58,3 +56,4 @@ int main() {
     // GameDisplayMap(game);
     return 0;
 }
+

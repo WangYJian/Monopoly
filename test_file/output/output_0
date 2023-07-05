@@ -19,7 +19,7 @@ item2 0
 item3 0
 buff 0
 stop 0
-userloc 0
+userloc 5
 S
 alive 1
 money 3000
@@ -43,3 +43,4 @@ userloc 0
 MAP
 mapuser 0 ASJ
 mapuser 5 Q
+
