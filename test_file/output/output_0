@@ -19,7 +19,7 @@ item2 0
 item3 0
 buff 0
 stop 0
-userloc 0
+userloc 5
 S
 alive 1
 money 3000
@@ -41,3 +41,5 @@ buff 0
 stop 0
 userloc 0
 MAP
+mapuser 0 QS
+mapuser 5 A

@@ -451,7 +451,7 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
                 PlayerUseTool(player,ROBOT,tool_place);
             }
             else{
-                printf("未解析的外部命令！");
+                printf("未解析的外部命令！\n");
             }
 
         }else{

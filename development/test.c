@@ -40,18 +40,22 @@ void print_player(char name, FILE* file) {
     }
 
 }
-
+/*
 int main(int argc, char* argv[]) {
     // 通过参数获取测试文件路径和输出文件路径
     char* input_file_path = argv[1];
     char* output_file_path = argv[2];
 
-    //input_file_path = "/Users/wangjian/code/C/dian/Monopoly/test_file/input/input_0";
-    //output_file_path = "/Users/wangjian/code/C/dian/Monopoly/test_file/output/output_0";
+    input_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\test_file\\input\\input_0";
+    output_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\test_file\\output\\output_0";
 
 
     // 字符串读入到log文件中
-    FILE* log = fopen("/Users/wangjian/code/C/dian/Monopoly/test_file/log", "w");
+    FILE* log = fopen("E:\\c_workplace\\monopoly\\Monopoly\\test_file\\log", "w");
+    if(log == NULL){
+        printf("文件未找到！！");
+        exit(0);
+    }
     fprintf(log, "input_file_path: %s\n", input_file_path);
     fprintf(log, "output_file_path: %s\n", output_file_path);
 
@@ -242,3 +246,4 @@ int main(int argc, char* argv[]) {
     fclose(file);
     return 0;
 }
+ */
