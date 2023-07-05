@@ -15,4 +15,4 @@ add_executable(development
         Property.c
         Property.h
         Tool.c
-        Tool.h ../test.c)
+        Tool.h test.c)
