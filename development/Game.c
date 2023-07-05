@@ -8,6 +8,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 char player_char(char num);
 
 Game* GameInitialize(int initcash,char* player_nums){
@@ -284,7 +285,7 @@ Player* GameRollDice(struct Game* game, int dice_num){
     }
     // 下面只写了投色子之后需要走的步数，后序还需要添加一个读取指令的东西
     pos_in_map = cur_player->position;
-    pos_next_map = actual_num; // 这里进行一个初始化，然后后面要是又特殊的情况就修改
+    pos_next_map =cur_player->position + actual_num; // 这里进行一个初始化，然后后面要是又特殊的情况就修改
     for(i = 0; i < actual_num; i++) {
         pos_next_map = pos_in_map + i+1;
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
@@ -318,7 +319,7 @@ Player* GameRollDice(struct Game* game, int dice_num){
             }
         }
         // TODO 处理特殊地皮 ,继续使用cur_map
-        cur_map = game->map[pos_next_map]; // 玩家下一个位置
+        // cur_map = game->map[pos_next_map]; // 玩家下一个位置
         // TODO 下面的玩家需要把踩到的地图块更新上面的玩家
         switch (cur_map->land_type) {
             case MINERAL: {
@@ -343,12 +344,12 @@ Player* GameRollDice(struct Game* game, int dice_num){
     }
     // 添加玩家
     pre_map = game->map[pos_in_map];
-    cur_player->position += pos_next_map;
-    cur_map = game->map[cur_player->position];
+    cur_player->position = pos_next_map;
+    cur_map = game->map[pos_next_map];
     // printf("%d\n",pos_in_map);
     // TODO 下面的玩家需要把踩到的地图块更新上面的玩家
     AddPlayerMap(cur_map,cur_player); // 采用队列的形式添加
-    DelPlayerMap(pre_map,cur_player); // 在该地图上删掉这个玩家
+    DelPlayerMap(pre_map,cur_player); // 在之前地图上删掉这个玩家
     //game->map[cur_player->position]->player[] = cur_player; // 在地图的位置上更新玩家显示
     GameDisplayMap(game); // 从新打印地图
     printf("你(%c)已经到达相应的位置。\n",cur_player->name);
@@ -406,6 +407,7 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
                         continue;
                     }
                     else{
+                        ch = tolower(ch);
                         real_command[j++] = ch;
                     }
                 }
@@ -443,9 +445,22 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
                 tool_place = (player->position + pos_for_tool + MAP_SIZE) % MAP_SIZE;
                 //target_map = game->map[tool_place];
             }
-            if(strcmp(real_command,"query") == 0)
+            if(strcmp(real_command,"query") == 0) {
+                if (num[0] != -1 || num[1] != -1) {
+                    // 只要有一个加了数字
+                    printf("该指令不能附带数字，请重新输入!\n");
+                    num[0] = -1, num[1] = -1;
+                    continue;
+                }
                 PlayerDisplayInfo(player);
+            }
             else if(strcmp(real_command,"roll") == 0){
+                if(num[0] != -1 || num[1] != -1){
+                    // 只要有一个加了数字
+                    printf("该指令不能附带数字，请重新输入!\n");
+                    num[0] = -1, num[1] = -1;
+                    continue;
+                }
                 GameRollDice(game,NODICE);
                 // TODO
                 printf("玩家%c退出回合\n",player->name);
@@ -476,6 +491,7 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
                 if(num[0] != -1 || num[1] != -1){
                     // 只要有一个加了数字
                     printf("该指令不能附带数字，请重新输入!\n");
+                    num[0] = -1, num[1] = -1;
                     continue;
                 }
                 PlayerSellProperty(player,cur_map);
@@ -484,6 +500,7 @@ Player* GamePlayerRound(struct Game* game,struct Player* player,const char comma
                 if(num[0] != -1 || num[1] != -1){
                     // 只要有一个加了数字
                     printf("该指令不能附带数字，请重新输入!\n");
+                    num[0] = -1, num[1] = -1;
                     continue;
                 }
                 PlayerHelp();
