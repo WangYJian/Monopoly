@@ -1,1 +1,9 @@
-.vscode
+
+development/build/
+development/.vscode/
+development/cmake-build-debug/
+.vscode/
+*.exe
+test/
+*.py
+.idea/
