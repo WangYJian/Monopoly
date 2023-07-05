@@ -7,6 +7,7 @@ typedef struct Game Game;
 #define NORMAL 0
 #define INHOSPITAL 1
 #define INPRISON 2
+#define OUT 3
 
 //空地上的道具种类
 #define EMPTY 0
@@ -18,4 +19,5 @@ int IsInHospital(struct Game* game);
 int IsInMine(struct Game* game);
 int IsInSpace(struct Game* game);
 int IsInBomb(struct Game* game);
+int IsBankrupt(struct Game* game);
 #endif
