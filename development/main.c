@@ -61,15 +61,15 @@ int main() {
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);
     GameRollDice(game,37);
-    //int i = 0;
-//    while(1){
-//        // printf("11\n");
-//
-//        //GamePlayerRound(game,cur_player,NOCOMMAND);
-//        if(i > 2)
-//            break;
-//        i++;
-//    }
+    int i = 0;
+    while(1){
+        // printf("11\n");
+
+        GamePlayerRound(game,cur_player,NOCOMMAND);
+        if(i > 2)
+            break;
+        i++;
+    }
     // cur_player->position = 23;
     // game->map[cur_player->position]->player = cur_player;
     // game->map[27]->player = game->players[game->current_player_index+1];
