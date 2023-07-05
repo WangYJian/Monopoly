@@ -22,9 +22,12 @@ void DelPlayerMap(Map* map,Player* player){
             }else{
                 while(i<map->player_nums-1){
                     map->player[i] = map->player[i+1];
+                    i++;
                 }
                 map->player[i] = NULL; // 最后那个置空
+                break;
             }
         }
     }
+    map->player_nums--;
 }
