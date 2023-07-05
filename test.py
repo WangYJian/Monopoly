@@ -4,9 +4,9 @@ import io
 import re
 import time
 
-test_input_dir = "./test_file/input"
-test_output_dir = "./test_file/output"
-dump_dir = "./test_file/dump"
+test_input_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/input"
+test_output_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/output"
+dump_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/dump"
 
 
 def input_test(file, demo: Popen):
@@ -39,7 +39,7 @@ def input_all_test_file(in_dir, out_dir):
         dump_file.truncate(0)
         demo = Popen(
             [
-                "./development/development.exe",
+                "/Users/wangjian/code/C/dian/Monopoly/development/cmake-build-debug/development",
                 in_dir + "/" + file_name,
                 dump_file_name,
             ],
