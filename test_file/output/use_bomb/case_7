@@ -38,10 +38,12 @@ item1 0
 item2 0
 item3 3
 buff 0
-stop 0
+stop 3
 userloc 14
 MAP
 mapuser 1 Q
 mapuser 4 A
 mapuser 31 S
 mapuser 14 J
+item 13 3
+item 29 3
