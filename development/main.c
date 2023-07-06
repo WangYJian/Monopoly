@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include <windows.h>
 #include "Game.h"
 #include"Map.h"
 #include"Player.h"
+
+int checkDuplicate(char* nums, int length);
 
 int main(int argc, char* argv[]) {
     Game* game;
@@ -12,34 +15,12 @@ int main(int argc, char* argv[]) {
         game->output_file_path = argv[1];
     }
     Player* cur_player;
-    char nums[50];
+    char nums[5];
     int cash = 10000;
     int result;
     int dice_num; // 色子的点数
-    while(1){
-        int i = 0,err = 0;
-        printf("选择角色编号(1~4): ");
-        scanf("%s", nums);
-        fflush(stdin);
-        // printf("%d",strlen(nums));
-        if(strlen(nums) <= 4 && strlen(nums) >= 2){
-            for(i = 0; i< strlen(nums); i++){
-                if(nums[i] >'4' || nums[i] < '1'){
-                    err = 1;
-                    break;
-                }
-            }
-            if(err != 1){
-                break;
-            }
-            else
-                printf("输入数字有误! 请重新输入(2-4)\n");
-        }
-        else
-            printf("输入数字有误! 请重新输入(2-4)\n");
-    }
-
     char input[100];
+
     while (1) {
         printf("请输入初始金额(1000-50000)，直接按回车默认为10000: ");
         if (fgets(input, 100, stdin) == NULL) {
@@ -79,9 +60,55 @@ int main(int argc, char* argv[]) {
 
 
     printf("初始金额为：%d\n", cash);
+
+
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    int colors[] = {FOREGROUND_RED, FOREGROUND_GREEN, FOREGROUND_BLUE, FOREGROUND_RED | FOREGROUND_GREEN}; // 钱夫人红色、阿土伯绿色、孙小美蓝色、金贝贝黄色
+    char* names[] = {"钱夫人", "阿土伯", "孙小美", "金贝贝"};
+
+    while(1){
+        int i = 0, err = 0;
+        printf("请选择2~4位不重复玩家，输入编号即可(");
+        for(i = 0; i < 4; i++){
+            SetConsoleTextAttribute(hConsole, colors[i]); 
+            printf("%d、%s;", i+1, names[i]);
+            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        }
+        printf("),如输入:12 ");
+        scanf("%s", nums);
+        fflush(stdin);
+
+        int length = strlen(nums);
+        if(length <= 4 && length >= 2){
+            if(checkDuplicate(nums, length)){
+                printf("输入的数字有重复!请重新输入!\n");
+                continue;
+            }
+            for(i = 0; i < length; i++){
+                if(nums[i] >'4' || nums[i] < '1'){
+                    err = 1;
+                    break;
+                }
+            }
+            if(err != 1){
+                printf("您选择的角色是: ");
+                for(i = 0; i < length; i++){
+                    SetConsoleTextAttribute(hConsole, colors[nums[i] - '1']); // Set color
+                    printf("%s ", names[nums[i] - '1']);
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
+                }
+                printf("\n");
+                break;
+            }
+            else
+                printf("输入数字有误,请重新输入!如输入:12\n");
+        }
+        else
+            printf("输入数字有误,请重新输入!如输入:12\n");
+            }
+    
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);
-    int i = 0;
     while(1){
         // printf("11\n");
 
@@ -92,4 +119,17 @@ int main(int argc, char* argv[]) {
     // game->map[27]->player = game->players[game->current_player_index+1];
     // GameDisplayMap(game);
     return 0;
+
 }
+
+int checkDuplicate(char* nums, int length) {
+    for(int i = 0; i < length - 1; i++) {
+        for(int j = i + 1; j < length; j++) {
+            if(nums[i] == nums[j]) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
