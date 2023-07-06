@@ -520,6 +520,9 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         else if (strncmp(line, "dump", 4) == 0) {
             // 创建输出文件
             FILE* output = fopen(game->output_file_path, "w");
+            // 创建log文件
+            // FILE* log = fopen(game->log_file_path, "w");
+            // fprintf(log, "output file: %s\n", game->output_file_path);
             // 将游戏状态写入文件
             // 将玩家名字写入文件
             char names[5];
@@ -704,7 +707,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 }
                 tool_place = (player->position + pos_for_tool + MAP_SIZE) % MAP_SIZE;
                 // 判断地皮是否可以放置道具
-                if (game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type ||
+                if (game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type == PRISON ||
                     game->map[tool_place]->player_nums != 0) {
                     printf("该地皮不能够放置道具，请重新指令！\n");
                     continue;
@@ -775,6 +778,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
 int Input() {
     char command[10];
     scanf("%s", command);
+    // 将输入转换为小写
+    for (int i = 0; i < strlen(command); ++i) {
+        command[i] = tolower(command[i]);
+    }
     if (strcmp(command, "y") == 0) {
         return YES;
     } else {
