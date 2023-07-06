@@ -1,43 +1,97 @@
-input_file_path: E:/c++/richman/Monopoly/test_file/input/update_land/case_1.in
-output_file_path: E:/c++/richman/Monopoly/test_file/dump/update_land/out_1
-argc: 3
-line: set money Q 100
+请输入初始金额(1000-50000): 初始金额为：1000
+选择角色编号(1~4): 初始化地图 ...
+地图加载完成! 
+J0000000000000H0000000000000T
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+M0000000000000P0000000000000G
+A> 
 
-line: set money S 200
+未解析的外部命令！
+A> set money Q 50
 
-line: set pos Q 8
+A> set money S 500
 
-line: set pos S 30
+A> set money A 1000
 
-line: set pos A 37
+A> set money J 5000
 
-line: set pos J 53
+A> set pos Q 1
 
-line: set map 9 Q 0
+A> set pos S 29
 
-line: set map 32 S 1
+A> set pos A 36
 
-line: set map 40 A 2
+A> set pos J 50
 
-line: set map 58 J 3
+A> step 1                  
 
-line: step 1
+JA000000000000H0000000000000T
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+M0000000000000P0000000000000G
+你(A)已经到达相应的位置。
+玩家A退出回合
+是否购买该地皮？(y/n)
+S>                        
 
-line: Y
+未解析的外部命令！
+S> step 2                  
 
-line: step 2 
+JAS00000000000H0000000000000T
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+M0000000000000P0000000000000G
+你(S)已经到达相应的位置。
+玩家S退出回合
+是否购买该地皮？(y/n)
+Q>                       
 
-line: Y
+未解析的外部命令！
+Q> step 3
 
-line: step 3 
+JASQ0000000000H0000000000000T
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+M0000000000000P0000000000000G
+你(Q)已经到达相应的位置。
+玩家Q退出回合
+是否购买该地皮？(y/n)
+J>       
 
-line: N
+未解析的外部命令！
+J> step 4
 
-line: step 5
+sASQJ000000000H0000000000000T
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+$                           0
+M0000000000000P0000000000000G
+你(J)已经到达相应的位置。
+玩家J退出回合
+是否购买该地皮？(y/n)
+A> 
 
-line: N
+未解析的外部命令！
+A> dump
 
-line: dump
-
-line: quit
-
+E:/c++/richman/Monopoly/test_file/dump/buy_land/out_0
