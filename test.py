@@ -4,10 +4,12 @@ import io
 import re
 import time
 
-test_input_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/input"
-test_output_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/output"
-dump_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file/dump"
-test_obj = "/Users/wangjian/code/C/dian/Monopoly/development/cmake-build-debug/development"
+test_dir = "E:/c++/richman/Monopoly/test_file"
+test_input_dir = test_dir+"/input"
+test_output_dir = test_dir+"/output"
+dump_dir = test_dir+"/dump"
+test_obj = "E:/c++/richman/Monopoly/development/build/development.exe"
+make = "mingw32-make ./Monopoly/development/build"
 
 def input_test(file, demo: Popen):
     iter_f = iter(file)
@@ -25,15 +27,22 @@ def write_dump(demo: Popen, dump_file: io.TextIOWrapper):
 def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, suffix) -> bool:
     test_lines = demo_out.readlines()
     expect_lines = expect.readlines()
-    for i in range(len(test_lines)):
-        test_line = test_lines[i].replace(" ", "").replace("\n", "") 
+    for i in range(len(expect_lines)):
         expect_line = expect_lines[i].replace(" ", "").replace("\n", "")
-        if test_line != expect_line:
+        if i >= len(test_lines):
             print("\033[1;34m"+"test"+suffix+"\033[0m \033[1;31m error \033[0m")
             print("error in \033[1;36m line {line_num} \033[0m".format(line_num=i))
             print("expect: "+ "\033[1;35m"+ expect_line +"\033[0m")
-            print("get: "+"\033[1;33m"+ test_line +"\033[0m")
+            print("\033[1;33m get to the end of dump file \033[0m")
             return False
+        else:
+            test_line = test_lines[i].replace(" ", "").replace("\n", "") 
+            if test_line != expect_line:
+                print("\033[1;34m"+"test"+suffix+"\033[0m \033[1;31m error \033[0m")
+                print("error in \033[1;36m line {line_num} \033[0m".format(line_num=i))
+                print("expect: "+ "\033[1;35m"+ expect_line +"\033[0m")
+                print("get: "+"\033[1;33m"+ test_line +"\033[0m")
+                return False
     print("\033[1;34m"+"test"+suffix+"\033[0m \033[1;32m pass \033[0m")
     return True
 
@@ -66,6 +75,7 @@ def input_all_test_file(in_dir, out_dir, name_append):
             demo.kill()
             demo.wait()
             out_file.close()
+            
 
 if os.path.exists(dump_dir) != True:
     os.mkdir(dump_dir)
