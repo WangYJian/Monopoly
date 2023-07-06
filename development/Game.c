@@ -856,4 +856,3 @@ void GameRemovePlayer(struct Game* game, Player *player) {
     player->cash = 0;
     player->status = BANKRUPT;
 }
-
