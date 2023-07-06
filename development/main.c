@@ -13,8 +13,8 @@ int main(int argc, char* argv[]) {
         game->log_file_path = "/Users/wangjian/code/C/dian/Monopoly/log";
     }
     Player* cur_player;
-    char nums[5];
-    int cash;
+    char nums[50];
+    int cash = 10000;
     int result;
     int dice_num; // 色子的点数
     while(1){
