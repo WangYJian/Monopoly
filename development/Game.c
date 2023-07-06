@@ -778,6 +778,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
 int Input() {
     char command[10];
     scanf("%s", command);
+    // 将输入转换为小写
+    for (int i = 0; i < strlen(command); ++i) {
+        command[i] = tolower(command[i]);
+    }
     if (strcmp(command, "y") == 0) {
         return YES;
     } else {
