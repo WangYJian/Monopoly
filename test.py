@@ -15,6 +15,7 @@ def input_test(file:io.TextIOWrapper, demo: Popen):
     iter_f = file.readlines()
     for line in iter_f:
         if len(line) != 0:
+            # print(line)
             demo.stdin.write(line.encode())
             demo.stdin.flush()
     # demo.stdin.write("dump".encode())
@@ -75,8 +76,14 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
             log.truncate(0)
             demo = Popen([test_obj, dump_file_name], stdin=PIPE, stdout=log, stderr=STDOUT)
             input_test(in_file, demo)
-            if demo.wait() != 0:
-                print("\033[1;34m proess exit incorrectly\n \033[0m")
+            time.sleep(0.1)
+            if demo.poll() == None:
+                time.sleep(3)
+                if demo.poll() == None:
+                    print("\033[1;34m"+"test"+suffix+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
+                    continue
+            elif demo.poll() != 0:
+                print("\033[1;34m"+"test"+suffix+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
             # write_dump(demo, dump_file)
             out_file_name = [v for v in out_files if suffix in v]
             out_file = open(out_dir+"/"+out_file_name[0], "r", encoding="utf-8")
