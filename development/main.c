@@ -10,6 +10,7 @@ int main(int argc, char* argv[]) {
     Game* game;
     if (argc == 2) {
         game->output_file_path = argv[1];
+        game->log_file_path = "/Users/wangjian/code/C/dian/Monopoly/log";
     }
     Player* cur_player;
     char nums[5];
@@ -17,6 +18,26 @@ int main(int argc, char* argv[]) {
     int result;
     int dice_num; // 色子的点数
     while(1){
+    char input[100];
+    size_t size = 0;
+
+    while (1) {
+        printf("请输入初始金额(1000-50000): ");
+        if (fgets(input, 100, stdin) == NULL) {
+            // 处理输入错误或结束的情况
+            printf("无效输入！请重新输入(1000-50000)\n");
+            continue;
+        }
+
+        result = sscanf(input, "%d", &cash);
+        if (result == 1 && cash >= 1000 && cash <= 50000) {
+            break;
+        }
+        printf("输入初始化金额有误！请重新输入(1000-50000)\n");
+    }
+
+    printf("初始金额为：%d\n", cash);
+
         int i = 0,err = 0;
         printf("选择角色编号(1~4): ");
         scanf("%s", nums);
@@ -38,26 +59,6 @@ int main(int argc, char* argv[]) {
         else
             printf("输入数字有误! 请重新输入(2-4)\n");
     }
-
-    char input[100];
-    size_t size = 0;
-
-    while (1) {
-        printf("请输入初始金额(1000-50000): ");
-        if (fgets(input, 100, stdin) == NULL) {
-            // 处理输入错误或结束的情况
-            printf("无效输入！请重新输入(1000-50000)\n");
-            continue;
-        }
-
-        result = sscanf(input, "%d", &cash);
-        if (result == 1 && cash >= 1000 && cash <= 50000) {
-            break;
-        }
-        printf("输入初始化金额有误！请重新输入(1000-50000)\n");
-    }
-
-    printf("初始金额为：%d\n", cash);
 
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);

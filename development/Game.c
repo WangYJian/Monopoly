@@ -519,6 +519,9 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         else if (strncmp(line, "dump", 4) == 0) {
             // 创建输出文件
             FILE* output = fopen(game->output_file_path, "w");
+            // 创建log文件
+            FILE* log = fopen(game->log_file_path, "w");
+            fprintf(log, "output file: %s\n", game->output_file_path);
             // 将游戏状态写入文件
             // 将玩家名字写入文件
             char names[5];

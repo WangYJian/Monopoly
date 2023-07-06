@@ -4,11 +4,11 @@ import io
 import re
 import time
 
-test_dir = "E:/c++/richman/Monopoly/test_file"
+test_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file"
 test_input_dir = test_dir+"/input"
 test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
-test_obj = "E:/c++/richman/Monopoly/development/build/development.exe"
+test_obj = "/Users/wangjian/code/C/dian/Monopoly/development/cmake-build-debug/development"
 make = "mingw32-make ./Monopoly/development/build"
 
 def input_test(file, demo: Popen):
