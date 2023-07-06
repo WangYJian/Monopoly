@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     }
     Player* cur_player;
     char nums[5];
-    int cash;
+    int cash = 10000;
     int result;
     int dice_num; // 色子的点数
     while(1){
@@ -40,25 +40,45 @@ int main(int argc, char* argv[]) {
     }
 
     char input[100];
-    size_t size = 0;
-
     while (1) {
-        printf("请输入初始金额(1000-50000): ");
+        printf("请输入初始金额(1000-50000)，直接按回车默认为10000: ");
         if (fgets(input, 100, stdin) == NULL) {
             // 处理输入错误或结束的情况
-            printf("无效输入！请重新输入(1000-50000)\n");
+            printf("输入错误！请重新输入(1000-50000)，直接按回车默认为10000\n");
             continue;
         }
 
-        result = sscanf(input, "%d", &cash);
-        if (result == 1 && cash >= 1000 && cash <= 50000) {
+        // 检查是否只是回车（输入长度为1），若是，则使用默认值
+        if (input[0] == '\n') {
             break;
         }
-        printf("输入初始化金额有误！请重新输入(1000-50000)\n");
+
+        int tempCash;
+        char extra;
+        result = sscanf(input, "%d%c", &tempCash, &extra);
+        if (result != 2) {
+            printf("输入金额有误！请重新输入(1000-50000)，直接按回车默认为10000\n");
+            continue;
+        }
+        if (tempCash >= 1000 && tempCash <= 50000 && (extra == ' ' || extra == '\n')) {
+            int valid = 1;
+            // Check for any non-space characters after the number
+            for (char *p = input; *p; p++) {
+                if (*p != ' ' && (*p < '0' || *p > '9') && *p != '\n') {
+                    valid = 0;
+                    break;
+                }
+            }
+            if (valid) {
+                cash = tempCash; // 如果有效输入，则更新cash的值
+                break;
+            }
+        }
+        printf("输入金额有误！请重新输入(1000-50000)，直接按回车默认为10000\n");
     }
 
-    printf("初始金额为：%d\n", cash);
 
+    printf("初始金额为：%d\n", cash);
     game = GameInitialize(cash,nums);
     cur_player = GameStart(game);
     int i = 0;
