@@ -14,7 +14,7 @@ log_dir = test_dir+"/log"
 def input_test(file:io.TextIOWrapper, demo: Popen):
     iter_f = file.readlines()
     for line in iter_f:
-        if len(line) != 0:
+        if len(line) > 0:
             demo.stdin.write(line.encode())
             demo.stdin.flush()
     # demo.stdin.write("dump".encode())
