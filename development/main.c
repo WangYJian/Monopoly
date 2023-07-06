@@ -8,10 +8,6 @@
 
 int main(int argc, char* argv[]) {
     Game* game;
-    if (argc == 2) {
-        game->output_file_path = argv[1];
-        game->log_file_path = "/Users/wangjian/code/C/dian/Monopoly/log";
-    }
     Player* cur_player;
     char nums[50];
     int cash = 10000;
@@ -36,7 +32,7 @@ int main(int argc, char* argv[]) {
     }
 
     printf("初始金额为：%d\n", cash);
-    fflush(stdin);
+    
     while(1){
         int i = 0,err = 0;
         printf("选择角色编号(1~4): ");

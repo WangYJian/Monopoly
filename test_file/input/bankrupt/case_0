@@ -1,7 +1,0 @@
-1000
-1234
-set map 5 A 3
-set money Q 1
-step 5
-dump
-quit
