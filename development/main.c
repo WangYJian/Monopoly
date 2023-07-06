@@ -8,38 +8,12 @@
 
 int main(int argc, char* argv[]) {
     Game* game;
-    if (argc == 2) {
-        game->output_file_path = argv[1];
-    }
     Player* cur_player;
     char nums[5];
     int cash;
     int result;
     int dice_num; // 色子的点数
-    while(1){
-        int i = 0,err = 0;
-        printf("选择角色编号(1~4): ");
-        scanf("%s", nums);
-        fflush(stdin);
-        // printf("%d",strlen(nums));
-        if(strlen(nums) <= 4 && strlen(nums) >= 2){
-            for(i = 0; i< strlen(nums); i++){
-                if(nums[i] >'4' || nums[i] < '1'){
-                    err = 1;
-                    break;
-                }
-            }
-            if(err != 1){
-                break;
-            }
-            else
-                printf("输入数字有误! 请重新输入(2-4)\n");
-        }
-        else
-            printf("输入数字有误! 请重新输入(2-4)\n");
-    }
-
-    char input[100];
+        char input[100];
     size_t size = 0;
 
     while (1) {
@@ -59,7 +33,31 @@ int main(int argc, char* argv[]) {
 
     printf("初始金额为：%d\n", cash);
 
+    while(1){
+        int i = 0,err = 0;
+        printf("选择角色编号(1~4): ");
+        scanf("%s", nums);
+        // printf("%d",strlen(nums));
+        if(strlen(nums) <= 4 && strlen(nums) >= 2){
+            for(i = 0; i< strlen(nums); i++){
+                if(nums[i] >'4' || nums[i] < '1'){
+                    err = 1;
+                    break;
+                }
+            }
+            if(err != 1){
+                break;
+            }
+            else
+                printf("输入数字有误! 请重新输入(2-4)\n");
+        }
+        else
+            printf("输入数字有误! 请重新输入(2-4)\n");
+    }
     game = GameInitialize(cash,nums);
+    if (argc == 2) {
+        game->output_file_path = argv[1];
+    }
     cur_player = GameStart(game);
     int i = 0;
     while(1){

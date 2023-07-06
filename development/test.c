@@ -46,12 +46,11 @@ int main(int argc, char* argv[]) {
     char* input_file_path = argv[1];
     char* output_file_path = argv[2];
 
-    input_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\test_file\\input\\input_0";
-    output_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\test_file\\output\\output_0";
-
 
     // 字符串读入到log文件中
-    FILE* log = fopen("/Users/wangjian/code/C/dian/Monopoly/test_file/log", "w");
+    
+    FILE* log = fopen("./log", "w+");
+    fseek(log, 0, SEEK_SET);
     if(log == NULL){
         printf("文件未找到！！");
         exit(0);
@@ -243,7 +242,6 @@ int main(int argc, char* argv[]) {
             break;
         }
     }
-
     fclose(file);
     return 0;
 }

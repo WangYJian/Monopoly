@@ -1,4 +1,5 @@
 
+build
 development/build/
 development/.vscode/
 development/cmake-build-debug/
@@ -9,3 +10,4 @@ test/
 .idea/
 
 test_file/dump
+test_file/log

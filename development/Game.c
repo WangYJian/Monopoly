@@ -407,8 +407,9 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         symbol = 0;
         // TODO 读取处理问题
         char line[100];
-        fflush(stdin);
         fgets(line, 100, stdin);
+        printf("%s\n", line);
+        fflush(stdout);
         // set money [Q|A|S|J] [value] 设置玩家的资金
         if (strncmp(line, "set money", 9) == 0) {
             char name;
@@ -559,7 +560,11 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     fprintf(output, "mapuser %d %s\n", i, names);
                 }
             }
+            fflush(output);
             continue;
+        }
+        else if(strncmp(line, "quit", 4) == 0){
+            exit(0);
         }
         int n = 0;
         while ((ch = line[n++]) != '\n') {
@@ -761,6 +766,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         num[0] = -1, num[1] = -1; // 最后重置，因为sell里面还需要判断
     }
     // 触发地块
+    fflush(stdout);
     GameTriggerEvent(game, player, player->position, INPUT);
     return player_next;
 }
@@ -850,10 +856,9 @@ void GameRemovePlayer(struct Game* game, Player *player) {
     // 将玩家的地皮全部卖出，将玩家的钱设置为0
     for (int i = 0; i < MAP_SIZE; ++i) {
         if (game->map[i]->property != NULL && game->map[i]->property->owner == player) {
-            PlayerSellProperty(player, game->map[i]);
+            PlayerSellProperty(player, game->map[i]->property);
         }
     }
     player->cash = 0;
     player->status = BANKRUPT;
 }
-
