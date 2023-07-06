@@ -7,9 +7,13 @@
 #include"Player.h"
 
 int main(int argc, char* argv[]) {
-    Game* game;
+    Game* game = (Game*)malloc(sizeof(Game));
     if (argc == 2) {
+        FILE* log = fopen("./log", "w+");
         game->output_file_path = argv[1];
+        fprintf(log, "%s\n", game->output_file_path);
+        fflush(log);
+        fclose(log);
     }
     Player* cur_player;
     char nums[5];

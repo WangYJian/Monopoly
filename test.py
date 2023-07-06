@@ -8,8 +8,8 @@ test_dir = "E:/c++/richman/Monopoly/test_file"
 test_input_dir = test_dir+"/input"
 test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
-test_obj = "E:/c++/richman/Monopoly/development/build/development.exe"
-make = "mingw32-make ./Monopoly/development/build"
+test_obj = "E:/c++/richman/Monopoly/build/development.exe"
+log = open("./log", "w+", encoding='utf-8')
 
 def input_test(file, demo: Popen):
     iter_f = iter(file)
@@ -48,7 +48,7 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, suffix) -> boo
 
 
 
-def input_all_test_file(in_dir, out_dir, name_append):
+def input_all_test_file(in_dir, out_dir, name_append)->bool:
     print("\n\n\n")
     print("test "+name_append)
     in_files = os.listdir(in_dir)
@@ -63,10 +63,10 @@ def input_all_test_file(in_dir, out_dir, name_append):
             dump_file_name = dump_dir+"/"+name_append+"/out"+suffix
             dump_file = open(dump_file_name, "w+", encoding="utf-8")
             dump_file.truncate(0)
-            demo = Popen([test_obj, in_dir+"/"+file_name, dump_file_name], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-            time.sleep(0.1)
-            # in_file = open(in_dir+"/"+file_name, "r")
-            # input_test(in_file, demo)
+            demo = Popen([test_obj, dump_file_name], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+            in_file = open(in_dir+"/"+file_name, "r",encoding="utf-8")
+            input_test(in_file, demo)
+            time.sleep(0.5)
             # write_dump(demo, dump_file)
             out_file_name = [v for v in out_files if suffix in v]
             out_file = open(out_dir+"/"+out_file_name[0], "r", encoding="utf-8")

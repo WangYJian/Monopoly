@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.16)
 project(development C)
 
 set(CMAKE_C_STANDARD 11)
@@ -17,4 +17,4 @@ add_executable(development
         Property.c
         Property.h
         Tool.c
-        Tool.h test.c)
+        Tool.h main.c)

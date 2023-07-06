@@ -242,7 +242,6 @@ int main(int argc, char* argv[]) {
             break;
         }
     }
-
     fclose(file);
     return 0;
 }
