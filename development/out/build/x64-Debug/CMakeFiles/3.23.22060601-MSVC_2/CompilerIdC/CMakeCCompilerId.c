@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/ZLY
 #ifdef __cplusplus
 # error "A C++ compiler has been selected for C."
 #endif
@@ -827,6 +830,7 @@ int main(int argc, char* argv[])
   return require;
 }
 #endif
+<<<<<<< HEAD
 =======
 #ifdef __cplusplus
 # error "A C++ compiler has been selected for C."
@@ -1657,3 +1661,5 @@ int main(int argc, char* argv[])
 }
 #endif
 >>>>>>> origin/ZH
+=======
+>>>>>>> origin/ZLY

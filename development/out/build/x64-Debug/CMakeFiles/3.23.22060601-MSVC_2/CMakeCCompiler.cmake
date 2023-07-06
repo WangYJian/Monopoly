@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/ZLY
 set(CMAKE_C_COMPILER "E:/MicrosoftVisualStudio/2022/Community/VC/Tools/MSVC/14.33.31629/bin/Hostx64/x64/cl.exe")
 set(CMAKE_C_COMPILER_ARG1 "")
 set(CMAKE_C_COMPILER_ID "MSVC")
@@ -71,6 +74,7 @@ set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "")
 set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "")
 set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "")
 set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")
+<<<<<<< HEAD
 =======
 set(CMAKE_C_COMPILER "E:/MicrosoftVisualStudio/2022/Community/VC/Tools/MSVC/14.33.31629/bin/Hostx64/x64/cl.exe")
 set(CMAKE_C_COMPILER_ARG1 "")
@@ -145,3 +149,5 @@ set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "")
 set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "")
 set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")
 >>>>>>> origin/ZH
+=======
+>>>>>>> origin/ZLY

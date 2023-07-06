@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/ZLY
 # Install script for directory: E:/Microsoft project/C/rich/Monopoly/development
 
 # Set the install prefix
@@ -43,6 +46,7 @@ string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 file(WRITE "E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
+<<<<<<< HEAD
 =======
 # Install script for directory: E:/Microsoft project/C/rich/Monopoly/development
 
@@ -89,3 +93,5 @@ string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
 file(WRITE "E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 >>>>>>> origin/ZH
+=======
+>>>>>>> origin/ZLY

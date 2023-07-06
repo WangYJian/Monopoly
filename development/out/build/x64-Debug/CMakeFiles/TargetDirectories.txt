@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/development.dir
 E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/edit_cache.dir
 E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
@@ -7,3 +8,8 @@ E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/
 E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/edit_cache.dir
 E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
 >>>>>>> origin/ZH
+=======
+E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/development.dir
+E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+E:/Microsoft project/C/rich/Monopoly/development/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+>>>>>>> origin/ZLY
