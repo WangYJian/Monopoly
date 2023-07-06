@@ -5,7 +5,7 @@
 #define NORMAL 0
 #define INHOSPITAL 1
 #define INPRISON 2
-#define OUT 3
+#define Out 3
 
 
 #define GIFT_CASH 2000
