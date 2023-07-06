@@ -6,7 +6,6 @@ development/cmake-build-debug/
 .vscode/
 *.exe
 test/
-*.py
 .idea/
 
 test_file/dump
