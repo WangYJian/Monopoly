@@ -61,7 +61,9 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
         if os.path.isdir(in_dir+"/"+file_name):
             if os.path.exists(dump_dir+"/"+file_name) != True:
                 os.mkdir(dump_dir+"/"+file_name)
-            input_all_test_file(in_dir+"/"+file_name, out_dir+"/"+file_name, file_name)
+            if os.path.exists(log_dir+"/"+file_name) != True:
+                os.mkdir(log_dir+"/"+file_name)
+            input_all_test_file(in_dir+"/"+file_name, out_dir+"/"+file_name, name_append+file_name)
         elif os.path.isfile(in_dir+"/"+file_name):
             suffix = re.sub("[A-Za-z.]", "", file_name)
             dump_file_name = dump_dir+"/"+name_append+"/out"+suffix
@@ -88,6 +90,8 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
 
 if os.path.exists(dump_dir) != True:
     os.mkdir(dump_dir)
+if os.path.exists(log_dir) != True:
+    os.mkdir(log_dir)
 
 input_all_test_file(test_input_dir, test_output_dir, "")
 
