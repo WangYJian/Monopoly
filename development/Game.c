@@ -850,7 +850,7 @@ void GameRemovePlayer(struct Game* game, Player *player) {
     // 将玩家的地皮全部卖出，将玩家的钱设置为0
     for (int i = 0; i < MAP_SIZE; ++i) {
         if (game->map[i]->property != NULL && game->map[i]->property->owner == player) {
-            PlayerSellProperty(player, game->map[i]);
+            PlayerSellProperty(player, game->map[i]->property);
         }
     }
     player->cash = 0;

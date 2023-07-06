@@ -9,3 +9,4 @@ test/
 .idea/
 
 test_file/dump
+.history/
