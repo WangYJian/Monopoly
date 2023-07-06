@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
         game->output_file_path = argv[1];
     }
     Player* cur_player;
-    char nums[5];
+    char nums[50];
     int cash = 10000;
     int result;
     int dice_num; // 色子的点数
