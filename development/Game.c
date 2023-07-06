@@ -502,8 +502,13 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             char name;
             int n;
             sscanf(line, "set pos %c %d", &name, &n);
-            //game->map[n]->player = GameGetPlayerByName(game, name);
-            //game->map[n]->player->position = n;
+            // 将玩家移动到地皮n
+            Player* cur_player = GameGetPlayerByName(game, name);
+            Map* cur_map = game->map[n];
+            Map* pre_map = game->map[cur_player->position];
+            cur_player->position = n;
+            AddPlayerMap(cur_map, cur_player); // 采用队列的形式添加
+            DelPlayerMap(pre_map, cur_player); // 在之前地图上删掉这个玩家
             continue;
         }
 
