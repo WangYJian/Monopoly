@@ -1,7 +1,5 @@
-<<<<<<< HEAD
+
 build
-=======
->>>>>>> ef3017c26d13557800e67f3049dae8b30accfff2
 development/build/
 development/.vscode/
 development/cmake-build-debug/
@@ -12,3 +10,4 @@ test/
 .idea/
 
 test_file/dump
+test_file/log
