@@ -9,7 +9,7 @@ test_input_dir = test_dir+"/input"
 test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
 test_obj = "E:/c++/richman/Monopoly/build/development.exe"
-log = open("./log", "w+", encoding='utf-8')
+log_dir = test_dir+"/log"
 
 def input_test(file:io.TextIOWrapper, demo: Popen):
     iter_f = file.readlines()
@@ -65,10 +65,11 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
         elif os.path.isfile(in_dir+"/"+file_name):
             suffix = re.sub("[A-Za-z.]", "", file_name)
             dump_file_name = dump_dir+"/"+name_append+"/out"+suffix
+            log_file_name = log_dir+"/"+name_append+"/log"+suffix
             dump_file = open(dump_file_name, "w+", encoding="utf-8")
             dump_file.truncate(0)
             in_file = open(in_dir+"/"+file_name, "r",encoding="utf-8")
-            log.seek(0,0)
+            log = open(log_file_name, "w+", encoding="utf-8")
             log.truncate(0)
             demo = Popen([test_obj, dump_file_name], stdin=PIPE, stdout=log, stderr=STDOUT)
             input_test(in_file, demo)
