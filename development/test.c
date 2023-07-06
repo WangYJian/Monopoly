@@ -51,13 +51,14 @@ int main(int argc, char* argv[]) {
 
 
     // 字符串读入到log文件中
-    FILE* log = fopen("E:\\c_workplace\\monopoly\\Monopoly\\test_file\\log", "w");
+    FILE* log = fopen("/Users/wangjian/code/C/dian/Monopoly/test_file/log", "w");
     if(log == NULL){
         printf("文件未找到！！");
         exit(0);
     }
     fprintf(log, "input_file_path: %s\n", input_file_path);
     fprintf(log, "output_file_path: %s\n", output_file_path);
+    fprintf(log, "argc: %d\n", argc);
 
 
     char line[256];
