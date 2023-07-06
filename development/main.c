@@ -9,11 +9,11 @@
 int main(int argc, char* argv[]) {
     Game* game;
     Player* cur_player;
-    char nums[5];
-    int cash;
+    char nums[50];
+    int cash = 10000;
     int result;
     int dice_num; // 色子的点数
-        char input[100];
+    char input[100];
     size_t size = 0;
 
     while (1) {
@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     }
 
     printf("初始金额为：%d\n", cash);
-
+    
     while(1){
         int i = 0,err = 0;
         printf("选择角色编号(1~4): ");
