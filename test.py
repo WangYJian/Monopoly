@@ -94,6 +94,8 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
             if demo.poll() == None:
                 time.sleep(1)
                 if demo.poll() == None:
+                    demo.kill()
+                    demo.wait()
                     print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
                     continue
             elif demo.poll() != 0:
@@ -104,8 +106,6 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
             dump_file.seek(0,0)
             check_out(dump_file, out_file, name_append)
             dump_file.close()
-            # demo.kill()
-            # demo.wait()
             out_file.close()
             
 
