@@ -11,6 +11,10 @@ test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
 test_obj = "E:/c_workplace/monopoly/Monopoly/development/cmake-build-debug/development.exe"
 log_dir = test_dir+"/log"
+
+max_log_file_size = 10000
+
+
 test_cnt = 0
 pass_cnt = 0
 
@@ -23,8 +27,8 @@ def input_test(file:io.TextIOWrapper, demo: Popen):
     # demo.stdin.write("dump".encode())
 
 
-def write_dump(demo: Popen, dump_file: io.TextIOWrapper):
-    out, err = demo.communicate()
+def write_log(demo: Popen, dump_file: io.TextIOWrapper):
+    out = demo.stdout.read(max_log_file_size)
     out = out.decode().replace("\r", "")
     dump_file.write(out)
 
@@ -85,25 +89,25 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
             in_file = open(in_dir+"/"+file_name, "r",encoding="utf-8")
             log = open(log_file_name, "w+", encoding="utf-8")
             log.truncate(0)
-            demo = Popen([test_obj, dump_file_name], stdin=PIPE, stdout=log, stderr=STDOUT)
+            demo = Popen([test_obj, dump_file_name], stdin=in_file, stdout=PIPE, stderr=STDOUT)
             test_cnt += 1
-            input_test(in_file, demo)
+            # input_test(in_file, demo)
             time.sleep(0.1)
             if demo.poll() == None:
-                time.sleep(3)
+                time.sleep(1)
                 if demo.poll() == None:
+                    write_log(demo, log)
+                    demo.kill()
+                    demo.wait()
                     print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
                     continue
             elif demo.poll() != 0:
                 print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
-            # write_dump(demo, dump_file)
             out_file_name = [v for v in out_files if suffix in v]
             out_file = open(out_dir+"/"+out_file_name[0], "r", encoding="utf-8")
             dump_file.seek(0,0)
             check_out(dump_file, out_file, name_append)
             dump_file.close()
-            # demo.kill()
-            # demo.wait()
             out_file.close()
             
 
