@@ -839,7 +839,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
 
 // 输入是否购买
 int Input() {
-    char command = [10];
+    char command[10];
     size_t len = 0;
     ssize_t read;
     int result = INPUTERROR; // 默认为错误
@@ -847,7 +847,7 @@ int Input() {
     do {
         int count_y = 0; // 计数 'y' 或 'Y'
         int count_n = 0; // 计数 'n' 或 'N'
-        read = fgets(&command, len, stdin);
+        read = fgets(command, len, stdin);
         if (read != -1) {
             //去除可能存在的换行符
             command[strcspn(command, "\n")] = 0;

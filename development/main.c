@@ -109,7 +109,7 @@ int main(int argc, char* argv[]) {
     }
     cur_player = GameStart(game);
     while(1){
-        fflush(stdin);
+       // fflush(stdin);
         // printf("11\n");
         cur_player = GamePlayerRound(game,cur_player);
     }
