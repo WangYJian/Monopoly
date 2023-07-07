@@ -786,7 +786,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
 
         } else {
             // TODO 当权处于轮空状态
-            printf("你当前处于轮空状态！");
+            printf("你当前处于轮空状态！\n");
             player_next = GameRollDice(game, NODICE);
 
         }
@@ -794,6 +794,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     }
     // 触发地块
     GameTriggerEvent(game, player, player->position, GAME_INPUT);
+    fflush(stdin); // 刷新缓冲，除去\n
     return player_next;
 }
 
