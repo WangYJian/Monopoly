@@ -19,7 +19,7 @@ typedef struct Map Map;
 #define NOCOMMAND "NULL" // 没有指令
 #define YES 1
 #define NO 0
-#define INPUT -1
+#define GAME_INPUT -1
 // 定义游戏的结构体
 typedef struct Game {
     Player* players[PLAYERS_SIZE]; // 游戏中的玩家
@@ -28,6 +28,7 @@ typedef struct Game {
     Map* map[MAP_SIZE]; // 游戏地图
     int current_player_index; // 当前行动的玩家的索引
     char* output_file_path ;
+    char* log_file_path ;
 } Game;
 
 Game* GameInitialize(int initcash,char* player_nums);  // 初始化游戏

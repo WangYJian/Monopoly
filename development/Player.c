@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "Player.h"
 #include "Property.h"
 #include "Tool.h"
@@ -113,8 +114,99 @@ void PlayerDisplayInfo(const Player* player){
 }
 
 void PlayerTool(struct Player* player){
-    //
+    char input[100];
+    char* token;
+    int tool_id;
+
+    printf("欢迎光临道具屋，请选择您需要的道具:\n");
+    printf("1.路障 50点\n");
+    printf("2.机器娃娃 30点\n");
+    printf("3.炸弹 50点\n");
+    printf("您当前拥有点数：%d点\n",player->points);
+    printf("每个玩家最多可拥有10个道具，您当前拥有：\n");
+    printf("炸弹：%d个\n",player->bomb_count);
+    printf("路障：%d个\n",player->barrier_count);
+    printf("机器娃娃：%d个\n",player->robot_count);
+    printf("共计：%d个\n",player->bomb_count+player->barrier_count+player->robot_count);   
+    if (player->points < 30){
+        printf("您的点数不足以购买任何道具，自动退出道具屋\n");
+        return;
+    }
+    printf("请输入您要购买的道具编号，按“F”可手工退出道具屋：");
+    //实现读取输入和购买功能，可循环读入数字，每次读取一行输入，在一行内识别合法数字，如果出现任何除空格外不合法输入都print输入不合法并提示如何正确输入
+    //如果一行内都是合法输入(123)那就分别读出数字并购买，完成后循环读取下一行直到满足两个退出条件之一
+    //例(不算引号)：输入"1 2 3  3 4"应该认为合法
+    //"1 2 3 4 5"出现4 5 非法
+    //”    1  2   “合法
+    //”直接回车“非法
+    while(fgets(input, 100, stdin)) {
+        // 分割输入的字符串
+        token = strtok(input, " ");
+        while(token != NULL) {
+            // 如果输入的是"F"或者"f"，退出
+            if (strcmp(token, "F") == 0 || strcmp(token, "f") == 0) {
+                printf("您已退出道具屋\n");
+                return;
+            }
+
+
+            // 尝试将输入的字符串转换为数字
+            tool_id = atoi(token);
+            if (tool_id < 1 || tool_id > 3) {
+                printf("输入的道具编号不合法！请输入1、2或3。\n");
+            }
+
+            // 购买道具
+            PlayerBuyTool(player, tool_id);
+
+            // 获取下一个分割的部分
+            token = strtok(NULL, " ");
+        }
+        if (player->points < 30){
+            printf("您的点数不足以购买任何道具，自动退出道具屋\n");
+            return;
+        }
+    }
+
 };
+
+void PlayerBuyTool(struct Player* player, int toolID){
+    // 确保玩家所拥有的道具总数没有超过10个
+    int total_tool_count = player->bomb_count + player->barrier_count + player->robot_count;
+
+    if (total_tool_count >= 10) {
+        printf("您的道具箱已满，不能继续购买\n");
+        return;
+    }
+
+    if (toolID == 1) {
+        if (player->points >= 50) {
+            player->points -= 50;
+            PlayerGetBarrier(player);
+            printf("购买路障成功！\n");
+        } else {
+            printf("积分不足，无法购买路障！\n");
+        }
+    } else if (toolID == 2) {
+        if (player->points >= 30) {
+            player->points -= 30;
+            PlayerGetRobot(player);
+            printf("购买机器娃娃成功！\n");
+        } else {
+            printf("积分不足，无法购买机器娃娃！\n");
+        }
+    } else if (toolID == 3) {
+        if (player->points >= 50) {
+            player->points -= 50;
+            PlayerGetBomb(player);
+            printf("购买炸弹成功！\n");
+        } else {
+            printf("积分不足，无法购买炸弹！\n");
+        }
+    }
+}
+
+
 void PlayerPrison(struct Player* player){
     printf("need to be fill\n"); // TODO
 };

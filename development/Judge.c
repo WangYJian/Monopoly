@@ -98,7 +98,7 @@ int IsBankrupt(struct Game *game)
     if(game->players[game->current_player_index]->cash < 0)
     {
         game->player_count -- ;
-        game->players[game->current_player_index]->status = OUT;//出局标志
+        game->players[game->current_player_index]->status = Out;//出局标志
         printf("玩家%c破产！其资产将被收回......\n",game->players[game->current_player_index]->name);
         for(int i = 0 ; i < MAP_SIZE ; i++)
         {
@@ -118,7 +118,7 @@ int IsGameOver(struct Game *game)
         printf("游戏结束!\n");
         for(int i = 0 ; i < 4; i++)
         {
-            winner_real_name = (game->players[i]->status != OUT ? game->players[i]->name : winner_real_name );
+            winner_real_name = (game->players[i]->status != Out ? game->players[i]->name : winner_real_name );
         }
         printf("获胜者是%c\n",winner_real_name);
         
