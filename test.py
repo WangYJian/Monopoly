@@ -1,4 +1,3 @@
-
 from subprocess import *
 import os
 import io
@@ -11,7 +10,6 @@ test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
 test_obj = "E:/c_workplace/monopoly/Monopoly/development/cmake-build-debug/development.exe"
 log_dir = test_dir+"/log"
-
 test_cnt = 0
 pass_cnt = 0
 
