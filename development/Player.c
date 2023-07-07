@@ -142,14 +142,9 @@ void PlayerTool(struct Player* player){
     while(fgets(input, 100, stdin)) {
         // 分割输入的字符串
         token = strtok(input, " ");
-        if (player->points < 30){
-            printf("您的点数不足以购买任何道具，自动退出道具屋\n");
-            return;
-        }
-
         while(token != NULL) {
             // 如果输入的是"F"或者"f"，退出
-            if (token[0] == 'F' || token[0] == 'f') {
+            if (strcmp(token, "F") == 0 || strcmp(token, "f") == 0) {
                 printf("您已退出道具屋\n");
                 return;
             }
@@ -167,6 +162,10 @@ void PlayerTool(struct Player* player){
             // 获取下一个分割的部分
             token = strtok(NULL, " ");
         }
+        if (player->points < 30){
+            printf("您的点数不足以购买任何道具，自动退出道具屋\n");
+            return;
+        }
     }
 
 };
@@ -183,7 +182,7 @@ void PlayerBuyTool(struct Player* player, int toolID){
     if (toolID == 1) {
         if (player->points >= 50) {
             player->points -= 50;
-            player->barrier_count++;
+            PlayerGetBarrier(player);
             printf("购买路障成功！\n");
         } else {
             printf("积分不足，无法购买路障！\n");
@@ -191,7 +190,7 @@ void PlayerBuyTool(struct Player* player, int toolID){
     } else if (toolID == 2) {
         if (player->points >= 30) {
             player->points -= 30;
-            player->robot_count++;
+            PlayerGetRobot(player);
             printf("购买机器娃娃成功！\n");
         } else {
             printf("积分不足，无法购买机器娃娃！\n");
@@ -199,7 +198,7 @@ void PlayerBuyTool(struct Player* player, int toolID){
     } else if (toolID == 3) {
         if (player->points >= 50) {
             player->points -= 50;
-            player->bomb_count++;
+            PlayerGetBomb(player);
             printf("购买炸弹成功！\n");
         } else {
             printf("积分不足，无法购买炸弹！\n");

@@ -7,9 +7,9 @@ set pos J 4
 set stop Q 3
 set stop S 2
 set stop A 1
-step 0
-step 0
-step 0
-step 1
+step 0 J
+step 0 A
+step 0 J
+step 1 S
 dump
 quit

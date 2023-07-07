@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+//#include <windows.h>
 
 char player_char(char num);
 
@@ -52,7 +53,7 @@ Game *GameInitialize(int initcash, char *player_nums) {
     3. 初始化地图的数据
     */
     int i = 0;
-    char name[4] = {'A', 'Q', 'S', 'J'};
+    // char name[4] = {'A', 'Q', 'S', 'J'};
     Property *temp = NULL;
     struct Game *game = malloc(sizeof(Game));
     game->init_cash = initcash;
@@ -150,10 +151,10 @@ char player_char(char num) {
     char ch;
     switch (num) {
         case '1':
-            ch = 'A';
+            ch = 'Q';
             break;
         case '2':
-            ch = 'Q';
+            ch = 'A';
             break;
         case '3':
             ch = 'S';
@@ -220,18 +221,23 @@ void GameDisplayMap(const struct Game *game) {
             drawmap[i][j] = ' ';
         }
     }
+    char level_symbols[] = {'0', '1', '2', '3'};
     // 这里打印第一行，其中除了14号，都可以有道具
+
     for (i = 0; i < 29; i++) {
         player_on_map = game->map[i]->player_nums;
         if (player_on_map != 0) {
             drawmap[0][i] = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
-        } else if (game->map[i]->is_tool)
+        } else if (game->map[i]->is_tool) {
             drawmap[0][i] = Tool_char(game->map[i]->is_tool);
-        else if (game->map[i]->land_type == SPACE && !game->map[i]->property->level) {
-            drawmap[0][i] = level_char(game->map[i]->property->level);
-        } else
+        } else if (game->map[i]->land_type == SPACE && game->map[i]->property->level) {
+            // 根据房屋等级打印相应的字符
+            drawmap[0][i] = level_symbols[game->map[i]->property->level];
+        } else {
             drawmap[0][i] = game->map[i]->land_type;
+        }
     }
+
     for (i = 0; i < 8; i++)
         drawmap[i][29] = '\n';
 
@@ -239,28 +245,32 @@ void GameDisplayMap(const struct Game *game) {
 
     for (i = 0; i < 8; i++) {
         player_on_map = game->map[28 + i]->player_nums;
+        // 同样的更改应用于右边
         if (player_on_map != 0) {
             drawmap[i][28] = game->map[28 + i]->player[player_on_map - 1]->name;
-        } else if (game->map[28 + i]->is_tool)
+        } else if (game->map[28 + i]->is_tool) {
             drawmap[i][28] = Tool_char(game->map[28 + i]->is_tool);
-        else if (!game->map[28 + i]->property->level && game->map[28 + i]->land_type == SPACE)
-            drawmap[i][28] = level_char(game->map[28 + i]->property->level);
-        else
+        } else if (!game->map[28 + i]->property->level && game->map[28 + i]->land_type == SPACE) {
+            drawmap[i][28] = level_symbols[game->map[28 + i]->property->level];
+        } else {
             drawmap[i][28] = game->map[28 + i]->land_type;
+        }
     }
 
     //打印下边
     for (i = 28; i >= 0; i--) {
         j = 28 - i;
         player_on_map = game->map[35 + j]->player_nums;
+        // 同样的更改应用于下边
         if (player_on_map != 0) {
             drawmap[7][i] = game->map[35 + j]->player[player_on_map - 1]->name;
-        } else if (game->map[35 + j]->is_tool)
+        } else if (game->map[35 + j]->is_tool) {
             drawmap[7][i] = Tool_char(game->map[35 + j]->is_tool);
-        else if (game->map[35 + j]->land_type == SPACE && !game->map[35 + j]->property->level)
-            drawmap[7][i] = level_char(game->map[35 + j]->property->level);
-        else
+        } else if (game->map[35 + j]->land_type == SPACE && game->map[35 + j]->property->level) {
+            drawmap[7][i] = level_symbols[game->map[35 + j]->property->level];
+        } else {
             drawmap[7][i] = game->map[35 + j]->land_type;
+        }
     }
 
     // 打印左边,矿区不能够买地皮，所以只需要管一部分
@@ -276,10 +286,23 @@ void GameDisplayMap(const struct Game *game) {
     }
 
 
+    //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 30; j++) {
+            if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+            } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+            } else if (drawmap[i][j] == 'S') { // 孙小美（蓝色）
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+            } else if (drawmap[i][j] == 'J') { // 金贝贝（黄色）
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+            } else {
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+            }
             printf("%c", drawmap[i][j]);
         }
+        //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     }
 }
 
@@ -502,8 +525,13 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             char name;
             int n;
             sscanf(line, "set pos %c %d", &name, &n);
-            //game->map[n]->player = GameGetPlayerByName(game, name);
-            //game->map[n]->player->position = n;
+            // 将玩家移动到地皮n
+            Player* cur_player = GameGetPlayerByName(game, name);
+            Map* cur_map = game->map[n];
+            Map* pre_map = game->map[cur_player->position];
+            cur_player->position = n;
+            AddPlayerMap(cur_map, cur_player); // 采用队列的形式添加
+            DelPlayerMap(pre_map, cur_player); // 在之前地图上删掉这个玩家
             continue;
         }
 
@@ -520,10 +548,6 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         else if (strncmp(line, "dump", 4) == 0) {
             // 创建输出文件
             FILE* output = fopen(game->output_file_path, "w");
-            // 创建log文件
-            // FILE* log = fopen(game->log_file_path, "w");
-            // fprintf(log, "output file: %s\n", game->output_file_path);
-            // 将游戏状态写入文件
             // 将玩家名字写入文件
             char names[5];
             for (int i = 0; i < game->player_count; i++) {
@@ -744,7 +768,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 }
                 // 判断地皮是否可以出售
                 if (game->map[sell_place]->property == NULL || game->map[sell_place]->property->owner != player) {
-                    printf("该地皮不是你的，请重新指令！\n");
+                    printf("该地皮不是你的，请重新输入指令！\n");
                     continue;
                 }
                 PlayerSellProperty(player, game->map[sell_place]->property);
@@ -769,8 +793,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         num[0] = -1, num[1] = -1; // 最后重置，因为sell里面还需要判断
     }
     // 触发地块
-    fflush(stdout);
-    GameTriggerEvent(game, player, player->position, INPUT);
+    GameTriggerEvent(game, player, player->position, GAME_INPUT);
     return player_next;
 }
 
@@ -797,7 +820,7 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
         // 如果是空地皮
         if (map->property->owner == NULL) {
             // 询问是否购买
-            if (YesOrNo == INPUT) {
+            if (YesOrNo == GAME_INPUT) {
                 printf("是否购买该地皮？(y/n)\n");
                 YesOrNo = Input();
             }
@@ -813,7 +836,7 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
         // 如果是自己的地皮
         else if (map->property->owner == player) {
             // 询问是否升级
-            if (YesOrNo == INPUT) {
+            if (YesOrNo == GAME_INPUT) {
                 printf("是否升级该地皮？(y/n)\n");
                 YesOrNo = Input();
             }
