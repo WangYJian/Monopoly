@@ -1,3 +1,4 @@
+
 from subprocess import *
 import os
 import io
@@ -114,4 +115,3 @@ if os.path.exists(log_dir) != True:
 input_all_test_file(test_input_dir, test_output_dir, "")
 
 print("summary:\033[1;35m pass {cnt} / {total} \033[0m!".format(cnt = pass_cnt, total = test_cnt))
-
