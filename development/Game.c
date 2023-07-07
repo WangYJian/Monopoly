@@ -619,6 +619,12 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 }
             }
             fflush(output);
+            //打印所有地产
+            for(int i = 0; i < 70; i++){
+                if(game->map[i]->property->owner != NULL){
+                    fprintf(output, "map %d %c %d\n", i, game->map[i]->property->owner->name, game->map[i]->property->level);
+                }
+            }
             continue;
         }
         else if(strncmp(line, "quit", 4) == 0){
