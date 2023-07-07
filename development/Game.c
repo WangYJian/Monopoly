@@ -721,6 +721,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     step = num[0] * 10 + num[1];
                 }
                 GameRollDice(game, step);
+                //TODO 这里如果赋初值为负，就会有问题
                 // printf("玩家%c退出回合\n", player->name);
                 loop = 0;
                 game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
