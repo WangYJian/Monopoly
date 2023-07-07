@@ -4,13 +4,12 @@ import io
 import re
 import time
 
-test_dir = "/Users/wangjian/code/C/dian/Monopoly/test_file"
+test_dir = "E:\Microsoft project\C/rich\Monopoly/test_file"
 test_input_dir = test_dir+"/input"
 test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
-test_obj = "/Users/wangjian/code/C/dian/Monopoly/development/cmake-build-debug/development"
+test_obj = "E:\Microsoft project\C/rich\Monopoly\development"
 log_dir = test_dir+"/log"
-
 test_cnt = 0
 pass_cnt = 0
 
