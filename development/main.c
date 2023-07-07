@@ -72,8 +72,7 @@ int main(int argc, char* argv[]) {
         }
         printf("),如输入:12 ");
         scanf("%s", nums);
-        fflush(stdin);
-
+        
         int length = strlen(nums);
         if(length <= 4 && length >= 2){
             if(checkDuplicate(nums, length)){
