@@ -7,5 +7,6 @@ development/cmake-build-debug/
 test/
 *.py
 .idea/
+*.in
 
 test_file/dump
