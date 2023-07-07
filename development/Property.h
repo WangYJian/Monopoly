@@ -13,11 +13,11 @@ typedef struct Player Player;
     } Property;
 
 // 方法
-Property* PropertyInitialize(int id, int price);  // 初始化土地
+Property* PropertyInitialize(Property *property,int price);  // 初始化土地
 void PropertySetOwner(struct Property* property, Player *player);  // 设置物业所有者
 void PropertyUpgrade(struct Property* property);  // 升级物业
-void PropertySell(struct Property* property);  // 出售物业
-void PropertyGetRent(const struct Property* property);  // 获取物业的租金
+// void PropertySell(struct Property* property);  // 出售物业
+// void PropertyGetRent(const struct Property* property);  // 获取物业的租金
 
 
 #endif

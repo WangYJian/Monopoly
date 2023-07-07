@@ -238,6 +238,7 @@ void PlayerUseBombOrBarrier(struct Player* player, int toolID, Map* map){
 void PlayerBuyProperty(struct Player* player, Property *property){
     property->owner = player;
     player->cash -= property->price;
+    printf("购买成功！\n");
 }
 
 void PlayerSellProperty(struct Player* player, Property *property){
@@ -245,16 +246,21 @@ void PlayerSellProperty(struct Player* player, Property *property){
     player->cash += 2 * property->value;
     property->level = 0;
     property->value = property->price;
+    printf("出售成功！\n");
 }
 
 // 升级地产
 void PlayerUpgradeProperty(struct Player* player, Property *property){
-    if (property->level <= 3) {
+
+    if (property->level < 3) {
         if (player->cash >= property->price) {
             player->cash -= property->price;
             property->level++;
             property->value += property->price;
         }
+        printf("升级成功！现在的等级是%d\n", property->level);
+    } else {
+        printf("已经是满级了，无法升级！\n");
     }
 }
 
