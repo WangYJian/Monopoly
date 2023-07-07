@@ -1,15 +1,16 @@
+
 from subprocess import *
 import os
 import io
 import re
 import time
 
-test_dir = "E:\\c_workplace\\monopoly\\Monopoly\\test_file"
-test_input_dir = test_dir+"\\input"
-test_output_dir = test_dir+"\\output"
-dump_dir = test_dir+"\\dump"
-test_obj = "E:\\c_workplace\\monopoly\\Monopoly\\development\\development.exe"
-log_dir = test_dir+"\\log"
+test_dir = "E:/c_workplace/monopoly/Monopoly/test_file"
+test_input_dir = test_dir+"/input"
+test_output_dir = test_dir+"/output"
+dump_dir = test_dir+"/dump"
+test_obj = "E:/c_workplace/monopoly/Monopoly/development/cmake-build-debug/development.exe"
+log_dir = test_dir+"/log"
 
 test_cnt = 0
 pass_cnt = 0
@@ -115,3 +116,4 @@ if os.path.exists(log_dir) != True:
 input_all_test_file(test_input_dir, test_output_dir, "")
 
 print("summary:\033[1;35m pass {cnt} / {total} \033[0m!".format(cnt = pass_cnt, total = test_cnt))
+
