@@ -3,13 +3,14 @@
 #include "Tool.h"
 #include "Player.h"
 #include "Property.h"
-#include <stdio.h>
 #include<string.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <ctype.h>
 //#include <windows.h>
+
 
 char player_char(char num);
 
@@ -79,27 +80,32 @@ Game *GameInitialize(int initcash, char *player_nums) {
             game->map[i]->land_type = START;
         } else if (i < 14) {
             game->map[i]->land_type = SPACE;
-            game->map[i]->property->price = 200;
+            // game->map[i]->property->price = 200;
+            PropertyInitialize(game->map[i]->property, 200);
         } else if (i == 14) {
             game->map[i]->land_type = HOSPITAL;
         } else if (i < 28) {
             game->map[i]->land_type = SPACE;
-            game->map[i]->property->price = 200;
+            // game->map[i]->property->price = 200;
+            PropertyInitialize(game->map[i]->property, 200);
         } else if (i == 28) {
             game->map[i]->land_type = TOOL;
         } else if (i < 35) {
             game->map[i]->land_type = SPACE;
-            game->map[i]->property->price = 500;
+            // game->map[i]->property->price = 500;
+            PropertyInitialize(game->map[i]->property, 500);
         } else if (i == 35) {
             game->map[i]->land_type = GIFT;
         } else if (i < 49) {
             game->map[i]->land_type = SPACE;
-            game->map[i]->property->price = 300;
+            // game->map[i]->property->price = 300;
+            PropertyInitialize(game->map[i]->property, 300);
         } else if (i == 49) {
             game->map[i]->land_type = PRISON;
         } else if (i < 63) {
             game->map[i]->land_type = SPACE;
-            game->map[i]->property->price = 300;
+            // game->map[i]->property->price = 300;
+            PropertyInitialize(game->map[i]->property, 300);
         } else if (i == 63) {
             game->map[i]->land_type = MAGIC;
         } else if (i < 70) {
@@ -285,10 +291,10 @@ void GameDisplayMap(const struct Game *game) {
             drawmap[i][0] = game->map[63 + j]->land_type;
     }
 
-
     //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 30; j++) {
+            // printf("",game->map[i]->property->level);
             if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
                 //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
@@ -407,9 +413,15 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     Player *player_next = NULL;
 
     // 如果轮空或者破产，就直接进入下一个玩家
-    if (player->status == BANKRUPT || player->stop_rounds != 0) {
+    if (player->stop_rounds != 0) {
         printf("当前你(%c)还处于轮空状态，还剩余%d轮，无法行动，进入下一个玩家回合\n", player->name, player->stop_rounds);
         player->stop_rounds--;
+        game->current_player_index = (++game->current_player_index) % 4;
+        player_next = game->players[game->current_player_index];
+        return player_next; // 返回下一个玩家
+    }
+    else if(player->status == BANKRUPT){
+        printf("当前你(%c)已经破产，无法行动，进入下一个玩家回合\n", player->name);
         game->current_player_index = (++game->current_player_index) % 4;
         player_next = game->players[game->current_player_index];
         return player_next; // 返回下一个玩家
@@ -424,7 +436,22 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     int pos_for_tool = 0, tool_place = 0;
     int is_dig = 0; // 用来指定是不是有数字量
     while (loop) {
-        printf("%c> ", player->name);
+        //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+        if (player->name == 'A') { // 阿土伯（绿色）
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+            printf("阿土伯> ");
+        } else if (player->name == 'Q') { // 钱夫人（红色）
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+            printf("钱夫人> ");
+        } else if (player->name == 'S') { // 孙小美（蓝色）
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+            printf("孙小美> ");
+        } else if (player->name == 'J') { // 金贝贝（黄色）
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+            printf("金贝贝> ");
+        }
+        //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         i = 0;
         j = 0;
         symbol = 0;
@@ -666,7 +693,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 }
                 GameRollDice(game, NODICE);
                 // TODO
-                printf("玩家%c退出回合\n", player->name);
+                // printf("玩家%c退出回合\n", player->name);
                 loop = 0;
                 game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
                 player_next = game->players[game->current_player_index]; // 进入下一个玩家的回合
@@ -684,7 +711,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     step = num[0] * 10 + num[1];
                 }
                 GameRollDice(game, step);
-                printf("玩家%c退出回合\n", player->name);
+                // printf("玩家%c退出回合\n", player->name);
                 loop = 0;
                 game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
                 player_next = game->players[game->current_player_index]; // 进入下一个玩家的回合
@@ -785,7 +812,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             }
 
         } else {
-            // TODO 当权处于轮空状态
+            // TODO 当权处于轮空状态 
             printf("你当前处于轮空状态！");
             player_next = GameRollDice(game, NODICE);
 
@@ -794,23 +821,65 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     }
     // 触发地块
     GameTriggerEvent(game, player, player->position, GAME_INPUT);
+    printf("玩家%c退出回合\n", player->name);
     return player_next;
 }
 
 // 输入是否购买
 int Input() {
-    char command[10];
-    scanf("%s", command);
-    // 将输入转换为小写
-    for (int i = 0; i < strlen(command); ++i) {
-        command[i] = tolower(command[i]);
-    }
-    if (strcmp(command, "y") == 0) {
-        return YES;
-    } else {
-        return NO;
-    }
+    char *command = NULL;
+    size_t len = 0;
+    ssize_t read;
+    int result = INPUTERROR; // 默认为错误
+
+    do {
+        int count_y = 0; // 计数 'y' 或 'Y'
+        int count_n = 0; // 计数 'n' 或 'N'
+        read = getline(&command, &len, stdin);
+        if (read != -1) {
+            //去除可能存在的换行符
+            command[strcspn(command, "\n")] = 0;
+
+            for (int i = 0; i < strlen(command); ++i) {
+                // 如果字符是 'y' 或 'Y'，计数加1
+                if (tolower(command[i]) == 'y') {
+                    count_y++;
+                } 
+                // 如果字符是 'n' 或 'N'，计数加1
+                else if (tolower(command[i]) == 'n') {
+                    count_n++;
+                }
+                // 如果字符不是 'y'、'Y'、'n'、'N' 或空格，设置结果为 ERROR
+                else if (command[i] != ' ') {
+                    result = INPUTERROR;
+                    break;
+                }
+
+                // 如果只有一个 'y' 或 'Y'，设置结果为 YES
+                if (count_y == 1 && count_n == 0) {
+                    result = YES;
+                } 
+                // 如果只有一个 'n' 或 'N'，设置结果为 NO
+                else if (count_y == 0 && count_n == 1) {
+                    result = NO;
+                } 
+                // 否则设置结果为 ERROR
+                else {
+                    result = INPUTERROR;
+                }
+            }
+        }
+        // 如果结果为 ERROR，提示用户重新输入
+        if (result == INPUTERROR) {
+            printf("输入错误，请重新输入：\n");
+        }
+
+    } while (result == INPUTERROR); // 当结果为 ERROR 时，继续读取输入
+
+    free(command);
+    return result;
 }
+
 
 // 触发地块
 void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, int YesOrNo) {
@@ -821,7 +890,7 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
         if (map->property->owner == NULL) {
             // 询问是否购买
             if (YesOrNo == GAME_INPUT) {
-                printf("是否购买该地皮？(y/n)\n");
+                printf("是否购买该地皮？(y),其余键自动拒绝\n");
                 YesOrNo = Input();
             }
             if (YesOrNo == YES) {
@@ -832,12 +901,16 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
                 }
                 PlayerBuyProperty(player, map->property);
             }
+            else {
+                printf("你拒绝了购买该地皮！\n");
+            }
         }
         // 如果是自己的地皮
         else if (map->property->owner == player) {
             // 询问是否升级
             if (YesOrNo == GAME_INPUT) {
-                printf("是否升级该地皮？(y/n)\n");
+                printf("当前的等级是%d\n", map->property->level);
+                printf("是否升级该地皮？(y),其余键自动拒绝\n");
                 YesOrNo = Input();
             }
             if (YesOrNo == YES) {
@@ -848,18 +921,24 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
                 }
                 PlayerUpgradeProperty(player, map->property);
             }
+            else {
+                printf("你拒绝了升级该地皮！\n");
+            }
         }
         // 如果是其他玩家的地皮
         else if (map->property->owner != player) {
             // 判断是否有足够的钱支付
-            if (player->cash < map->property->price / 2) {
+            printf("你需要支付%d元给%c\n", map->property->value / 2, map->property->owner->name);
+            if (player->cash < map->property->value / 2) {
                 // 破产
+                printf("你只有%d元，无法支付！\n", player->cash);
+                printf("你破产了！\n");
                 GameRemovePlayer(game, player);
             } else {
                 // 支付钱
-                player->cash -= map->property->price / 2;
-                map->property->owner->cash += map->property->price / 2;
-                printf("你支付了%d元给%c\n", map->property->price / 2, map->property->owner->name);
+                player->cash -= map->property->value / 2;
+                map->property->owner->cash += map->property->value / 2;
+                printf("你支付了%d元给%c\n", map->property->value / 2, map->property->owner->name);
             }
         }
     }

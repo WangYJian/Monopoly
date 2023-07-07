@@ -5,9 +5,7 @@
 
 
 // 初始化土地
-Property * PropertyInitialize(int id, int price){
-    Property* property = (Property*)malloc(sizeof(Property));
-    property->id = id;
+Property * PropertyInitialize(Property *property, int price){
     property->price = price;
     property->level = 0;
     property->value = price;
