@@ -110,7 +110,6 @@ int main(int argc, char* argv[]) {
     cur_player = GameStart(game);
     while(1){
         // printf("11\n");
-
         cur_player = GamePlayerRound(game,cur_player);
     }
     // cur_player->position = 23;

@@ -19,6 +19,7 @@ typedef struct Map Map;
 #define NOCOMMAND "NULL" // 没有指令
 #define YES 1
 #define NO 0
+#define INPUTERROR -1
 #define GAME_INPUT -1
 // 定义游戏的结构体
 typedef struct Game {

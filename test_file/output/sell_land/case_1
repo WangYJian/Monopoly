@@ -45,7 +45,7 @@ mapuser 2 Q
 mapuser 3 S
 mapuser 4 A
 mapuser 5 J
-map 3 Q 0
-map 16 S 1
-map 32 A 2
-map 51 J 3
+set map 3 Q 0
+set map 16 S 1
+set map 32 A 2
+set map 51 J 3
