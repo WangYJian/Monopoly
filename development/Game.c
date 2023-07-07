@@ -406,6 +406,10 @@ Player *GameRollDice(struct Game *game, int dice_num) {
 }
 
 Player *GamePlayerRound(struct Game *game, struct Player *player) {
+    // 如果有财神效果，减一
+    if (player->god_rounds > 0) {
+        player->god_rounds--;
+    }
     if (player == NULL || game == NULL) {
         printf("NULL ptr!!");
         return NULL;
@@ -927,6 +931,16 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
         }
         // 如果是其他玩家的地皮
         else if (map->property->owner != player) {
+            // 如果有财神效果
+            if (player->god_rounds > 0) {
+                printf("你有财神效果，不需要支付！\n");
+                return;
+            }
+            // 如果对方轮空，不用支付
+            if (map->property->owner->stop_rounds > 0) {
+                printf("对方处于轮空状态，不需要支付！\n");
+                return;
+            }
             // 判断是否有足够的钱支付
             printf("你需要支付%d元给%c\n", map->property->value / 2, map->property->owner->name);
             if (player->cash < map->property->value / 2) {

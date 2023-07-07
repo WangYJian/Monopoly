@@ -72,7 +72,6 @@ int main(int argc, char* argv[]) {
         }
         printf("),如输入:12 ");
         scanf("%s", nums);
-        fflush(stdin);
 
         int length = strlen(nums);
         if(length <= 4 && length >= 2){
@@ -111,7 +110,6 @@ int main(int argc, char* argv[]) {
     cur_player = GameStart(game);
     while(1){
         // printf("11\n");
-
         cur_player = GamePlayerRound(game,cur_player);
     }
     // cur_player->position = 23;

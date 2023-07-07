@@ -1,5 +1,5 @@
 user QSAJ
-preuser Q 
+preuser S
 Q
 alive 1
 money 5000
@@ -45,3 +45,7 @@ mapuser 2 Q
 mapuser 4 S
 mapuser 6 A
 mapuser 7 J
+map 2 Q 0
+map 4 A 1
+map 6 J 2
+map 8 S 3
