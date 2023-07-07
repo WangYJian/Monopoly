@@ -105,6 +105,8 @@ int main(int argc, char* argv[]) {
     game = GameInitialize(cash,nums);
     if (argc == 2) {
         game->output_file_path = argv[1];
+    } else {
+        game->output_file_path = "/Users/wangjian/code/C/dian/Monopoly/log";
     }
     cur_player = GameStart(game);
     while(1){

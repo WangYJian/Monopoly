@@ -768,7 +768,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 }
                 // 判断地皮是否可以出售
                 if (game->map[sell_place]->property == NULL || game->map[sell_place]->property->owner != player) {
-                    printf("该地皮不是你的，请重新指令！\n");
+                    printf("该地皮不是你的，请重新输入指令！\n");
                     continue;
                 }
                 PlayerSellProperty(player, game->map[sell_place]->property);
