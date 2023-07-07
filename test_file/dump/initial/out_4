@@ -1,4 +1,4 @@
-user QQQQ
+user QASJ
 preuser Q
 Q
 alive 1
@@ -11,7 +11,7 @@ buff 0
 stop 0
 userloc 0
 A
-alive 0
+alive 1
 money 20000
 point 0
 item1 0
@@ -21,7 +21,7 @@ buff 0
 stop 0
 userloc 0
 S
-alive 0
+alive 1
 money 20000
 point 0
 item1 0
@@ -31,7 +31,7 @@ buff 0
 stop 0
 userloc 0
 J
-alive 0
+alive 1
 money 20000
 point 0
 item1 0
@@ -41,4 +41,4 @@ buff 0
 stop 0
 userloc 0
 MAP
-mapuser 0 QQQQ
+mapuser 0 QASJ

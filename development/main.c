@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
-#include <windows.h>
+//#include <windows.h>
 #include "Game.h"
 #include"Map.h"
 #include"Player.h"
@@ -58,17 +58,17 @@ int main(int argc, char* argv[]) {
     printf("初始金额为：%d\n", cash);
 
 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    int colors[] = {FOREGROUND_RED, FOREGROUND_GREEN, FOREGROUND_BLUE, FOREGROUND_RED | FOREGROUND_GREEN}; // 钱夫人红色、阿土伯绿色、孙小美蓝色、金贝贝黄色
+    //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    //int colors[] = {FOREGROUND_RED, FOREGROUND_GREEN, FOREGROUND_BLUE, FOREGROUND_RED | FOREGROUND_GREEN}; // 钱夫人红色、阿土伯绿色、孙小美蓝色、金贝贝黄色
     char* names[] = {"钱夫人", "阿土伯", "孙小美", "金贝贝"};
 
     while(1){
         int i = 0, err = 0;
         printf("请选择2~4位不重复玩家，输入编号即可(");
         for(i = 0; i < 4; i++){
-            SetConsoleTextAttribute(hConsole, colors[i]); 
+            //SetConsoleTextAttribute(hConsole, colors[i]);
             printf("%d、%s;", i+1, names[i]);
-            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         }
         printf("),如输入:12 ");
         scanf("%s", nums);
@@ -89,9 +89,9 @@ int main(int argc, char* argv[]) {
             if(err != 1){
                 printf("您选择的角色是: ");
                 for(i = 0; i < length; i++){
-                    SetConsoleTextAttribute(hConsole, colors[nums[i] - '1']); // Set color
+                    //SetConsoleTextAttribute(hConsole, colors[nums[i] - '1']); // Set color
                     printf("%s ", names[nums[i] - '1']);
-                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
+                    //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
                 }
                 printf("\n");
                 break;

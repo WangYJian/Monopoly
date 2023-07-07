@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <windows.h>
+//#include <windows.h>
 
 char player_char(char num);
 
@@ -286,23 +286,23 @@ void GameDisplayMap(const struct Game *game) {
     }
 
 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 30; j++) {
             if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
-                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
             } else if (drawmap[i][j] == 'S') { // 孙小美（蓝色）
-                SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
             } else if (drawmap[i][j] == 'J') { // 金贝贝（黄色）
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
             } else {
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
             }
             printf("%c", drawmap[i][j]);
         }
-        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     }
 }
 
