@@ -120,9 +120,9 @@ def group_4_test(in_dir):
     in_files = os.listdir(in_dir)
     global test_cnt
     for dir_name in in_files:
-        dir_name = in_dir+dir_name
+        dir_name = in_dir+"/"+dir_name
         name_append = dir_name
-        if os.path.isdir(in_dir+"/"+dir_name):
+        if os.path.isdir(dir_name):
             dump_file_name = dir_name+"/dump"
             log_file_name = dir_name+"/log"
             dump_file = open(dump_file_name, "w+", encoding="utf-8")
