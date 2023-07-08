@@ -108,8 +108,9 @@ int main(int argc, char* argv[]) {
         game->output_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\log";
     }
     cur_player = GameStart(game);
+    getchar(); // 需要处理读入的回车
     while(1){
-        // fflush(stdin);
+        //fflush(stdin);
         // printf("11\n");
         if(game->player_count == 1){
             printf("游戏结束！！\n 玩家(%c)获得游戏胜利:\n",game->players[game->current_player_index]->name);
