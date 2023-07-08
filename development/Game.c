@@ -351,11 +351,8 @@ void GameDisplayMap(const struct Game *game) {
             } else if (drawmap[i][j]->cur_char == 'S') { // 孙小美（蓝色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
             } else if (drawmap[i][j]->cur_char == 'J') { // 金贝贝（黄色）
-                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
-            } else {
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-            }
-            if (drawmap[i][j]->owner == 'A') { // 阿土伯（绿色）
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+            }else if (drawmap[i][j]->owner == 'A') { // 阿土伯（绿色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             } else if (drawmap[i][j]->owner == 'Q') { // 钱夫人（红色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
