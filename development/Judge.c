@@ -102,7 +102,7 @@ int IsBankrupt(struct Game *game)
         printf("玩家%c破产！其资产将被收回......\n",game->players[game->current_player_index]->name);
         for(int i = 0 ; i < MAP_SIZE ; i++)
         {
-            if(game->map[i]->property->owner == &game->players[game->current_player_index] )//如果该块地的所有者是破产者，则这块地被收回
+            if(game->map[i]->property->owner == game->players[game->current_player_index] )//如果该块地的所有者是破产者，则这块地被收回
             {
                 game->map[i]->property->level = 0;//初始化为空地
             }
