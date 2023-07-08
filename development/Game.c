@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <ctype.h>
-//#include <windows.h>
+#include <windows.h>
 
 
 char player_char(char num);
@@ -210,6 +210,18 @@ char Tool_char(int idx) {
     return ch;
 }
 
+int FindPlayerOnMap(Map* cur_map,int idx){
+    int i = 0;
+    for(i = 0; i< cur_map->player_nums; i++){
+        if(idx == cur_map->player[i]->id){
+            return 1;
+            break;
+        }
+    }
+    return 0;
+
+}
+
 void GameDisplayMap(const struct Game *game) {
     /*
     仅仅显示地图
@@ -220,6 +232,7 @@ void GameDisplayMap(const struct Game *game) {
     */
     int i = 0;
     int j = 0;
+    int is_find_player = 0;
     int player_on_map = 0;
     char drawmap[8][30];
     for (i = 0; i < 8; i++) {
@@ -231,9 +244,14 @@ void GameDisplayMap(const struct Game *game) {
     // 这里打印第一行，其中除了14号，都可以有道具
 
     for (i = 0; i < 29; i++) {
+        is_find_player = 0;
         player_on_map = game->map[i]->player_nums;
         if (player_on_map != 0) {
-            drawmap[0][i] = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
+            is_find_player = FindPlayerOnMap(game->map[i],game->current_player_index);
+            if(is_find_player){
+                drawmap[0][i] = game->players[game->current_player_index]->name;
+            }else
+                drawmap[0][i] = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
         } else if (game->map[i]->is_tool) {
             drawmap[0][i] = Tool_char(game->map[i]->is_tool);
         } else if (game->map[i]->land_type == SPACE && game->map[i]->property->level) {
@@ -250,10 +268,15 @@ void GameDisplayMap(const struct Game *game) {
     // 打印右边，
 
     for (i = 0; i < 8; i++) {
+        is_find_player = 0;
         player_on_map = game->map[28 + i]->player_nums;
         // 同样的更改应用于右边
         if (player_on_map != 0) {
-            drawmap[i][28] = game->map[28 + i]->player[player_on_map - 1]->name;
+            is_find_player = FindPlayerOnMap(game->map[28 + i],game->current_player_index);
+            if(is_find_player){
+                drawmap[i][28] = game->players[game->current_player_index]->name;
+            }else
+                drawmap[i][28] = game->map[28 + i]->player[player_on_map - 1]->name;
         } else if (game->map[28 + i]->is_tool) {
             drawmap[i][28] = Tool_char(game->map[28 + i]->is_tool);
         } else if (!game->map[28 + i]->property->level && game->map[28 + i]->land_type == SPACE) {
@@ -267,9 +290,14 @@ void GameDisplayMap(const struct Game *game) {
     for (i = 28; i >= 0; i--) {
         j = 28 - i;
         player_on_map = game->map[35 + j]->player_nums;
+        is_find_player = 0;
         // 同样的更改应用于下边
         if (player_on_map != 0) {
-            drawmap[7][i] = game->map[35 + j]->player[player_on_map - 1]->name;
+            is_find_player = FindPlayerOnMap(game->map[35+j],game->current_player_index);
+            if(is_find_player){
+                drawmap[7][i] = game->players[game->current_player_index]->name;
+            }else
+                drawmap[7][i] = game->map[35 + j]->player[player_on_map - 1]->name;
         } else if (game->map[35 + j]->is_tool) {
             drawmap[7][i] = Tool_char(game->map[35 + j]->is_tool);
         } else if (game->map[35 + j]->land_type == SPACE && game->map[35 + j]->property->level) {
@@ -281,20 +309,26 @@ void GameDisplayMap(const struct Game *game) {
 
     // 打印左边,矿区不能够买地皮，所以只需要管一部分
     for (i = 6; i >= 1; i--) {
+        is_find_player = 0;
         j = 7 - i;
         player_on_map = game->map[63 + j]->player_nums;
         if (player_on_map != 0) {
-            drawmap[i][0] = game->map[63 + j]->player[player_on_map - 1]->name;
+            is_find_player = FindPlayerOnMap(game->map[63+j],game->current_player_index);
+            if(is_find_player){
+                drawmap[i][0] = game->players[game->current_player_index]->name;
+            }else
+                drawmap[i][0] = game->map[63 + j]->player[player_on_map - 1]->name;
         } else if (game->map[63 + j]->is_tool)
             drawmap[i][0] = Tool_char(game->map[63 + j]->is_tool);
         else
             drawmap[i][0] = game->map[63 + j]->land_type;
     }
 
-    //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 30; j++) {
             // printf("",game->map[i]->property->level);
+
             if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
                 //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
