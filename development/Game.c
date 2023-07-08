@@ -330,19 +330,19 @@ void GameDisplayMap(const struct Game *game) {
             // printf("",game->map[i]->property->level);
 
             if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
-                //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
-                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
             } else if (drawmap[i][j] == 'S') { // 孙小美（蓝色）
-                //SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+                SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
             } else if (drawmap[i][j] == 'J') { // 金贝贝（黄色）
-                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
             } else {
-                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
             }
             printf("%c", drawmap[i][j]);
         }
-        //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     }
 }
 
