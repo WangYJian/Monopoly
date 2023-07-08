@@ -336,19 +336,6 @@ Player *GameRollDice(struct Game *game, int dice_num) {
         game->current_player_index = (++game->current_player_index) % game->player_count;
         player_id = game->current_player_index;
         return game->players[player_id]; // 返回下一个玩家
-    }else{
-        switch (cur_player->status) {
-            case INHOSPITAL:
-                printf("您(%c)已经出院！",cur_player->name);
-                break;
-            case INPRISON:
-                printf("您(%c)已经出狱!",cur_player->name);
-                break;
-            default:
-                break;
-        }
-        cur_player->status = NORMAL;
-
     }
 
     //投掷色子
@@ -368,66 +355,36 @@ Player *GameRollDice(struct Game *game, int dice_num) {
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
 
         cur_map = game->map[pos_next_map];
-        if(cur_player->robot_count)//如果存在机器娃娃
-        {
-            switch (cur_map->is_tool) {
-                case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
-                    break;
 
-                case BARRIER: // 有路障，无视路障并清除
-                {
-                    cur_map->is_tool = 0; // 踩掉了
-                    free(cur_map->tool);
-                    cur_map->tool = NULL;
-                    pos_next_map = i + 1;
-                    flag = 0;
-                    printf("你使用一个机器娃娃清除了该路障\n");
-                    cur_player->robot_count -- ;
-                    break;
-                }
-                case BOMB: // 有炸弹 无视炸弹并清除
-                {
-                    cur_map->is_tool = 0;
-                    free(cur_map->tool); // 删掉地图上的道具信息
-                    cur_map->tool = NULL;
-                    flag = 0;
-                    printf("你使用一个机器娃娃清除了该炸弹\n");
-                    cur_player->robot_count -- ;
-                    break;
-                }
+        switch (cur_map->is_tool) {
+            case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
+                break;
+
+            case BARRIER: // 有路障
+            {
+                cur_map->is_tool = 0; // 踩掉了
+                free(cur_map->tool);
+                cur_map->tool = NULL;
+                pos_next_map = i + 1;
+                flag = 1;
+                printf("你踩到了路障，无法前进\n");
+                break;
             }
-
-        }
-        else{
-            switch (cur_map->is_tool) {
-                case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
-                    break;
-
-                case BARRIER: // 有路障
-                {
-                    cur_map->is_tool = 0; // 踩掉了
-                    free(cur_map->tool);
-                    cur_map->tool = NULL;
-                    pos_next_map = i + 1;
-                    flag = 1;
-                    printf("你踩到了路障，无法前进\n");
-                    break;
-                }
-                case BOMB: // 有炸弹
-                {
-                    //  添加status
-                    cur_player->status = INHOSPITAL;
-                    cur_map->is_tool = 0;
-                    free(cur_map->tool); // 删掉地图上的道具信息
-                    cur_map->tool = NULL;
-                    pos_next_map = 14; // 进入医院
-                    cur_player->stop_rounds += 3; // 添加轮空
-                    flag = 1;
-                    printf("你踩到了炸弹，进入医院休息三天\n");
-                    break;
-                }
+            case BOMB: // 有炸弹
+            {
+                //  添加status
+                cur_player->status = INHOSPITAL;
+                cur_map->is_tool = 0;
+                free(cur_map->tool); // 删掉地图上的道具信息
+                cur_map->tool = NULL;
+                pos_next_map = 14; // 进入医院
+                cur_player->stop_rounds += 3; // 添加轮空
+                flag = 1;
+                printf("你踩到了炸弹，进入医院休息三天\n");
+                break;
             }
         }
+
         // 这里只考虑路障和炸弹
         // TODO 一个地皮上有道具了就不能放了
 
@@ -710,6 +667,16 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
 
         //更新状态
         if(player->stop_rounds == 0){
+            switch (player->status) {
+                case INHOSPITAL:
+                    printf("您(%c)已经出院！\n",player->name);
+                    break;
+                case INPRISON:
+                    printf("您(%c)已经出狱!\n",player->name);
+                    break;
+                default:
+                    break;
+            }
             player->status = NORMAL;
         }
         // 上面读取完了指令
@@ -923,7 +890,7 @@ int Input() {
             // 如果字符是 'y' 或 'Y'，计数加1
             if (tolower(command[i]) == 'y') {
                 count_y++;
-            } 
+            }
             // 如果字符是 'n' 或 'N'，计数加1
             else if (tolower(command[i]) == 'n') {
                 count_n++;
@@ -937,11 +904,11 @@ int Input() {
             // 如果只有一个 'y' 或 'Y'，设置结果为 YES
             if (count_y == 1 && count_n == 0) {
                 result = YES;
-            } 
+            }
             // 如果只有一个 'n' 或 'N'，设置结果为 NO
             else if (count_y == 0 && count_n == 1) {
                 result = NO;
-            } 
+            }
             // 否则设置结果为 ERROR
             else {
                 result = INPUTERROR;
