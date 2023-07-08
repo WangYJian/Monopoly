@@ -333,7 +333,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     if (cur_player->stop_rounds != 0) {
         printf("当前你(%c)还处于轮空状态，无法行动，进入下一个玩家回合\n", cur_player->name);
         cur_player->stop_rounds--;
-        game->current_player_index = (++game->current_player_index) % 4;
+        game->current_player_index = (++game->current_player_index) % game->player_count;
         player_id = game->current_player_index;
         return game->players[player_id]; // 返回下一个玩家
     }
@@ -420,13 +420,13 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     if (player->stop_rounds != 0) {
         printf("当前你(%c)还处于轮空状态，还剩余%d轮，无法行动，进入下一个玩家回合\n", player->name, player->stop_rounds);
         player->stop_rounds--;
-        game->current_player_index = (++game->current_player_index) % 4;
+        game->current_player_index = (++game->current_player_index) % game->player_count;
         player_next = game->players[game->current_player_index];
         return player_next; // 返回下一个玩家
     }
     else if(player->status == BANKRUPT){
         printf("当前你(%c)已经破产，无法行动，进入下一个玩家回合\n", player->name);
-        game->current_player_index = (++game->current_player_index) % 4;
+        game->current_player_index = (++game->current_player_index) % game->player_count;
         player_next = game->players[game->current_player_index];
         return player_next; // 返回下一个玩家
     }
@@ -462,7 +462,6 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         // TODO 读取处理问题
         char line[100];
         fgets(line, 100, stdin);
-        printf("%s\n", line);
         fflush(stdout);
         // set money [Q|A|S|J] [value] 设置玩家的资金
         if (strncmp(line, "set money", 9) == 0) {
