@@ -103,6 +103,7 @@ void PlayerMineral(struct Player* player)
 }
 
 // 显示玩家信息
+// TODO
 void PlayerDisplayInfo(const Player* player){
     printf("玩家%c的信息:\n", player->name);
     printf("现金: %d元\n", player->cash);

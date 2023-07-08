@@ -1,15 +1,15 @@
-
+# -*- coding: utf-8 -*-
 from subprocess import *
 import os
 import io
 import re
 import time
 
-test_dir = "E:/c_workplace/monopoly/Monopoly/test_file"
+test_dir = "F:/zillionaire/Monopoly/test_file"
 test_input_dir = test_dir+"/input"
 test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
-test_obj = "E:/c_workplace/monopoly/Monopoly/development/cmake-build-debug/development.exe"
+test_obj = "F:/zillionaire/Monopoly/development/cmake-build-debug/development.exe"
 log_dir = test_dir+"/log"
 
 max_log_file_size = 10000
@@ -29,7 +29,7 @@ def input_test(file:io.TextIOWrapper, demo: Popen):
 
 def write_log(demo: Popen, dump_file: io.TextIOWrapper):
     out = demo.stdout.read(max_log_file_size)
-    out = out.decode().replace("\r", "")
+    out = out.decode('utf-8','ignore').replace("\r", "")
     dump_file.write(out)
 
 
