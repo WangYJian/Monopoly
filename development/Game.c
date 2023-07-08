@@ -344,11 +344,11 @@ void GameDisplayMap(const struct Game *game) {
         for (j = 0; j < 30; j++) {
             // printf("",game->map[i]->property->level);
 
-            if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
+            if (drawmap[i][j]->cur_char == 'A') { // 阿土伯（绿色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-            } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
+            } else if (drawmap[i][j]->cur_char == 'Q') { // 钱夫人（红色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-            } else if (drawmap[i][j] == 'S') { // 孙小美（蓝色）
+            } else if (drawmap[i][j]->cur_char == 'S') { // 孙小美（蓝色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
             } else if (drawmap[i][j]->cur_char == 'J') { // 金贝贝（黄色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
@@ -824,7 +824,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     continue;
                 }
                 PlayerUseBombOrBarrier(player, BOMB, game->map[tool_place]);
-            } else if (strcmp(real_command, "barrier") == 0) {
+            } else if (strcmp(real_command, "block") == 0) {
                 // 获取数字
                 if (!is_dig) {
                     printf("该指令需要附带数字，请重新输入!\n");
