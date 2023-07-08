@@ -2,7 +2,7 @@ user QSAJ
 preuser Q 
 Q
 alive 1
-money 10400
+money 10200
 point 0
 item1 0
 item2 0
@@ -12,7 +12,7 @@ stop 0
 userloc 2
 A
 alive 1
-money 13000
+money 10400
 point 0
 item1 0
 item2 0
@@ -22,7 +22,7 @@ stop 0
 userloc 3
 S
 alive 1
-money 10800
+money 13000
 point 0
 item1 0
 item2 0

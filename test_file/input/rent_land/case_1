@@ -11,9 +11,10 @@ set map 4 A 1
 set map 6 J 2
 set map 8 S 3
 step 1
+n
 step 1
 step 1
-step 0
 dump
 quit
+
 //no rent

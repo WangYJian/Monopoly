@@ -10,12 +10,16 @@ set map 32 A 2
 set map 51 J 3
 sell 3
 step 1
+n
 sell 16
 step 1
+n
 sell 32
 step 1
+n
 sell 51
 step 1
+n
 dump
 quit
 //success to sell
