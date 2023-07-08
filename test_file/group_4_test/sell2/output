@@ -1,3 +1,4 @@
+<<<<<<< HEAD:test_file/group_4_test/sell2/output
 user QASJ
 preuser Q
 Q
@@ -13,6 +14,13 @@ userloc 1
 A
 alive 1
 money 3500
+=======
+user QSAJ
+preuser Q
+Q
+alive 1
+money 10400
+>>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:log
 point 0
 item1 0
 item2 0
@@ -20,9 +28,25 @@ item3 0
 buff 0
 stop 0
 userloc 2
+<<<<<<< HEAD:test_file/group_4_test/sell2/output
 S
 alive 1
 money 4500
+=======
+A
+alive 1
+money 13000
+point 0
+item1 0
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 4
+S
+alive 1
+money 10800
+>>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:log
 point 0
 item1 0
 item2 0
@@ -32,13 +56,18 @@ stop 0
 userloc 3
 J
 alive 1
+<<<<<<< HEAD:test_file/group_4_test/sell2/output
 money 5500
+=======
+money 12400
+>>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:log
 point 0
 item1 0
 item2 0
 item3 0
 buff 0
 stop 0
+<<<<<<< HEAD:test_file/group_4_test/sell2/output
 userloc 4
 MAP
 mapuser 1 Q
@@ -46,3 +75,11 @@ mapuser 2 A
 mapuser 3 S
 mapuser 4 J
 map 31 Q 1
+=======
+userloc 5
+MAP
+mapuser 2 Q
+mapuser 3 S
+mapuser 4 A
+mapuser 5 J
+>>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:log

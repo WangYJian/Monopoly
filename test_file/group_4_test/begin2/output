@@ -11,8 +11,13 @@ buff 0
 stop 0
 userloc 0
 A
+<<<<<<< HEAD:test_file/group_4_test/begin2/output
 alive 1
 money 1500
+=======
+alive 0
+money 0
+>>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:test_file/dump/initial/out_6
 point 0
 item1 0
 item2 0

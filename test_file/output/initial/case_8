@@ -23,7 +23,7 @@ userloc 28
 S
 alive 1
 money 20000
-point 80
+point 0
 item1 0
 item2 0
 item3 0
@@ -33,7 +33,7 @@ userloc 35
 J
 alive 1
 money 20000
-point 20
+point 0
 item1 0
 item2 0
 item3 0

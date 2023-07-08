@@ -105,12 +105,17 @@ int main(int argc, char* argv[]) {
     if (argc == 2) {
         game->output_file_path = argv[1];
     } else {
-        game->output_file_path = "/Users/wangjian/code/C/dian/Monopoly/log";
+        game->output_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\log";
     }
     cur_player = GameStart(game);
     while(1){
         // fflush(stdin);
         // printf("11\n");
+        if(game->player_count == 1){
+            printf("游戏结束！！\n 玩家(%c)获得游戏胜利:\n",game->players[game->current_player_index]->name);
+            PlayerDisplayInfo(game->players[game->current_player_index]);
+            break;
+        }
         cur_player = GamePlayerRound(game,cur_player);
     }
     // cur_player->position = 23;
@@ -131,4 +136,3 @@ int checkDuplicate(char* nums, int length) {
     }
     return 0;
 }
-
