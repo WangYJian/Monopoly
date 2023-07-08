@@ -108,7 +108,7 @@ int main(int argc, char* argv[]) {
     } else {
         game->output_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\log";
     }
-    cur_player = GameStart(game);=
+    cur_player = GameStart(game);
     getchar();
     while(1){
         //fflush(stdin);
