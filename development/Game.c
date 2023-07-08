@@ -17,6 +17,14 @@ char player_char(char num);
 // 输出玩家信息
 void print_player(Game *game, char name, FILE* file) {
     Player* player = GameGetPlayerByName(game, name);
+    int i = 0;
+    int loc = 0;
+    for(i = 0; i < game->all_player; i++){
+        if(game->players[i]->name == name) {
+            loc = game->players[i]->position;
+            break;
+        }
+    }
     if (!player) {
         fprintf(file, "alive %d\n", 0);
         fprintf(file, "money %d\n", 0);
@@ -26,7 +34,7 @@ void print_player(Game *game, char name, FILE* file) {
         fprintf(file, "item3 %d\n", 0);
         fprintf(file, "buff %d\n", 0);
         fprintf(file, "stop %d\n", 0);
-        fprintf(file, "userloc %d\n", 0);
+        fprintf(file, "userloc %d\n", loc);
         return;
     } else {
         if (player->status == BANKRUPT) {
@@ -59,6 +67,7 @@ Game *GameInitialize(int initcash, char *player_nums) {
     struct Game *game = malloc(sizeof(Game));
     game->init_cash = initcash;
     game->player_count = strlen(player_nums);
+    game->all_player = game->player_count;
     printf("初始化地图 ...\n");
     for (i = 0; i < MAP_SIZE; i++) {
         game->map[i] = malloc(sizeof(Map));
