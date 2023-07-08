@@ -3,7 +3,7 @@
 set pos Q 40
 set item Q 3 1
 set item A 3 1
-set bomb 9
+bomb 9
 step 1
 N
 step 2
