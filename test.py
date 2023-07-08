@@ -1,16 +1,19 @@
+
 from subprocess import *
 import os
 import io
 import re
 import time
 
-test_dir = "./test_file"
+test_dir = "F:/zillionaire/Monopoly/test_file"
 test_input_dir = test_dir+"/input"
 test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
-test_obj = "./development.exe"
+test_obj = "F:/zillionaire/Monopoly/development/cmake-build-debug/development.exe"
 log_dir = test_dir+"/log"
-max_log_file_line = 10000
+
+max_log_file_size = 10000
+
 
 test_cnt = 0
 pass_cnt = 0
@@ -25,10 +28,9 @@ def input_test(file:io.TextIOWrapper, demo: Popen):
 
 
 def write_log(demo: Popen, dump_file: io.TextIOWrapper):
-    out = demo.stdout.readlines(max_log_file_line)
-    for line in out:
-    # out = out.decode().replace("/r", "")
-        dump_file.write(line.decode())
+    out = demo.stdout.read(max_log_file_size)
+    out = out.decode().replace("\r", "")
+    dump_file.write(out)
 
 
 def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) -> bool:
@@ -59,7 +61,7 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) ->
                 str4 = "get: "+"\033[1;33m"+ test_lines[i] +"\033[0m".replace("\n", "").replace("\r", "")
                 print(str1+":  "+str2+"    "+str3+"     "+str4)
                 return False
-    print("\033[1;34m"+"test  "+nameappend+"\033[0m \033[1;32m pass \033[0m")
+    print("\033[1;34m"+"test"+nameappend+"\033[0m \033[1;32m pass \033[0m")
     pass_cnt += 1
     return True
 
@@ -97,18 +99,14 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
                     write_log(demo, log)
                     demo.kill()
                     demo.wait()
-                    print("\033[1;34m"+"test  "+name_append+suffix+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
+                    print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
                     continue
-                elif demo.poll() != 0:
-                    # demo.wait()
-                    print("\033[1;34m"+"test  "+name_append+suffix+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
-            elif demo.poll() == 0:
-                write_log(demo, log)
-                # demo.wait()
+            elif demo.poll() != 0:
+                print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
             out_file_name = [v for v in out_files if suffix in v]
             out_file = open(out_dir+"/"+out_file_name[0], "r", encoding="utf-8")
             dump_file.seek(0,0)
-            check_out(dump_file, out_file, name_append+suffix)
+            check_out(dump_file, out_file, name_append)
             dump_file.close()
             out_file.close()
             
