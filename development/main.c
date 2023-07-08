@@ -101,6 +101,7 @@ int main(int argc, char* argv[]) {
         else
             printf("输入数字有误,请重新输入!如输入:12\n");
             }
+
     game = GameInitialize(cash,nums);
     if (argc == 2) {
         game->output_file_path = argv[1];

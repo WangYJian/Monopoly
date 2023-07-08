@@ -1095,6 +1095,4 @@ void GameRemovePlayer(struct Game* game, Player *player) {
             PlayerSellProperty(player, game->map[i]->property);
         }
     }
-
-
 }
