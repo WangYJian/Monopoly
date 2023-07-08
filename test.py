@@ -11,7 +11,7 @@ test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
 test_obj = "./development.exe"
 log_dir = test_dir+"/log"
-max_log_file_line = 10000
+max_log_file_line = 1000
 
 test_cnt = 0
 pass_cnt = 0
