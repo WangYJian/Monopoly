@@ -2,7 +2,7 @@ user SJ
 preuser S
 Q
 alive 0
-money 20000
+money 0
 point 0
 item1 0
 item2 0
@@ -12,7 +12,7 @@ stop 0
 userloc 0
 A
 alive 0
-money 20000
+money 0
 point 0
 item1 0
 item2 0

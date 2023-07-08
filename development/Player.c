@@ -283,6 +283,19 @@ void PlayerUpgradeProperty(struct Player* player, Property *property){
     }
 }
 
+
 void PlayerHelp(){
-    printf("help doc to fill\n");
-};
+    printf("---------------------------------------------------------\n");
+    printf("|\t命令\t|\t功能说明\t\t\t|\n");
+    printf("|\troll\t|\t掷色子命令\t\t\t|\n");
+    printf("|\tSell n\t|\t出售房产，售价=总投资*2\t\t|\n");
+    printf("|\tBlock n\t|\t放置路障至前后10步的范围内\t|\n");
+    printf("|\tBomb n\t|\t放置炸弹至前后10步范围内\t|\n");
+    printf("|\tRobot\t|\t清扫前方路面上10步内任意道具\t|\n");
+    printf("|\tQuery\t|\t显示自家资产\t\t\t|\n");
+    printf("|\tHelp\t|\t查看命令帮助\t\t\t|\n");
+    printf("|\tQuit\t|\t强制退出\t\t\t|\n");
+    printf("|\tStep n\t|\t遥控色子\t\t\t|\n");
+    printf("---------------------------------------------------------\n");
+}
+
