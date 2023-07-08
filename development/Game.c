@@ -462,6 +462,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         // TODO 读取处理问题
         char line[100];
         fgets(line, 100, stdin);
+        printf("%s\n", line);
         fflush(stdout);
         // set money [Q|A|S|J] [value] 设置玩家的资金
         if (strncmp(line, "set money", 9) == 0) {

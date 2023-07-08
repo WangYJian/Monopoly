@@ -24,11 +24,11 @@
 	ProcessorClockFrequency="3193"
 	>
 	<Testing>
-		<StartDateTime>Jul 08 09:30 [NON-UTF-8-BYTE-0xD6]й[NON-UTF-8-BYTE-0xFA][NON-UTF-8-BYTE-0xB1][NON-UTF-8-BYTE-0xEA]׼ʱ[NON-UTF-8-BYTE-0xBC][NON-UTF-8-BYTE-0xE4]</StartDateTime>
-		<StartTestTime>1688779847</StartTestTime>
+		<StartDateTime>Jul 08 09:56 中国标准时间</StartDateTime>
+		<StartTestTime>1688781369</StartTestTime>
 		<TestList/>
-		<EndDateTime>Jul 08 09:30 [NON-UTF-8-BYTE-0xD6]й[NON-UTF-8-BYTE-0xFA][NON-UTF-8-BYTE-0xB1][NON-UTF-8-BYTE-0xEA]׼ʱ[NON-UTF-8-BYTE-0xBC][NON-UTF-8-BYTE-0xE4]</EndDateTime>
-		<EndTestTime>1688779847</EndTestTime>
+		<EndDateTime>Jul 08 09:56 中国标准时间</EndDateTime>
+		<EndTestTime>1688781369</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
