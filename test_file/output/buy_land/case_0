@@ -12,16 +12,6 @@ stop 0
 userloc 2
 A
 alive 1
-money 0
-point 0
-item1 0
-item2 0
-item3 0
-buff 0
-stop 0
-userloc 31
-S
-alive 1
 money 700
 point 0
 item1 0
@@ -30,6 +20,16 @@ item3 0
 buff 0
 stop 0
 userloc 39
+S
+alive 1
+money 0
+point 0
+item1 0
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 31
 J
 alive 1
 money 5000
