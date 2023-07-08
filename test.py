@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from subprocess import *
 import os
 import io
@@ -29,7 +29,7 @@ def input_test(file:io.TextIOWrapper, demo: Popen):
 
 def write_log(demo: Popen, dump_file: io.TextIOWrapper):
     out = demo.stdout.read(max_log_file_size)
-    out = out.decode('utf-8','ignore').replace("\r", "")
+    out = out.decode().replace("\r", "")
     dump_file.write(out)
 
 
