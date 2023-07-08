@@ -259,14 +259,15 @@ void PlayerBuyProperty(struct Player* player, Property *property){
     player->cash -= property->price;
     printf("购买成功！\n");
 }
-
-void PlayerSellProperty(struct Player* player, Property *property){
+void PlayerSellProperty(struct Player* player,Property *property) {
     property->owner = NULL;
     player->cash += 2 * property->value;
     property->level = 0;
     property->value = property->price;
-    printf("出售成功！\n");
+    if (player->status != BANKRUPT)
+        printf("出售成功!\n");
 }
+
 
 // 升级地产
 void PlayerUpgradeProperty(struct Player* player, Property *property){

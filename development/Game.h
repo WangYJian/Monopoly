@@ -31,7 +31,10 @@ typedef struct Game {
     char* output_file_path ;
     char* log_file_path ;
 } Game;
-
+typedef struct ColorDis{
+    char cur_char;
+    char owner;
+}ColorDis;
 Game* GameInitialize(int initcash,char* player_nums);  // 初始化游戏
 void GameAddPlayer(struct Game* game, struct Player* player);  // 向游戏添加玩家
 void GameRemovePlayer(struct Game* game, Player *player);  // 从游戏中移除玩家
