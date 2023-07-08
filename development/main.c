@@ -101,6 +101,7 @@ int main(int argc, char* argv[]) {
         else
             printf("输入数字有误,请重新输入!如输入:12\n");
             }
+
     game = GameInitialize(cash,nums);
     if (argc == 2) {
         game->output_file_path = argv[1];
@@ -108,8 +109,9 @@ int main(int argc, char* argv[]) {
         game->output_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\log";
     }
     cur_player = GameStart(game);
+    getchar();
     while(1){
-        // fflush(stdin);
+        //fflush(stdin);
         // printf("11\n");
         if(game->player_count == 1){
             printf("游戏结束！！\n 玩家(%c)获得游戏胜利:\n",game->players[game->current_player_index]->name);

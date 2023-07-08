@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:test_file/group_4_test/sell2/output
 user QASJ
+=======
+user QSAJ
+>>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 preuser Q
 Q
 alive 1
@@ -14,6 +18,7 @@ userloc 1
 A
 alive 1
 money 3500
+<<<<<<< HEAD
 =======
 user QSAJ
 preuser Q
@@ -21,6 +26,8 @@ Q
 alive 1
 money 10400
 >>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:log
+=======
+>>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 point 0
 item1 0
 item2 0
@@ -28,6 +35,7 @@ item3 0
 buff 0
 stop 0
 userloc 2
+<<<<<<< HEAD
 <<<<<<< HEAD:test_file/group_4_test/sell2/output
 S
 alive 1
@@ -47,6 +55,11 @@ S
 alive 1
 money 10800
 >>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:log
+=======
+S
+alive 1
+money 4500
+>>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 point 0
 item1 0
 item2 0
@@ -56,18 +69,25 @@ stop 0
 userloc 3
 J
 alive 1
+<<<<<<< HEAD
 <<<<<<< HEAD:test_file/group_4_test/sell2/output
 money 5500
 =======
 money 12400
 >>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:log
+=======
+money 5500
+>>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 point 0
 item1 0
 item2 0
 item3 0
 buff 0
 stop 0
+<<<<<<< HEAD
 <<<<<<< HEAD:test_file/group_4_test/sell2/output
+=======
+>>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 userloc 4
 MAP
 mapuser 1 Q
@@ -75,6 +95,7 @@ mapuser 2 A
 mapuser 3 S
 mapuser 4 J
 map 31 Q 1
+<<<<<<< HEAD
 =======
 userloc 5
 MAP
@@ -83,3 +104,5 @@ mapuser 3 S
 mapuser 4 A
 mapuser 5 J
 >>>>>>> 57df1f6fb0dd3f7585c6271d79cdc93363d471ce:log
+=======
+>>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce

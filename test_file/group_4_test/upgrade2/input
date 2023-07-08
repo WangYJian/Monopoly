@@ -5,5 +5,9 @@ set map 31 A 3
 step 30
 y
 step 31
+<<<<<<< HEAD
+=======
+n
+>>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 dump
 quit

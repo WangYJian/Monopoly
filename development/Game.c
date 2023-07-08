@@ -17,6 +17,14 @@ char player_char(char num);
 // 输出玩家信息
 void print_player(Game *game, char name, FILE* file) {
     Player* player = GameGetPlayerByName(game, name);
+    int i = 0;
+    int loc = 0;
+    for(i = 0; i < game->all_player; i++){
+        if(game->players[i]->name == name) {
+            loc = game->players[i]->position;
+            break;
+        }
+    }
     if (!player) {
         fprintf(file, "alive %d\n", 0);
         fprintf(file, "money %d\n", game->init_cash);
@@ -26,7 +34,7 @@ void print_player(Game *game, char name, FILE* file) {
         fprintf(file, "item3 %d\n", 0);
         fprintf(file, "buff %d\n", 0);
         fprintf(file, "stop %d\n", 0);
-        fprintf(file, "userloc %d\n", 0);
+        fprintf(file, "userloc %d\n", loc);
         return;
     } else {
         if (player->status == BANKRUPT) {
@@ -59,6 +67,7 @@ Game *GameInitialize(int initcash, char *player_nums) {
     struct Game *game = malloc(sizeof(Game));
     game->init_cash = initcash;
     game->player_count = strlen(player_nums);
+    game->all_player = game->player_count;
     printf("初始化地图 ...\n");
     for (i = 0; i < MAP_SIZE; i++) {
         game->map[i] = malloc(sizeof(Map));
@@ -433,13 +442,14 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
 
     char real_command[16];
     int symbol = 0;
-    int num[2] = {-1, -1}, i = 0, j = 0;
+
     char ch;
     int loop = 1;
     int wrong_input = 0;
     int pos_for_tool = 0, tool_place = 0;
     int is_dig = 0; // 用来指定是不是有数字量
     while (loop) {
+        int num[2] = {-1, -1}, i = 0, j = 0;
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
         if (player->name == 'A') { // 阿土伯（绿色）
@@ -625,6 +635,11 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     fprintf(output, "map %d %c %d\n", i, game->map[i]->property->owner->name, game->map[i]->property->level);
                 }
             }
+            for(int i = 0; i < 70; i++){
+                if(game->map[i]->is_tool != NOTOOL){
+                    fprintf(output, "item %d %d\n", i, game->map[i]->tool->id);
+                }
+            }
             continue;
         }
 
@@ -657,11 +672,11 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         real_command[j] = '\0';
 
 
-        if (wrong_input) {
-            num[0] = -1, num[1] = -1;// 重置
-            wrong_input = 0;
-            continue;
-        } // 检测问题
+//        if (wrong_input) {
+//            num[0] = -1, num[1] = -1;// 重置
+//            wrong_input = 0;
+//            continue;
+//        } // 检测问题
 
         // 上面读取完了指令
         if (player->stop_rounds == 0 && player->status == NORMAL) {
@@ -1012,7 +1027,4 @@ void GameRemovePlayer(struct Game* game, Player *player) {
             PlayerSellProperty(player, game->map[i]->property);
         }
     }
-    player->cash = 0;
-    player->status = BANKRUPT;
-
 }

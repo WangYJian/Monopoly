@@ -32,7 +32,11 @@ stop 0
 userloc 69
 J
 alive 0
+<<<<<<< HEAD
 money 1500
+=======
+money 0
+>>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 point 0
 item1 0
 item2 0
