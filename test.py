@@ -28,8 +28,7 @@ def write_log(demo: Popen, dump_file: io.TextIOWrapper):
     out = demo.stdout.readlines(max_log_file_line)
     for line in out:
     # out = out.decode().replace("/r", "")
-        line = line.decode().replace("\n", "")
-        dump_file.write(line)
+        dump_file.write(line.decode())
 
 
 def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) -> bool:

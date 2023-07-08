@@ -144,7 +144,7 @@ void PlayerTool(struct Player* player){
         token = strtok(input, " ");
         while(token != NULL) {
             // 如果输入的是"F"或者"f"，退出
-            if (strcmp(token, "F") == 0 || strcmp(token, "f") == 0) {
+            if (token[0] == 'F'  || token[0] == 'f') {
                 printf("您已退出道具屋\n");
                 return;
             }
