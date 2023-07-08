@@ -12,7 +12,7 @@ set item S 2 5
 set item S 3 2
 set item J 2 2
 set item J 3 1
-barrier 2
+block 2
 robot
 step 3
 N
