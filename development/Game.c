@@ -425,7 +425,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 cur_map->is_tool = 0; // 踩掉了
                 free(cur_map->tool);
                 cur_map->tool = NULL;
-                pos_next_map = i + 1;
+                pos_next_map = pos_in_map + i + 1;
                 flag = 1;
                 printf("你踩到了路障，无法前进\n");
                 break;
