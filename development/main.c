@@ -131,4 +131,3 @@ int checkDuplicate(char* nums, int length) {
     }
     return 0;
 }
-

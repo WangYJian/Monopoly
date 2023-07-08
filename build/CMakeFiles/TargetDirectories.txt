@@ -1,3 +1,0 @@
-E:/c++/richman/Monopoly/build/CMakeFiles/development.dir
-E:/c++/richman/Monopoly/build/CMakeFiles/edit_cache.dir
-E:/c++/richman/Monopoly/build/CMakeFiles/rebuild_cache.dir
