@@ -2,7 +2,7 @@
 1234
 set map 1 A 2
 set item Q 3 1
-set bomb 1
+bomb 1
 step 1
 dump
 quit

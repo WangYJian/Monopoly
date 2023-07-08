@@ -5,7 +5,7 @@ set item Q 3 1
 set item A 3 1
 step 1
 N
-set bomb 2
+bomb 2
 step 2
 N
 step 3
