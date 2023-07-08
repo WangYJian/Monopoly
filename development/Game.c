@@ -505,13 +505,14 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
 
     char real_command[16];
     int symbol = 0;
-    int num[2] = {-1, -1}, i = 0, j = 0;
+
     char ch;
     int loop = 1;
     int wrong_input = 0;
     int pos_for_tool = 0, tool_place = 0;
     int is_dig = 0; // 用来指定是不是有数字量
     while (loop) {
+        int num[2] = {-1, -1}, i = 0, j = 0;
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
         if (player->name == 'A') { // 阿土伯（绿色）
@@ -733,11 +734,11 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         real_command[j] = '\0';
 
 
-        if (wrong_input) {
-            num[0] = -1, num[1] = -1;// 重置
-            wrong_input = 0;
-            continue;
-        } // 检测问题
+//        if (wrong_input) {
+//            num[0] = -1, num[1] = -1;// 重置
+//            wrong_input = 0;
+//            continue;
+//        } // 检测问题
 
         //更新状态
         if(player->stop_rounds == 0){
