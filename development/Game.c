@@ -333,9 +333,22 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     if (cur_player->stop_rounds != 0) {
         printf("当前你(%c)还处于轮空状态，无法行动，进入下一个玩家回合\n", cur_player->name);
         cur_player->stop_rounds--;
-        game->current_player_index = (++game->current_player_index) % 4;
+        game->current_player_index = (++game->current_player_index) % game->player_count;
         player_id = game->current_player_index;
         return game->players[player_id]; // 返回下一个玩家
+    }else{
+        switch (cur_player->status) {
+            case INHOSPITAL:
+                printf("您(%c)已经出院！",cur_player->name);
+                break;
+            case INPRISON:
+                printf("您(%c)已经出狱!",cur_player->name);
+                break;
+            default:
+                break;
+        }
+        cur_player->status = NORMAL;
+
     }
 
     //投掷色子
@@ -353,38 +366,71 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     for (i = 0; i < actual_num; i++) {
         pos_next_map = (pos_in_map + i + 1) % 70;
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
+
         cur_map = game->map[pos_next_map];
+        if(cur_player->robot_count)//如果存在机器娃娃
+        {
+            switch (cur_map->is_tool) {
+                case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
+                    break;
 
-        // 这里只考虑路障和炸弹
-        // TODO 一个地皮上有道具了就不能放了
-        switch (cur_map->is_tool) {
-            case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
-                break;
-
-            case BARRIER: // 有路障
-            {
-                cur_map->is_tool = 0; // 踩掉了
-                free(cur_map->tool);
-                cur_map->tool = NULL;
-                pos_next_map = i + 1;
-                flag = 1;
-                printf("你踩到了路障，无法前进\n");
-                break;
+                case BARRIER: // 有路障，无视路障并清除
+                {
+                    cur_map->is_tool = 0; // 踩掉了
+                    free(cur_map->tool);
+                    cur_map->tool = NULL;
+                    pos_next_map = i + 1;
+                    flag = 0;
+                    printf("你使用一个机器娃娃清除了该路障\n");
+                    cur_player->robot_count -- ;
+                    break;
+                }
+                case BOMB: // 有炸弹 无视炸弹并清除
+                {
+                    cur_map->is_tool = 0;
+                    free(cur_map->tool); // 删掉地图上的道具信息
+                    cur_map->tool = NULL;
+                    flag = 0;
+                    printf("你使用一个机器娃娃清除了该炸弹\n");
+                    cur_player->robot_count -- ;
+                    break;
+                }
             }
-            case BOMB: // 有炸弹
-            {
-                //  添加status
-                cur_player->status = INHOSPITAL;
-                cur_map->is_tool = 0;
-                free(cur_map->tool); // 删掉地图上的道具信息
-                cur_map->tool = NULL;
-                pos_next_map = 14; // 进入医院
-                cur_player->stop_rounds += 3; // 添加轮空
-                flag = 1;
-                printf("你踩到了炸弹，进入医院休息三天\n");
-                break;
+
+        }
+        else{
+            switch (cur_map->is_tool) {
+                case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
+                    break;
+
+                case BARRIER: // 有路障
+                {
+                    cur_map->is_tool = 0; // 踩掉了
+                    free(cur_map->tool);
+                    cur_map->tool = NULL;
+                    pos_next_map = i + 1;
+                    flag = 1;
+                    printf("你踩到了路障，无法前进\n");
+                    break;
+                }
+                case BOMB: // 有炸弹
+                {
+                    //  添加status
+                    cur_player->status = INHOSPITAL;
+                    cur_map->is_tool = 0;
+                    free(cur_map->tool); // 删掉地图上的道具信息
+                    cur_map->tool = NULL;
+                    pos_next_map = 14; // 进入医院
+                    cur_player->stop_rounds += 3; // 添加轮空
+                    flag = 1;
+                    printf("你踩到了炸弹，进入医院休息三天\n");
+                    break;
+                }
             }
         }
+        // 这里只考虑路障和炸弹
+        // TODO 一个地皮上有道具了就不能放了
+
         if (flag) {
             break;
         }
@@ -420,13 +466,13 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     if (player->stop_rounds != 0) {
         printf("当前你(%c)还处于轮空状态，还剩余%d轮，无法行动，进入下一个玩家回合\n", player->name, player->stop_rounds);
         player->stop_rounds--;
-        game->current_player_index = (++game->current_player_index) % 4;
+        game->current_player_index = (++game->current_player_index) % game->player_count;
         player_next = game->players[game->current_player_index];
         return player_next; // 返回下一个玩家
     }
     else if(player->status == BANKRUPT){
         printf("当前你(%c)已经破产，无法行动，进入下一个玩家回合\n", player->name);
-        game->current_player_index = (++game->current_player_index) % 4;
+        game->current_player_index = (++game->current_player_index) % game->player_count;
         player_next = game->players[game->current_player_index];
         return player_next; // 返回下一个玩家
     }
@@ -662,6 +708,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             continue;
         } // 检测问题
 
+        //更新状态
+        if(player->stop_rounds == 0){
+            player->status = NORMAL;
+        }
         // 上面读取完了指令
         if (player->stop_rounds == 0 && player->status == NORMAL) {
             pos_for_tool = 0, tool_place = 0;
@@ -823,10 +873,9 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             }
 
         } else {
-            // TODO 当权处于轮空状态 
-            printf("你当前处于轮空状态！");
-            player_next = GameRollDice(game, NODICE);
+            // TODO 当轮处于status没有更新问题
 
+            player_next = GameRollDice(game, NODICE);
         }
         num[0] = -1, num[1] = -1; // 最后重置，因为sell里面还需要判断
     }
