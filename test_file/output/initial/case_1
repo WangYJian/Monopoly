@@ -1,10 +1,5 @@
-<<<<<<< HEAD:test_file/output/initial/case_1
-user JSA
-preuser J
-=======
 user QASJ
 preuser A
->>>>>>> d8e317aeb21e4c8b0ee8c2790c11724f87277750:test_file/output/output_0
 Q
 alive 1
 money 10000
@@ -36,13 +31,8 @@ buff 0
 stop 0
 userloc 0
 J
-<<<<<<< HEAD:test_file/output/initial/case_1
-alive 0
-money 0
-=======
 alive 1
 money 10000
->>>>>>> d8e317aeb21e4c8b0ee8c2790c11724f87277750:test_file/output/output_0
 point 0
 item1 0
 item2 0
@@ -50,10 +40,6 @@ item3 0
 buff 0
 stop 0
 userloc 0
-<<<<<<< HEAD:test_file/output/initial/case_1
-=======
 MAP
 mapuser 0 ASJ
 mapuser 5 Q
-
->>>>>>> d8e317aeb21e4c8b0ee8c2790c11724f87277750:test_file/output/output_0
