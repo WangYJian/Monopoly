@@ -10,3 +10,5 @@ test/
 *.in
 test_file/dump
 test_file/log
+
+build
