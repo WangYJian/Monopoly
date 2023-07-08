@@ -697,6 +697,11 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     fprintf(output, "map %d %c %d\n", i, game->map[i]->property->owner->name, game->map[i]->property->level);
                 }
             }
+            for(int i = 0; i < 70; i++){
+                if(game->map[i]->is_tool != NOTOOL){
+                    fprintf(output, "item %d %d\n", i, game->map[i]->tool->id);
+                }
+            }
             continue;
         }
         else if(strncmp(line, "quit", 4) == 0){
