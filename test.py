@@ -4,13 +4,13 @@ import io
 import re
 import time
 
-test_dir = "./test_file"
-test_input_dir = test_dir+"/input"
-test_output_dir = test_dir+"/output"
+group_2_test_dir = "./test_file/group_2_test"
+test_input_dir = group_2_test_dir+"/input"
+test_output_dir = group_2_test_dir+"/output"
 group_4_test_dir = "./test_file/group_4_test"
-dump_dir = test_dir+"/dump"
+dump_dir = group_2_test_dir+"/dump"
 test_obj = "./development.exe"
-log_dir = test_dir+"/log"
+log_dir = group_2_test_dir+"/log"
 max_log_file_line = 10000
 
 test_cnt = 0
@@ -37,7 +37,7 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) ->
     test_lines = demo_out.readlines()
     expect_lines = expect.readlines()
     for i in range(len(expect_lines)):
-        expect_line = expect_lines[i].replace(" ", "").replace("\n", "").replace("\r", "")
+        expect_line = expect_lines[i].replace("\n", "").replace("\r", "")
         if i >= len(test_lines):
             str1 = "\033[1;34m"+"test  "+nameappend+"\033[0m \033[1;31m error \033[0m"
             str2 = "error in \033[1;36m line {line_num} \033[0m".format(line_num=i)
