@@ -7,6 +7,7 @@ import time
 test_dir = "./test_file"
 test_input_dir = test_dir+"/input"
 test_output_dir = test_dir+"/output"
+group_4_test = "test_file/test"
 dump_dir = test_dir+"/dump"
 test_obj = "./development.exe"
 log_dir = test_dir+"/log"
