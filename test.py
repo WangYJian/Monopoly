@@ -4,11 +4,11 @@ import io
 import re
 import time
 
-test_dir = "E:/c++/richman/Monopoly/test_file"
+test_dir = "./test_file"
 test_input_dir = test_dir+"/input"
 test_output_dir = test_dir+"/output"
 dump_dir = test_dir+"/dump"
-test_obj = "E:/c++/richman/Monopoly/build/development.exe"
+test_obj = "./development.exe"
 log_dir = test_dir+"/log"
 max_log_file_line = 10000
 
