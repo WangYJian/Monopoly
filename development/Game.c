@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <ctype.h>
-#include <windows.h>
+//#include <windows.h>
 
 
 char player_char(char num);
@@ -291,24 +291,24 @@ void GameDisplayMap(const struct Game *game) {
             drawmap[i][0] = game->map[63 + j]->land_type;
     }
 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 30; j++) {
             printf("",game->map[i]->property->level);
             if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
-                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
             } else if (drawmap[i][j] == 'S') { // 孙小美（蓝色）
-                SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
             } else if (drawmap[i][j] == 'J') { // 金贝贝（黄色）
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
             } else {
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+                //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
             }
             printf("%c", drawmap[i][j]);
         }
-        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     }
 }
 
@@ -440,24 +440,25 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     int pos_for_tool = 0, tool_place = 0;
     int is_dig = 0; // 用来指定是不是有数字量
     while (loop) {
-        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
         if (player->name == 'A') { // 阿土伯（绿色）
-            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             printf("阿土伯> ");
         } else if (player->name == 'Q') { // 钱夫人（红色）
-            SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
             printf("钱夫人> ");
         } else if (player->name == 'S') { // 孙小美（蓝色）
-            SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
             printf("孙小美> ");
         } else if (player->name == 'J') { // 金贝贝（黄色）
-            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+            //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
             printf("金贝贝> ");
         }
-        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         i = 0;
         j = 0;
+        num[0] = -1, num[1] = -1;
         symbol = 0;
         // TODO 读取处理问题
         char line[100];
@@ -656,13 +657,6 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         }
         real_command[j] = '\0';
 
-
-        if (wrong_input) {
-            num[0] = -1, num[1] = -1;// 重置
-            wrong_input = 0;
-            continue;
-        } // 检测问题
-
         // 上面读取完了指令
         if (player->stop_rounds == 0 && player->status == NORMAL) {
             pos_for_tool = 0, tool_place = 0;
@@ -804,6 +798,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     sell_place = num[0];
                 } else {
                     sell_place = num[0] * 10 + num[1];
+                }
+                if (sell_place < 0 || sell_place >= MAP_SIZE - 1) {
+                    printf("指令超过范围，请重新输入！\n");
+                    continue;
                 }
                 // 判断地皮是否可以出售
                 if (game->map[sell_place]->property == NULL || game->map[sell_place]->property->owner != player) {
