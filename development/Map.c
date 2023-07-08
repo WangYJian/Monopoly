@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "Player.h"
+#include "Tool.h"
 #include<stdio.h>
 void AddPlayerMap(Map* map,Player* player){
     int nums = map->player_nums;
@@ -31,3 +32,4 @@ void DelPlayerMap(Map* map,Player* player){
     }
     map->player_nums--;
 }
+

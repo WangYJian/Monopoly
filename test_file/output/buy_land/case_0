@@ -1,4 +1,4 @@
-user QSAJ
+user QASJ
 preuser Q 
 Q
 alive 1
@@ -42,6 +42,10 @@ stop 0
 userloc 54
 MAP 
 mapuser 2 Q
-mapuser 31 S
-mapuser 39 A
+mapuser 31 A
+mapuser 39 S
 mapuser 54 J
+map 2 Q 0
+map 31 A 0
+map 39 S 0
+map 54 J 0
