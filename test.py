@@ -58,7 +58,7 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) ->
                 str4 = "get: "+"\033[1;33m"+ test_lines[i] +"\033[0m".replace("\n", "").replace("\r", "")
                 print(str1+":  "+str2+"    "+str3+"     "+str4)
                 return False
-    print("\033[1;34m"+"test"+nameappend+"\033[0m \033[1;32m pass \033[0m")
+    print("\033[1;34m"+"test  "+nameappend+"\033[0m \033[1;32m pass \033[0m")
     pass_cnt += 1
     return True
 
