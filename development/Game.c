@@ -521,7 +521,6 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         i = 0;
         j = 0;
-        num[0] = -1, num[1] = -1;
         symbol = 0;
         // TODO 读取处理问题
         char line[100];
@@ -684,14 +683,13 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             }
             fflush(output);
             //打印所有地产
-            for(int i = 0; i < MAP_SIZE; i++){
+            for(int i = 0; i < 70; i++){
                 if(game->map[i]->property->owner != NULL){
                     fprintf(output, "map %d %c %d\n", i, game->map[i]->property->owner->name, game->map[i]->property->level);
                 }
             }
             continue;
         }
-
         else if(strncmp(line, "quit", 4) == 0){
             exit(0);
         }
@@ -719,6 +717,13 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             }
         }
         real_command[j] = '\0';
+
+
+        if (wrong_input) {
+            num[0] = -1, num[1] = -1;// 重置
+            wrong_input = 0;
+            continue;
+        } // 检测问题
 
         //更新状态
         if(player->stop_rounds == 0){
@@ -880,10 +885,6 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     sell_place = num[0];
                 } else {
                     sell_place = num[0] * 10 + num[1];
-                }
-                if (sell_place < 0 || sell_place >= MAP_SIZE - 1) {
-                    printf("指令超过范围，请重新输入！\n");
-                    continue;
                 }
                 // 判断地皮是否可以出售
                 if (game->map[sell_place]->property == NULL || game->map[sell_place]->property->owner != player) {
