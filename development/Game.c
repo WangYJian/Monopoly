@@ -210,6 +210,18 @@ char Tool_char(int idx) {
     return ch;
 }
 
+int FindPlayerOnMap(Map* cur_map,int idx){
+    int i = 0;
+    for(i = 0; i< cur_map->player_nums; i++){
+        if(idx == cur_map->player[i]->id){
+            return 1;
+            break;
+        }
+    }
+    return 0;
+
+}
+
 void GameDisplayMap(const struct Game *game) {
     /*
     仅仅显示地图
@@ -220,6 +232,7 @@ void GameDisplayMap(const struct Game *game) {
     */
     int i = 0;
     int j = 0;
+    int is_find_player = 0;
     int player_on_map = 0;
     char drawmap[8][30];
     for (i = 0; i < 8; i++) {
@@ -231,9 +244,14 @@ void GameDisplayMap(const struct Game *game) {
     // 这里打印第一行，其中除了14号，都可以有道具
 
     for (i = 0; i < 29; i++) {
+        is_find_player = 0;
         player_on_map = game->map[i]->player_nums;
         if (player_on_map != 0) {
-            drawmap[0][i] = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
+            is_find_player = FindPlayerOnMap(game->map[i],game->current_player_index);
+            if(is_find_player){
+                drawmap[0][i] = game->players[game->current_player_index]->name;
+            }else
+                drawmap[0][i] = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
         } else if (game->map[i]->is_tool) {
             drawmap[0][i] = Tool_char(game->map[i]->is_tool);
         } else if (game->map[i]->land_type == SPACE && game->map[i]->property->level) {
@@ -250,10 +268,15 @@ void GameDisplayMap(const struct Game *game) {
     // 打印右边，
 
     for (i = 0; i < 8; i++) {
+        is_find_player = 0;
         player_on_map = game->map[28 + i]->player_nums;
         // 同样的更改应用于右边
         if (player_on_map != 0) {
-            drawmap[i][28] = game->map[28 + i]->player[player_on_map - 1]->name;
+            is_find_player = FindPlayerOnMap(game->map[28 + i],game->current_player_index);
+            if(is_find_player){
+                drawmap[i][28] = game->players[game->current_player_index]->name;
+            }else
+                drawmap[i][28] = game->map[28 + i]->player[player_on_map - 1]->name;
         } else if (game->map[28 + i]->is_tool) {
             drawmap[i][28] = Tool_char(game->map[28 + i]->is_tool);
         } else if (!game->map[28 + i]->property->level && game->map[28 + i]->land_type == SPACE) {
@@ -267,9 +290,14 @@ void GameDisplayMap(const struct Game *game) {
     for (i = 28; i >= 0; i--) {
         j = 28 - i;
         player_on_map = game->map[35 + j]->player_nums;
+        is_find_player = 0;
         // 同样的更改应用于下边
         if (player_on_map != 0) {
-            drawmap[7][i] = game->map[35 + j]->player[player_on_map - 1]->name;
+            is_find_player = FindPlayerOnMap(game->map[35+j],game->current_player_index);
+            if(is_find_player){
+                drawmap[7][i] = game->players[game->current_player_index]->name;
+            }else
+                drawmap[7][i] = game->map[35 + j]->player[player_on_map - 1]->name;
         } else if (game->map[35 + j]->is_tool) {
             drawmap[7][i] = Tool_char(game->map[35 + j]->is_tool);
         } else if (game->map[35 + j]->land_type == SPACE && game->map[35 + j]->property->level) {
@@ -281,10 +309,15 @@ void GameDisplayMap(const struct Game *game) {
 
     // 打印左边,矿区不能够买地皮，所以只需要管一部分
     for (i = 6; i >= 1; i--) {
+        is_find_player = 0;
         j = 7 - i;
         player_on_map = game->map[63 + j]->player_nums;
         if (player_on_map != 0) {
-            drawmap[i][0] = game->map[63 + j]->player[player_on_map - 1]->name;
+            is_find_player = FindPlayerOnMap(game->map[63+j],game->current_player_index);
+            if(is_find_player){
+                drawmap[i][0] = game->players[game->current_player_index]->name;
+            }else
+                drawmap[i][0] = game->map[63 + j]->player[player_on_map - 1]->name;
         } else if (game->map[63 + j]->is_tool)
             drawmap[i][0] = Tool_char(game->map[63 + j]->is_tool);
         else
@@ -294,7 +327,8 @@ void GameDisplayMap(const struct Game *game) {
     //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 30; j++) {
-            printf("",game->map[i]->property->level);
+            // printf("",game->map[i]->property->level);
+
             if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
                 //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
@@ -353,10 +387,9 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     for (i = 0; i < actual_num; i++) {
         pos_next_map = (pos_in_map + i + 1) % 70;
         //TODO 如果玩家有娃娃，可以无视路径上的障碍，直接到达
+
         cur_map = game->map[pos_next_map];
 
-        // 这里只考虑路障和炸弹
-        // TODO 一个地皮上有道具了就不能放了
         switch (cur_map->is_tool) {
             case NOTOOL: // 啥都没有 TODO 考虑特殊地皮
                 break;
@@ -385,6 +418,10 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 break;
             }
         }
+
+        // 这里只考虑路障和炸弹
+        // TODO 一个地皮上有道具了就不能放了
+
         if (flag) {
             break;
         }
@@ -657,6 +694,20 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         }
         real_command[j] = '\0';
 
+        //更新状态
+        if(player->stop_rounds == 0){
+            switch (player->status) {
+                case INHOSPITAL:
+                    printf("您(%c)已经出院！\n",player->name);
+                    break;
+                case INPRISON:
+                    printf("您(%c)已经出狱!\n",player->name);
+                    break;
+                default:
+                    break;
+            }
+            player->status = NORMAL;
+        }
         // 上面读取完了指令
         if (player->stop_rounds == 0 && player->status == NORMAL) {
             pos_for_tool = 0, tool_place = 0;
@@ -781,9 +832,12 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     temp = game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->tool;
                     if (temp != NULL) {
                         game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->tool = NULL;
+                        game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->is_tool = 0;
+                        printf("成功使用机器娃娃!\n");
                         free(temp);
                     }
                 }
+
                 player->robot_count--;
             } else if (strcmp(real_command, "sell") == 0) {
                 // 获取数字
@@ -822,10 +876,9 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             }
 
         } else {
-            // TODO 当权处于轮空状态 
-            printf("你当前处于轮空状态！");
-            player_next = GameRollDice(game, NODICE);
+            // TODO 当轮处于status没有更新问题
 
+            player_next = GameRollDice(game, NODICE);
         }
         num[0] = -1, num[1] = -1; // 最后重置，因为sell里面还需要判断
     }
@@ -873,7 +926,7 @@ int Input() {
             // 如果字符是 'y' 或 'Y'，计数加1
             if (tolower(command[i]) == 'y') {
                 count_y++;
-            } 
+            }
             // 如果字符是 'n' 或 'N'，计数加1
             else if (tolower(command[i]) == 'n') {
                 count_n++;
@@ -887,11 +940,11 @@ int Input() {
             // 如果只有一个 'y' 或 'Y'，设置结果为 YES
             if (count_y == 1 && count_n == 0) {
                 result = YES;
-            } 
+            }
             // 如果只有一个 'n' 或 'N'，设置结果为 NO
             else if (count_y == 0 && count_n == 1) {
                 result = NO;
-            } 
+            }
             // 否则设置结果为 ERROR
             else {
                 result = INPUTERROR;

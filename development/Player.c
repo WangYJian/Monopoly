@@ -208,11 +208,29 @@ void PlayerBuyTool(struct Player* player, int toolID){
 
 
 void PlayerPrison(struct Player* player){
-    printf("need to be fill\n"); // TODO
+    if(player->position == 49)//玩家处于监狱
+    {
+        if(player->stop_rounds)//仍在监狱中
+        {
+            player->stop_rounds--;
+            printf("玩家%c本回合在监狱中，剩余轮空回合数：%d\n",player->name,player->stop_rounds);
+            if(!player->stop_rounds)//应该出狱
+            {
+                player->status = NORMAL;
+                printf("玩家%c下回合即将出狱，可以正常行动\n",player->name);
+            }
+        }
+        else //不在监狱中，坐牢2回合
+        {
+            player->stop_rounds = 2;
+            player->status = INPRISON;
+            printf("玩家%c本回合进入监狱中，剩余轮空回合数：%d\n",player->name,player->stop_rounds);
+        }
+    }
 };
 
 void PlayerMagic(struct Player* player){
-    printf("need to be fill\n"); // TODO
+    printf("您(%c)已经到达魔法屋\n",player->name); // TODO
 }
 void PlayerUseBombOrBarrier(struct Player* player, int toolID, Map* map){
     // 玩家使用道具

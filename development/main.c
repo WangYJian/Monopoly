@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
     if (argc == 2) {
         game->output_file_path = argv[1];
     } else {
-        game->output_file_path = "/Users/wangjian/code/C/dian/Monopoly/log";
+        game->output_file_path = "E:\\c_workplace\\monopoly\\Monopoly\\log";
     }
     cur_player = GameStart(game);
     while(1){
