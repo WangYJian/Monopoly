@@ -618,9 +618,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     fprintf(output, "mapuser %d %s\n", i, names);
                 }
             }
-            // 打印所有地产
-            for (int i = 0; i < MAP_SIZE; i++) {
-                if (game->map[i]->property->owner != NULL) {
+            fflush(output);
+            //打印所有地产
+            for(int i = 0; i < MAP_SIZE; i++){
+                if(game->map[i]->property->owner != NULL){
                     fprintf(output, "map %d %c %d\n", i, game->map[i]->property->owner->name, game->map[i]->property->level);
                 }
             }
@@ -721,6 +722,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     step = num[0] * 10 + num[1];
                 }
                 GameRollDice(game, step);
+                //TODO 这里如果赋初值为负，就会有问题
                 // printf("玩家%c退出回合\n", player->name);
                 loop = 0;
                 game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
@@ -831,57 +833,77 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     }
     // 触发地块
     GameTriggerEvent(game, player, player->position, GAME_INPUT);
+
     printf("玩家%c退出回合\n", player->name);
+
     return player_next;
 }
 
 // 输入是否购买
 int Input() {
-    char *command = NULL;
-    size_t len = 0;
-    ssize_t read;
+
+    int capacity = 10; // 初始化的缓冲区容量
+    int size = 0; // 初始的字符串长度
+    char *command = malloc(capacity); // 分配初始的内存空间
+    char c;
+
+    if (!command) return INPUTERROR; // 如果内存分配失败，返回错误
+
     int result = INPUTERROR; // 默认为错误
 
     do {
         int count_y = 0; // 计数 'y' 或 'Y'
         int count_n = 0; // 计数 'n' 或 'N'
-        read = getline(&command, &len, stdin);
-        if (read != -1) {
-            //去除可能存在的换行符
-            command[strcspn(command, "\n")] = 0;
 
-            for (int i = 0; i < strlen(command); ++i) {
-                // 如果字符是 'y' 或 'Y'，计数加1
-                if (tolower(command[i]) == 'y') {
-                    count_y++;
-                } 
-                // 如果字符是 'n' 或 'N'，计数加1
-                else if (tolower(command[i]) == 'n') {
-                    count_n++;
-                }
-                // 如果字符不是 'y'、'Y'、'n'、'N' 或空格，设置结果为 ERROR
-                else if (command[i] != ' ') {
-                    result = INPUTERROR;
-                    break;
-                }
 
-                // 如果只有一个 'y' 或 'Y'，设置结果为 YES
-                if (count_y == 1 && count_n == 0) {
-                    result = YES;
-                } 
-                // 如果只有一个 'n' 或 'N'，设置结果为 NO
-                else if (count_y == 0 && count_n == 1) {
-                    result = NO;
-                } 
-                // 否则设置结果为 ERROR
-                else {
-                    result = INPUTERROR;
+        // 使用 fgetc 从 stdin 读取一个字符，直到遇到换行符或 EOF
+        while ((c = fgetc(stdin)) != '\n' && c != EOF) {
+            if (size + 1 > capacity) { // 如果当前的大小大于容量，需要重新分配内存
+                capacity *= 2;
+                char *tmp = realloc(command, capacity);
+                if (!tmp) {
+                    free(command);
+                    return INPUTERROR; // 如果内存分配失败，返回错误
                 }
+                command = tmp;
+            }
+            command[size++] = c;
+        }
+        command[size] = '\0'; // 确保字符串以 null 结束
+
+        for (int i = 0; i < strlen(command); ++i) {
+            // 如果字符是 'y' 或 'Y'，计数加1
+            if (tolower(command[i]) == 'y') {
+                count_y++;
+            } 
+            // 如果字符是 'n' 或 'N'，计数加1
+            else if (tolower(command[i]) == 'n') {
+                count_n++;
+            }
+            // 如果字符不是 'y'、'Y'、'n'、'N' 或空格，设置结果为 ERROR
+            else if (command[i] != ' ') {
+                result = INPUTERROR;
+                break;
+            }
+
+            // 如果只有一个 'y' 或 'Y'，设置结果为 YES
+            if (count_y == 1 && count_n == 0) {
+                result = YES;
+            } 
+            // 如果只有一个 'n' 或 'N'，设置结果为 NO
+            else if (count_y == 0 && count_n == 1) {
+                result = NO;
+            } 
+            // 否则设置结果为 ERROR
+            else {
+                result = INPUTERROR;
             }
         }
+
         // 如果结果为 ERROR，提示用户重新输入
         if (result == INPUTERROR) {
             printf("输入错误，请重新输入：\n");
+            size = 0; // 重置 size 以便下一次输入
         }
 
     } while (result == INPUTERROR); // 当结果为 ERROR 时，继续读取输入
@@ -900,7 +922,7 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
         if (map->property->owner == NULL) {
             // 询问是否购买
             if (YesOrNo == GAME_INPUT) {
-                printf("是否购买该地皮？(y),其余键自动拒绝\n");
+                printf("是否购买该地皮？(y/n),其余键自动拒绝\n");
                 YesOrNo = Input();
             }
             if (YesOrNo == YES) {
@@ -920,7 +942,7 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
             // 询问是否升级
             if (YesOrNo == GAME_INPUT) {
                 printf("当前的等级是%d\n", map->property->level);
-                printf("是否升级该地皮？(y),其余键自动拒绝\n");
+                printf("是否升级该地皮？(y/n),其余键自动拒绝\n");
                 YesOrNo = Input();
             }
             if (YesOrNo == YES) {
@@ -956,9 +978,11 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
                 GameRemovePlayer(game, player);
             } else {
                 // 支付钱
+                printf("你当前有%d元\n", player->cash);
                 player->cash -= map->property->value / 2;
                 map->property->owner->cash += map->property->value / 2;
                 printf("你支付了%d元给%c\n", map->property->value / 2, map->property->owner->name);
+                printf("你还剩余%d元\n", player->cash);
             }
         }
     }
@@ -990,4 +1014,5 @@ void GameRemovePlayer(struct Game* game, Player *player) {
     }
     player->cash = 0;
     player->status = BANKRUPT;
+
 }
