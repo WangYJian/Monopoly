@@ -234,10 +234,12 @@ void GameDisplayMap(const struct Game *game) {
     int j = 0;
     int is_find_player = 0;
     int player_on_map = 0;
-    char drawmap[8][30];
+    ColorDis *drawmap[8][30];
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 30; j++) {
-            drawmap[i][j] = ' ';
+            drawmap[i][j] = malloc(sizeof(ColorDis));
+            drawmap[i][j]->cur_char = ' ';
+            drawmap[i][j]->owner = ' ';
         }
     }
     char level_symbols[] = {'0', '1', '2', '3'};
@@ -249,21 +251,26 @@ void GameDisplayMap(const struct Game *game) {
         if (player_on_map != 0) {
             is_find_player = FindPlayerOnMap(game->map[i],game->current_player_index);
             if(is_find_player){
-                drawmap[0][i] = game->players[game->current_player_index]->name;
+                drawmap[0][i]->cur_char = game->players[game->current_player_index]->name;
+
             }else
-                drawmap[0][i] = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
+                drawmap[0][i]->cur_char = game->map[i]->player[player_on_map - 1]->name; // 需要删除玩家，走出去了
         } else if (game->map[i]->is_tool) {
-            drawmap[0][i] = Tool_char(game->map[i]->is_tool);
+            drawmap[0][i]->cur_char = Tool_char(game->map[i]->is_tool);
         } else if (game->map[i]->land_type == SPACE && game->map[i]->property->level) {
             // 根据房屋等级打印相应的字符
-            drawmap[0][i] = level_symbols[game->map[i]->property->level];
+            drawmap[0][i]->cur_char = level_symbols[game->map[i]->property->level];
+            drawmap[0][i]->owner = game->map[i]->property->owner->name;
         } else {
-            drawmap[0][i] = game->map[i]->land_type;
+            drawmap[0][i]->cur_char = game->map[i]->land_type;
+            if(game->map[i]->property->owner != NULL){
+                drawmap[0][i]->owner = game->map[i]->property->owner->name;
+            }
         }
     }
 
     for (i = 0; i < 8; i++)
-        drawmap[i][29] = '\n';
+        drawmap[i][29]->cur_char = '\n';
 
     // 打印右边，
 
@@ -274,15 +281,19 @@ void GameDisplayMap(const struct Game *game) {
         if (player_on_map != 0) {
             is_find_player = FindPlayerOnMap(game->map[28 + i],game->current_player_index);
             if(is_find_player){
-                drawmap[i][28] = game->players[game->current_player_index]->name;
+                drawmap[i][28]->cur_char = game->players[game->current_player_index]->name;
             }else
-                drawmap[i][28] = game->map[28 + i]->player[player_on_map - 1]->name;
+                drawmap[i][28]->cur_char = game->map[28 + i]->player[player_on_map - 1]->name;
         } else if (game->map[28 + i]->is_tool) {
-            drawmap[i][28] = Tool_char(game->map[28 + i]->is_tool);
-        } else if (!game->map[28 + i]->property->level && game->map[28 + i]->land_type == SPACE) {
-            drawmap[i][28] = level_symbols[game->map[28 + i]->property->level];
+            drawmap[i][28]->cur_char = Tool_char(game->map[28 + i]->is_tool);
+        } else if (game->map[28 + i]->property->level && game->map[28 + i]->land_type == SPACE) {
+            drawmap[i][28]->cur_char = level_symbols[game->map[28 + i]->property->level];
+            drawmap[i][28]->owner = game->map[28 + i]->property->owner->name;
         } else {
-            drawmap[i][28] = game->map[28 + i]->land_type;
+            drawmap[i][28]->cur_char = game->map[28 + i]->land_type;
+            if(game->map[28 + i]->property->owner != NULL){
+                drawmap[i][28]->owner = game->map[28 + i]->property->owner->name;
+            }
         }
     }
 
@@ -295,15 +306,19 @@ void GameDisplayMap(const struct Game *game) {
         if (player_on_map != 0) {
             is_find_player = FindPlayerOnMap(game->map[35+j],game->current_player_index);
             if(is_find_player){
-                drawmap[7][i] = game->players[game->current_player_index]->name;
+                drawmap[7][i]->cur_char = game->players[game->current_player_index]->name;
             }else
-                drawmap[7][i] = game->map[35 + j]->player[player_on_map - 1]->name;
+                drawmap[7][i]->cur_char = game->map[35 + j]->player[player_on_map - 1]->name;
         } else if (game->map[35 + j]->is_tool) {
-            drawmap[7][i] = Tool_char(game->map[35 + j]->is_tool);
+            drawmap[7][i]->cur_char = Tool_char(game->map[35 + j]->is_tool);
         } else if (game->map[35 + j]->land_type == SPACE && game->map[35 + j]->property->level) {
-            drawmap[7][i] = level_symbols[game->map[35 + j]->property->level];
+            drawmap[7][i]->cur_char = level_symbols[game->map[35 + j]->property->level];
+            drawmap[7][i]->owner = game->map[35 + j]->property->owner->name;
         } else {
-            drawmap[7][i] = game->map[35 + j]->land_type;
+            drawmap[7][i]->cur_char = game->map[35 + j]->land_type;
+            if(game->map[35 + j]->property->owner != NULL){
+                drawmap[7][i]->owner = game->map[35 + j]->property->owner->name;
+            }
         }
     }
 
@@ -315,13 +330,13 @@ void GameDisplayMap(const struct Game *game) {
         if (player_on_map != 0) {
             is_find_player = FindPlayerOnMap(game->map[63+j],game->current_player_index);
             if(is_find_player){
-                drawmap[i][0] = game->players[game->current_player_index]->name;
+                drawmap[i][0]->cur_char = game->players[game->current_player_index]->name;
             }else
-                drawmap[i][0] = game->map[63 + j]->player[player_on_map - 1]->name;
+                drawmap[i][0]->cur_char = game->map[63 + j]->player[player_on_map - 1]->name;
         } else if (game->map[63 + j]->is_tool)
-            drawmap[i][0] = Tool_char(game->map[63 + j]->is_tool);
+            drawmap[i][0]->cur_char = Tool_char(game->map[63 + j]->is_tool);
         else
-            drawmap[i][0] = game->map[63 + j]->land_type;
+            drawmap[i][0]->cur_char = game->map[63 + j]->land_type;
     }
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -329,18 +344,32 @@ void GameDisplayMap(const struct Game *game) {
         for (j = 0; j < 30; j++) {
             // printf("",game->map[i]->property->level);
 
-            if (drawmap[i][j] == 'A') { // 阿土伯（绿色）
+            if (drawmap[i][j]->cur_char == 'A') { // 阿土伯（绿色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-            } else if (drawmap[i][j] == 'Q') { // 钱夫人（红色）
+            } else if (drawmap[i][j]->cur_char == 'Q') { // 钱夫人（红色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-            } else if (drawmap[i][j] == 'S') { // 孙小美（蓝色）
+            } else if (drawmap[i][j]->cur_char == 'S') { // 孙小美（蓝色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
-            } else if (drawmap[i][j] == 'J') { // 金贝贝（黄色）
+            } else if (drawmap[i][j]->cur_char == 'J') { // 金贝贝（黄色）
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+            } else {
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+            }
+            if (drawmap[i][j]->owner == 'A') { // 阿土伯（绿色）
+                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+            } else if (drawmap[i][j]->owner == 'Q') { // 钱夫人（红色）
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+            } else if (drawmap[i][j]->owner == 'S') { // 孙小美（蓝色）
+                SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+            } else if (drawmap[i][j]->owner == 'J') { // 金贝贝（黄色）
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
             } else {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
             }
-            printf("%c", drawmap[i][j]);
+            printf("%c", drawmap[i][j]->cur_char);
+            // 出错
+            free(drawmap[i][j]);
+            drawmap[i][j] = NULL;
         }
         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     }
@@ -477,22 +506,22 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     int pos_for_tool = 0, tool_place = 0;
     int is_dig = 0; // 用来指定是不是有数字量
     while (loop) {
-        //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
         if (player->name == 'A') { // 阿土伯（绿色）
-            //SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
             printf("阿土伯> ");
         } else if (player->name == 'Q') { // 钱夫人（红色）
-            //SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+            SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
             printf("钱夫人> ");
         } else if (player->name == 'S') { // 孙小美（蓝色）
-            //SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+            SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
             printf("孙小美> ");
         } else if (player->name == 'J') { // 金贝贝（黄色）
-            //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
             printf("金贝贝> ");
         }
-        //SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         i = 0;
         j = 0;
         symbol = 0;
@@ -756,6 +785,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 // TODO
                 // printf("玩家%c退出回合\n", player->name);
                 loop = 0;
+
                 game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
                 player_next = game->players[game->current_player_index]; // 进入下一个玩家的回合
             } else if (strcmp(real_command, "step") == 0) {
@@ -772,6 +802,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     step = num[0] * 10 + num[1];
                 }
                 GameRollDice(game, step);
+
                 //TODO 这里如果赋初值为负，就会有问题
                 // printf("玩家%c退出回合\n", player->name);
                 loop = 0;
@@ -887,7 +918,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     GameTriggerEvent(game, player, player->position, GAME_INPUT);
 
     printf("玩家%c退出回合\n", player->name);
-
+    GameDisplayMap(game);
     return player_next;
 }
 
