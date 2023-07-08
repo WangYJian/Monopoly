@@ -803,9 +803,12 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     temp = game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->tool;
                     if (temp != NULL) {
                         game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->tool = NULL;
+                        game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->is_tool = 0;
+                        printf("成功使用机器娃娃!\n");
                         free(temp);
                     }
                 }
+
                 player->robot_count--;
             } else if (strcmp(real_command, "sell") == 0) {
                 // 获取数字
