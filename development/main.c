@@ -17,9 +17,6 @@ int main(int argc, char* argv[]) {
     int result;
     int dice_num; // 色子的点数
     char input[100];
-    while(1){
-        printf("hahahahahahahahahahahahahahahahhahahahaha\n");
-    }
     while (1) {
         printf("请输入初始金额(1000-50000)，直接按回车默认为10000: ");
         if (fgets(input, 100, stdin) == NULL) {
