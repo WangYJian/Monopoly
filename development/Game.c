@@ -19,7 +19,7 @@ void print_player(Game *game, char name, FILE* file) {
     Player* player = GameGetPlayerByName(game, name);
     if (!player) {
         fprintf(file, "alive %d\n", 0);
-        fprintf(file, "money %d\n", game->init_cash);
+        fprintf(file, "money %d\n", 0);
         fprintf(file, "point %d\n", 0);
         fprintf(file, "item1 %d\n", 0);
         fprintf(file, "item2 %d\n", 0);
@@ -1086,12 +1086,14 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
 // 移除破产玩家
 void GameRemovePlayer(struct Game* game, Player *player) {
     // 将玩家的地皮全部卖出，将玩家的钱设置为0
+    game->player_count--;
+    player->cash = 0;
+    player->status = BANKRUPT;
     for (int i = 0; i < MAP_SIZE; ++i) {
         if (game->map[i]->property != NULL && game->map[i]->property->owner == player) {
             PlayerSellProperty(player, game->map[i]->property);
         }
     }
-    player->cash = 0;
-    player->status = BANKRUPT;
+
 
 }

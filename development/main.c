@@ -111,6 +111,11 @@ int main(int argc, char* argv[]) {
     while(1){
         // fflush(stdin);
         // printf("11\n");
+        if(game->player_count == 1){
+            printf("游戏结束！！\n 玩家(%c)获得游戏胜利:\n",game->players[game->current_player_index]->name);
+            PlayerDisplayInfo(game->players[game->current_player_index]);
+            break;
+        }
         cur_player = GamePlayerRound(game,cur_player);
     }
     // cur_player->position = 23;
