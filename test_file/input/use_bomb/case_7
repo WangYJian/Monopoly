@@ -13,7 +13,7 @@ N
 set bomb 10
 step 1
 N
-set bomb -1
+bomb -1
 step 1
 N
 set bomb 1
