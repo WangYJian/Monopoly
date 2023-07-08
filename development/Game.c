@@ -339,7 +339,7 @@ void GameDisplayMap(const struct Game *game) {
             drawmap[i][0]->cur_char = game->map[63 + j]->land_type;
     }
 
-    //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 30; j++) {
             // printf("",game->map[i]->property->level);
