@@ -241,10 +241,10 @@ def group_4_test(in_dir):
             dump_file.close()
             out_file.close()
 
-print("test "+"group 1")
-group_1_test(group_1_test_dir)
 print("test "+"group 2")
 group_2_test(group_2_test_dir)
+print("test "+"group 1")
+group_1_test(group_1_test_dir)
 print("test "+"group 3")
 group_3_test(group_3_test_dir)
 print("test "+"group 4")
