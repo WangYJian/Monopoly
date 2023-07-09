@@ -1177,7 +1177,9 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
                 // 破产
                 printf("你只有%d元，无法支付！\n", player->cash);
                 printf("你破产了！\n");
+                DelPlayerMap(game->map[player->position],player);
                 GameRemovePlayer(game, player);
+
             } else {
                 // 支付钱
                 printf("你当前有%d元\n", player->cash);
