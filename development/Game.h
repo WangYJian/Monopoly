@@ -34,6 +34,8 @@ typedef struct Game {
     int current_player_index; // 当前行动的玩家的索引
     char* output_file_path ;
     char* log_file_path ;
+    int cur_god_rounds;
+    int god_incoming_rounds;
 } Game;
 typedef struct ColorDis{
     char cur_char;
