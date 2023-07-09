@@ -1,5 +1,5 @@
-user QSAJ
-preuser A 
+user QA
+preuser Q
 Q
 alive 1
 money 10000
@@ -19,28 +19,26 @@ item2 0
 item3 0
 buff 0
 stop 0
-userloc 3
+userloc 2
 S
-alive 1
-money 10000
+alive 0
+money 0
 point 0
 item1 0
 item2 0
 item3 0
 buff 0
 stop 0
-userloc 3
+userloc 0
 J
-alive 1
-money 10000
+alive 0
+money 0
 point 0
 item1 0
 item2 0
 item3 0
 buff 0
 stop 0
-userloc 6
+userloc 0
 MAP 
 mapuser 1 Q
-mapuser 3 AS
-mapuser 6 J
