@@ -1,16 +1,7 @@
 10000
-1324
+12
 set pos Q 1
-set pos S 2
-set pos A 3
-set pos J 4
-set stop Q 3
-set stop S 2
-set stop A 1
-step 0
-step 0
-step 0
-step 1
+set pos A 2
+set stop Q 1
 dump
 quit
-//
