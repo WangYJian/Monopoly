@@ -1,7 +1,0 @@
-10000
-12
-set pos Q 1
-set pos A 2
-set stop Q 1
-dump
-quit

@@ -894,6 +894,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     num[0] = -1, num[1] = -1;
                     continue;
                 }
+                
                 int sell_place;
                 // 获取相对位置
                 if (num[1] == -1) {
@@ -925,13 +926,16 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             player_next = GameRollDice(game, NODICE);
         }
         num[0] = -1, num[1] = -1; // 最后重置，因为sell里面还需要判断
+
     }
     // 触发地块
     GameTriggerEvent(game, player, player->position, GAME_INPUT);
 
+
     printf("玩家%c退出回合\n", player->name);
     GameDisplayMap(game);
     return player_next;
+
 }
 
 // 输入是否购买
@@ -1015,6 +1019,7 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
     if (map->land_type == SPACE) {
         // 如果是空地皮
         if (map->property->owner == NULL) {
+            printf("您现在拥有的现金：%d,这块地皮需要的金额：%d\n",player->cash,map->property->price);
             // 询问是否购买
             if (YesOrNo == GAME_INPUT) {
                 printf("是否购买该地皮？(y/n),其余键自动拒绝\n");
