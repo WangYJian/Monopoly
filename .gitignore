@@ -7,6 +7,12 @@ development/cmake-build-debug/
 test/
 .idea/
 *.in
+<<<<<<< HEAD
+test_file/dump
+test_file/log
+build
+=======
 test_file/group_2_test/dump/
 test_file/group_2_test/log/
 venv/
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
