@@ -23,10 +23,10 @@ userloc 28
 S
 alive 1
 money 1000
-point 50
+point 100
 item1 0
 item2 0
-item3 1
+item3 0
 buff 0
 stop 0
 userloc 28
