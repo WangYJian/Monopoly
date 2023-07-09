@@ -145,9 +145,10 @@ Game *GameInitialize(int initcash, char *player_nums) {
     }
     // printf("final");
     //system("cls");
-    game->god_incoming_round = 10*game->player_count;
+    srand((unsigned) time(NULL));
+    game->god_incoming_round = (10 + (rand() % 10 + 1))*game->player_count;
     game->cur_god_round = 0;
-    printf("财神还有%d玩家回合降临\n", game->god_incoming_round);
+    printf("财神还有%d玩家回合降临\n", (game->god_incoming_round - 1)/ game->all_player + 1);
     return game;
 }
 
@@ -483,7 +484,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     AddPlayerMap(cur_map, cur_player); // 采用队列的形式添加
     DelPlayerMap(pre_map, cur_player); // 在之前地图上删掉这个玩家
     //game->map[cur_player->position]->player[] = cur_player; // 在地图的位置上更新玩家显示
-    GameDisplayMap(game); // 从新打印地图
+    //GameDisplayMap(game); // 从新打印地图
     if (!flag) {
         printf("你(%c)已经到达相应的位置。\n", cur_player->name);
     }
@@ -492,28 +493,30 @@ Player *GameRollDice(struct Game *game, int dice_num) {
 
 void GameGodComing(struct Game *game) {
     if (game->god_incoming_round > 0) {
-        if(game->god_incoming_round == 1) {
-            game->is_in_10 = 0;
-        }
-        printf("离财神降临还有%d玩家回合\n", game->god_incoming_round);
+
+        printf("离财神降临还有%d玩家回合\n", (game->god_incoming_round - 1)/game->all_player + 1);
         game->god_incoming_round--;
     }
-
+    int pos;
+    static int pos2;
     if(game->god_incoming_round == 0&&game->cur_god_round==0){
-        int pos;
         int flag = 0;
         srand((unsigned) time(NULL));
-        while(!flag){
+        while(1){
+
             pos = rand() % 70;
             if(game->map[pos]->is_tool == 0 && game->map[pos]->player_nums == 0){
                 if(game->map[pos]->land_type == SPACE||game->map[pos]->land_type == START
                         ||game->map[pos]->land_type == MINERAL||game->map[pos]->land_type == PARK){
                     game->map[pos]->is_tool = BOMB;
-                    game->map[pos]->land_type = BOMB;
+
                     game->map[pos]->tool = GodInitialize(NULL);
-                    flag = 1;
-                    game->cur_god_round = 5 * game->player_count;
-                    printf("财神降临于%d,还将持续%d玩家回合!\n",pos,game->cur_god_round);
+
+                    game->cur_god_round = 5 * game->player_count; // 如果财神出现就应该重置当前财神在地图上的保留轮数
+                    printf("财神降临于%d,还将持续%d玩家回合!\n",pos,(game->cur_god_round - 1) / game->all_player + 1);
+                    pos2 = pos;
+                    GameDisplayMap(game);
+                    break;
                 }
                 else {
                     continue;
@@ -523,20 +526,27 @@ void GameGodComing(struct Game *game) {
                 continue;
             }
         }
-
-    }
-    else if(game->cur_god_round>0){
+    }else if(game->cur_god_round>0){
         game->cur_god_round--;
-        printf("财神还将持续%d玩家回合!\n",game->cur_god_round);
+        printf("财神还将持续%d玩家回合!\n",(game->cur_god_round-1) / game->all_player + 1);
+        if(game->cur_god_round==0){
+            //重新赋值一个10以内的整数
+            printf("财神消失\n");
+
+            game->map[pos2]->is_tool = NOTOOL;
+            //printf("%d\n",pos2);
+            GameDisplayMap(game);
+            free(game->map[pos2]->tool);
+            game->map[pos]->tool = NULL;
+            srand((unsigned) time(NULL));
+            game->god_incoming_round = (rand() % 10 + 1)*game->player_count;
+
+        }
     }
 
-    if(game->cur_god_round==0&& game->is_in_10 == 0){
-        //重新赋值一个10以内的整数
-        srand((unsigned) time(NULL));
-        game->god_incoming_round = (rand() % 10 + 1)*game->player_count;
-    }
 
 }
+
 Player *GamePlayerRound(struct Game *game, struct Player *player) {
     // 如果有财神效果，减一
     if (player->god_rounds > 0) {
