@@ -1,13 +1,36 @@
 10000
+<<<<<<< HEAD
 1324
 set pos Q 1
 set pos S 2
 set pos A 3
+=======
+1234
+set pos Q 1
+set pos A 2
+set pos S 3
+>>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
 set pos J 4
 set map 3 Q 0
 set map 16 S 1
 set map 32 A 2
 set map 51 J 3
+<<<<<<< HEAD
+sell 3
+step 1
+n
+sell 16
+step 1
+n
+sell 32
+step 1
+n
+sell 51
+step 1
+n
+dump
+quit
+=======
 sell 16
 step 1
 n
@@ -23,3 +46,4 @@ n
 dump
 quit
 //fail to sell
+>>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2

@@ -536,8 +536,8 @@ void GameGodComing(struct Game *game) {
             game->map[pos2]->is_tool = NOTOOL;
             //printf("%d\n",pos2);
             GameDisplayMap(game);
-            //free(game->map[pos2]->tool);
-            //game->map[pos]->tool = NULL;
+            free(game->map[pos2]->tool);
+            game->map[pos2]->tool = NULL;
             srand((unsigned) time(NULL));
             game->god_incoming_round = (rand() % 10 + 1)*game->player_count;
 

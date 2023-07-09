@@ -22,7 +22,11 @@ stop 0
 userloc 0
 S
 alive 1
+<<<<<<< HEAD
 money 10000
+=======
+money 0
+>>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
 point 0
 item1 0
 item2 0
@@ -32,7 +36,11 @@ stop 0
 userloc 0
 J
 alive 1
+<<<<<<< HEAD
 money 10000
+=======
+money 0
+>>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
 point 0
 item1 0
 item2 0

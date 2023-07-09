@@ -1,0 +1,56 @@
+user QASJ
+preuser Q
+Q
+alive 1
+money 1000
+point 0
+item1 0
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 1
+A
+alive 1
+money 1000
+point 0
+item1 1
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 4
+S
+alive 1
+money 1000
+point 0
+item1 3
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 31
+J
+alive 1
+money 1000
+point 100
+item1 4
+item2 0
+item3 0
+buff 0
+stop 0
+userloc 67
+MAP
+mapuser 1 Q
+mapuser 4 A
+mapuser 31 S
+mapuser 67 J
+<<<<<<<< HEAD:test_file/group_2_test/old/set_barrier_0/dump
+item 13 1
+item 29 1
+item 56 1
+========
+map 16 J 0
+map 34 J 3
+item 12 3
+>>>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2:test_file/group_2_test/old/set_barrier_3/output

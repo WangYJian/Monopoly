@@ -1,4 +1,4 @@
-user QSAJ
+user QASJ
 preuser Q 
 Q
 alive 1
@@ -42,10 +42,15 @@ stop 0
 userloc 5
 MAP 
 mapuser 2 Q
-mapuser 3 S
-mapuser 4 A
+mapuser 3 A
+mapuser 4 S
 mapuser 5 J
 map 3 Q 0
+<<<<<<< HEAD
 map 16 S 1
 map 32 A 2
+=======
+map 16 A 1
+map 32 S 2
+>>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
 map 51 J 3
