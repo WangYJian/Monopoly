@@ -528,7 +528,6 @@ void GameGodComing(struct Game *game) {
         }
     }else if(game->cur_god_round>0){
         game->cur_god_round--;
-        printf("财神还将持续%d玩家回合!\n",(game->cur_god_round-1) / game->all_player + 1);
         if(game->cur_god_round==0){
             //重新赋值一个10以内的整数
             printf("财神消失\n");
@@ -541,7 +540,8 @@ void GameGodComing(struct Game *game) {
             srand((unsigned) time(NULL));
             game->god_incoming_round = (rand() % 10 + 1)*game->all_player;
 
-        }
+        }else
+            printf("财神还将持续%d玩家回合!\n",(game->cur_god_round-1) / game->all_player + 1);
     }
 
 
@@ -1029,7 +1029,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 } else {
                     sell_place = num[0] * 10 + num[1];
                 }
-                if(sell_place>62 && sell_place<=0){
+                if(sell_place>62 || sell_place<=0){
                     printf("指令超过范围，请重新输入！\n");
                     continue;
                 }
