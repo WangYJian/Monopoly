@@ -5,5 +5,4 @@ development/cmake-build-debug/
 .vscode/
 *.exe
 .idea/
-*.in
 venv/

@@ -72,7 +72,8 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) ->
 def group_1_test(in_dir):
     dirs = os.listdir(in_dir)
     for dir in dirs:
-        group_1_process(in_dir+"/"+dir)
+        if os.path.isdir(in_dir+"/"+dir):
+            group_1_process(in_dir+"/"+dir)
 
 def group_1_process(in_dir):
     global test_cnt
@@ -132,7 +133,8 @@ def group_1_process(in_dir):
 def group_2_test(in_dir):
     dirs = os.listdir(in_dir)
     for dir in dirs:
-        group_4_test(in_dir+"/"+dir)
+        if os.path.isdir(in_dir+"/"+dir):
+            group_4_test(in_dir+"/"+dir)
             
 def group_process(in_dir):
     global test_cnt
@@ -192,6 +194,8 @@ def group_3_test(in_dir):
     in_files = os.listdir(in_dir)
     for dir1_name in in_files:
         dir1_name = in_dir+"/"+dir1_name
+        if os.path.isdir(dir1_name) != True:
+            continue
         in_dir2s = os.listdir(dir1_name)
         for dir2_name in in_dir2s:
             dir2_name = dir1_name+"/"+dir2_name
