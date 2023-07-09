@@ -4,7 +4,7 @@ import io
 import re
 import time
 
-group_1_test_dir = "./test_file/group_1_test/test"
+group_1_test_dir = "./test_file/group_1_test"
 group_2_test_dir = "./test_file/group_2_test"
 group_4_test_dir = "./test_file/group_4_test"
 group_3_test_dir = "./test_file/group_3_test"
@@ -70,6 +70,11 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) ->
     return True
 
 def group_1_test(in_dir):
+    dirs = os.listdir(in_dir)
+    for dir in dirs:
+        group_1_process(in_dir+"/"+dir)
+
+def group_1_process(in_dir):
     global test_cnt
     files = os.listdir(in_dir)
     in_files = []
@@ -78,6 +83,8 @@ def group_1_test(in_dir):
         if "input" in file:
             in_files.append(file)
         elif "dump" in file:
+            out_files.append(file)
+        elif "output" in file:
             out_files.append(file)
     sorted(in_files)
     sorted(out_files)
@@ -105,8 +112,8 @@ def group_1_test(in_dir):
                 print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
                 continue
             elif demo.poll() != 0:
-                demo.wait()
-                print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
+                ret=demo.wait()
+                print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly return {arg}\n \033[0m".format(arg=ret))
             else:
                 write_log(demo, log)
                 demo.wait()
