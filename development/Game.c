@@ -441,7 +441,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 cur_map->is_tool = 0; // 踩掉了
                 free(cur_map->tool);
                 cur_map->tool = NULL;
-                pos_next_map = pos_in_map + i + 1;
+                pos_next_map = (pos_in_map + i + 1) % 70;
                 flag = 1;
                 printf("你踩到了路障，无法前进\n");
                 break;
@@ -463,7 +463,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 cur_map->tool = NULL;
                 game->cur_god_round = 5* game->all_player; //如果捡到财神就应该将当前的财神在地图上的保留论数置为0
 
-                printf("你(%d)捡到财神，获得财神buff，生效共5轮\n",cur_player->name);
+                printf("你(%c)捡到财神，获得财神buff，生效共5轮\n",cur_player->name);
                 break;
             }
         }
@@ -551,7 +551,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     // 如果有财神效果，减一
     if (player->god_rounds > 0) {
         if(player->god_rounds == 1){
-            printf("(%d)财神效果结束\n",player->name);
+            printf("(%c)财神效果结束\n",player->name);
         }
         player->god_rounds--;
 
@@ -677,6 +677,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             int n;
             sscanf(line, "set buff %c %d", &name, &n);
             GameGetPlayerByName(game, name)->god_rounds = n;
+            game->cur_god_round = n * game->all_player;
             continue;
         }
 
@@ -813,7 +814,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             for(int i = 0; i < 70; i++){
                 if(game->map[i]->is_tool != NOTOOL){
                     if(game->map[i]->is_tool == BOMB){
-                        int temp_round = game->cur_god_round/game->all_player;
+                        int temp_round = (game->cur_god_round - 1)/game->all_player + 1;
                         fprintf(output, "mapgod %d %d\n", i,temp_round); // 修改了dump中的财神显示
                     }
                     else
@@ -1003,6 +1004,8 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 for (int i = 1; i <= 10; ++i) {
                     temp = game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->tool;
                     if (temp != NULL) {
+                        if(temp->id == BOMB)
+                            continue;
                         game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->tool = NULL;
                         game->map[(player->position + i + MAP_SIZE) % MAP_SIZE]->is_tool = 0;
                         printf("成功使用机器娃娃!\n");
@@ -1025,6 +1028,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     sell_place = num[0];
                 } else {
                     sell_place = num[0] * 10 + num[1];
+                }
+                if(sell_place>62 && sell_place<=0){
+                    printf("指令超过范围，请重新输入！\n");
+                    continue;
                 }
                 // 判断地皮是否可以出售
                 if (game->map[sell_place]->property == NULL || game->map[sell_place]->property->owner != player) {

@@ -7,7 +7,7 @@ point 0
 item1 0
 item2 0
 item3 0
-buff 4
+buff 5
 stop 0
 userloc 4
 A
@@ -27,7 +27,7 @@ point 0
 item1 0
 item2 0
 item3 0
-buff 4
+buff 0
 stop 0
 userloc 0
 J

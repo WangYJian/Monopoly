@@ -248,6 +248,14 @@ void PlayerUseBombOrBarrier(struct Player* player, int toolID, Map* map){
         // 玩家使用路障
         if (player->barrier_count > 0) {
             // 玩家有路障
+            if(map->is_tool == BOMB ){
+                printf("该地点已经有财神了，不能再放置道具\n");
+                return;
+            }
+            if(map->player_nums != 0){
+                printf("该地点已经有玩家了，不能再放置道具\n");
+                return;
+            }
             map->tool = player->barrier[player->barrier_count - 1];
             map->is_tool = BARRIER;
             player->barrier_count--;
