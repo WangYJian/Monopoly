@@ -21,6 +21,9 @@ typedef struct Map Map;
 #define NO 0
 #define INPUTERROR -1
 #define GAME_INPUT -1
+// 添加其他地皮特性
+#define PARK 'P' // 路障
+
 // 定义游戏的结构体
 typedef struct Game {
     Player* players[PLAYERS_SIZE]; // 游戏中的玩家
