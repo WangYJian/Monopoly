@@ -28,11 +28,11 @@ typedef struct Player {
     int god_rounds; // 财神回合数
     // 炸弹、路障、机器娃娃
 
-    //Tool* bomb[10];
+    // Tool* bomb[10];
     Tool* barrier[10];
     Tool* robot[10];
     // 对应的道具数量、
-    //int bomb_count;
+    // int bomb_count;
     int barrier_count;
     int robot_count;
 } Player;

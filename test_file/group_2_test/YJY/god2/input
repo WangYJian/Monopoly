@@ -1,0 +1,7 @@
+10000
+12
+set barrier 1
+set god 1
+dump
+quit
+// 测试财神是否会出现在道具上
