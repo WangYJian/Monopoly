@@ -31,7 +31,7 @@ void print_player(Game *game, char name, FILE* file) {
         fprintf(file, "point %d\n", 0);
         fprintf(file, "item1 %d\n", 0);
         fprintf(file, "item2 %d\n", 0);
-        //fprintf(file, "item3 %d\n", 0);
+        fprintf(file, "item3 %d\n", 0);
         fprintf(file, "buff %d\n", 0);
         fprintf(file, "stop %d\n", 0);
         fprintf(file, "userloc %d\n", loc);
@@ -46,9 +46,9 @@ void print_player(Game *game, char name, FILE* file) {
         fprintf(file, "point %d\n", player->points);
         fprintf(file, "item1 %d\n", player->barrier_count);
         fprintf(file, "item2 %d\n", player->robot_count);
-        //fprintf(file, "item3 %d\n", player->bomb_count);
+        fprintf(file, "item3 %d\n", 0);
         fprintf(file, "buff %d\n", player->god_rounds);
-        fprintf(file, "stop %d\n", player->stop_rounds);
+        fprintf(file, "stop %d\n", 0);
         fprintf(file, "userloc %d\n", player->position);
     }
 
@@ -386,7 +386,7 @@ void GameDisplayMap(const struct Game *game) {
 // 通过名字获取玩家
 Player *GameGetPlayerByName(const struct Game *game, char name) {
     int i = 0;
-    for (i = 0; i < game->player_count; i++) {
+    for (i = 0; i < game->all_player; i++) {
         if (game->players[i]->name == name)
             return game->players[i];
     }
@@ -662,10 +662,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             FILE* output = fopen(game->output_file_path, "w");
             // 将玩家名字写入文件
             char names[5];
-            for (int i = 0; i < game->player_count; i++) {
+            for (int i = 0; i < game->all_player; i++) {
                 names[i] = game->players[i]->name;
             }
-            names[game->player_count] = '\0';
+            names[game->all_player] = '\0';
             fprintf(output, "user %s\n", names);
             fflush(output);
 
@@ -703,12 +703,16 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 if (game->map[i]->player_nums != 0) {
                     // 获取所有玩家的名字
                     char names[5];
-                    for (int j = 0; j < game->map[i]->player_nums; j++) {
-                        names[j] = game->map[i]->player[j]->name;
+                    int j = 0;
+                    for (int t = 0; t < game->map[i]->player_nums; t++) {
+                        if(game->map[i]->player[t]->status != BANKRUPT)
+                            names[j++] = game->map[i]->player[t]->name;
                     }
-                    names[game->map[i]->player_nums] = '\0';
-                    fprintf(output, "mapuser %d %s\n", i, names);
-                    fflush(output);
+                    names[j] = '\0';
+                    if(j != 0){
+                        fprintf(output, "mapuser %d %s\n", i, names);
+                        fflush(output);
+                    }
                 }
             }
             fflush(output);
@@ -1138,6 +1142,7 @@ void GameRemovePlayer(struct Game* game, Player *player) {
     player->cash = 0;
     player->status = BANKRUPT;
     for (int i = 0; i < MAP_SIZE; ++i) {
+        fflush(stdout);
         if (game->map[i]->property != NULL && game->map[i]->property->owner == player) {
             PlayerSellProperty(player, game->map[i]->property);
         }

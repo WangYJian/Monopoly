@@ -1,34 +1,18 @@
-<<<<<<< HEAD
 user SJAQ
 preuser A
 Q
 alive 1
 money 1000
 point 0
-=======
-user QAS
-preuser A
-Q
-alive 1
-money 50000
-point 300
->>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 item1 0
 item2 0
 item3 0
 buff 0
 stop 0
-<<<<<<< HEAD
 userloc 0
 A
 alive 1
 money 1000
-=======
-userloc 35
-A
-alive 1
-money 10000
->>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 point 0
 item1 0
 item2 0
@@ -38,44 +22,24 @@ stop 0
 userloc 0
 S
 alive 1
-<<<<<<< HEAD
 money 1000
 point 200
-=======
-money 10000
-point 0
->>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 item1 0
 item2 0
 item3 0
 buff 0
 stop 0
-<<<<<<< HEAD
 userloc 35
 J
 alive 1
 money 1000
 point 200
-=======
-userloc 0
-J
-alive 0
-money 0
-point 0
->>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 item1 0
 item2 0
 item3 0
 buff 0
 stop 0
-<<<<<<< HEAD
 userloc 35
 MAP
 mapuser 0 AQ
 mapuser 35 SJ
-=======
-userloc 0
-MAP
-mapuser 0 AS
-mapuser 35 Q
->>>>>>> be442c4c3476a086aed875cc7c40b70845199156
