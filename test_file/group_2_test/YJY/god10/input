@@ -1,9 +1,0 @@
-10000
-12
-set god 1
-step 1
-N
-set round
-dump
-quit
-// 测试玩家捡到财神后 财神存在的回合数
