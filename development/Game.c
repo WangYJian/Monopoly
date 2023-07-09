@@ -68,6 +68,7 @@ Game *GameInitialize(int initcash, char *player_nums) {
     game->init_cash = initcash;
     game->player_count = strlen(player_nums);
     game->all_player = game->player_count;
+    game->is_in_10 = 1;
     printf("初始化地图 ...\n");
     for (i = 0; i < MAP_SIZE; i++) {
         game->map[i] = malloc(sizeof(Map));
@@ -144,6 +145,9 @@ Game *GameInitialize(int initcash, char *player_nums) {
     }
     // printf("final");
     //system("cls");
+    game->god_incoming_round = 10*game->player_count;
+    game->cur_god_round = 0;
+    printf("财神还有%d玩家回合降临\n", game->god_incoming_round);
     return game;
 }
 
@@ -456,7 +460,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 cur_player->god_rounds = GIFT_GOD_ROUND;
                 free(cur_map->tool); // 删掉地图上的道具信息
                 cur_map->tool = NULL;
-                game->cur_god_rounds = 0; //如果捡到财神就应该将当前的财神在地图上的保留论数置为0
+                game->cur_god_round = 5* game->player_count; //如果捡到财神就应该将当前的财神在地图上的保留论数置为0
 
                 printf("你捡到财神，获得财神buff，生效共5轮\n");
                 break;
@@ -486,11 +490,63 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     return cur_player; // 这个玩家投完色子之后，返回当前玩家
 }
 
+void GameGodComing(struct Game *game) {
+    if (game->god_incoming_round > 0) {
+        if(game->god_incoming_round == 1) {
+            game->is_in_10 = 0;
+        }
+        printf("离财神降临还有%d玩家回合\n", game->god_incoming_round);
+        game->god_incoming_round--;
+    }
+
+    if(game->god_incoming_round == 0&&game->cur_god_round==0){
+        int pos;
+        int flag = 0;
+        srand((unsigned) time(NULL));
+        while(!flag){
+            pos = rand() % 70;
+            if(game->map[pos]->is_tool == 0 && game->map[pos]->player_nums == 0){
+                if(game->map[pos]->land_type == SPACE||game->map[pos]->land_type == START
+                        ||game->map[pos]->land_type == MINERAL||game->map[pos]->land_type == PARK){
+                    game->map[pos]->is_tool = BOMB;
+                    game->map[pos]->land_type = BOMB;
+                    game->map[pos]->tool = GodInitialize(NULL);
+                    flag = 1;
+                    game->cur_god_round = 5 * game->player_count;
+                    printf("财神降临于%d,还将持续%d玩家回合!\n",pos,game->cur_god_round);
+                }
+                else {
+                    continue;
+                }
+            }
+            else{
+                continue;
+            }
+        }
+
+    }
+    else if(game->cur_god_round>0){
+        game->cur_god_round--;
+        printf("财神还将持续%d玩家回合!\n",game->cur_god_round);
+    }
+
+    if(game->cur_god_round==0&& game->is_in_10 == 0){
+        //重新赋值一个10以内的整数
+        srand((unsigned) time(NULL));
+        game->god_incoming_round = (rand() % 10 + 1)*game->player_count;
+    }
+
+}
 Player *GamePlayerRound(struct Game *game, struct Player *player) {
     // 如果有财神效果，减一
     if (player->god_rounds > 0) {
+        if(player->god_rounds == 1){
+            printf("财神效果结束\n");
+        }
         player->god_rounds--;
+
     }
+    GameGodComing(game);
     if (player == NULL || game == NULL) {
         printf("NULL ptr!!");
         return NULL;
@@ -558,14 +614,18 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             //int value;
             //sscanf(line, "set point %c %d", &name, &value);
             //GameGetPlayerByName(game, name)->points = value;
-            game->god_incoming_rounds = 1; // 设置财神降临的回合数
+            game->god_incoming_round = 1; // 设置财神降临的回合数
             continue;
         }else if (strncmp(line, "set god", 7) == 0) {
             int value;
             sscanf(line, "set god %d", &value);
+            if(game->map[value]->player_nums != 0){
+                printf("该位置已经有玩家了\n");
+                continue;
+            }
             game->map[value]->is_tool = BOMB;
-            game->map[value]->tool->id = BOMB;
-            game->cur_god_rounds = GIFT_GOD_ROUND; // 设置财神的生效时间
+            game->map[value]->tool = GodInitialize(player);
+            game->cur_god_round = game->player_count*GIFT_GOD_ROUND; // 设置财神的生效时间
             continue;
         }
 
@@ -726,7 +786,8 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             for(int i = 0; i < 70; i++){
                 if(game->map[i]->is_tool != NOTOOL){
                     if(game->map[i]->is_tool == BOMB){
-                        fprintf(output, "mapgod %d %d\n", i, game->cur_god_rounds); // 修改了dump中的财神显示
+                        int temp_round = game->cur_god_round/game->player_count;
+                        fprintf(output, "mapgod %d %d\n", i,temp_round); // 修改了dump中的财神显示
                     }
                     else
                         fprintf(output, "item %d %d\n", i, game->map[i]->tool->id);

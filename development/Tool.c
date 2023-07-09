@@ -12,10 +12,10 @@ void ToolInitialize(struct Tool* tool, int toolID, const char* name, int points,
 }
 
 // 初始化炸弹
-Tool *BombInitialize(Player *owner){
-    Tool *bomb = (Tool *)malloc(sizeof(Tool));
-    ToolInitialize(bomb, BOMB, "bomb", BOMB_POINTS, owner);
-    return bomb;
+Tool *GodInitialize(Player *owner){
+    Tool *god = (Tool *)malloc(sizeof(Tool));
+    ToolInitialize(god, BOMB, "god", BOMB_POINTS, owner);
+    return god;
 }
 
 // 初始化路障

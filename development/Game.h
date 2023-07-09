@@ -24,6 +24,7 @@ typedef struct Map Map;
 // 添加其他地皮特性
 #define PARK 'P' // 路障
 
+
 // 定义游戏的结构体
 typedef struct Game {
     Player* players[PLAYERS_SIZE]; // 游戏中的玩家
@@ -34,13 +35,15 @@ typedef struct Game {
     int current_player_index; // 当前行动的玩家的索引
     char* output_file_path ;
     char* log_file_path ;
-    int cur_god_rounds;
-    int god_incoming_rounds;
+    int cur_god_round;
+    int god_incoming_round;
+    int is_in_10;
 } Game;
 typedef struct ColorDis{
     char cur_char;
     char owner;
 }ColorDis;
+void GameGodComing(struct Game* game);  // 财神降临
 Game* GameInitialize(int initcash,char* player_nums);  // 初始化游戏
 void GameAddPlayer(struct Game* game, struct Player* player);  // 向游戏添加玩家
 void GameRemovePlayer(struct Game* game, Player *player);  // 从游戏中移除玩家
