@@ -4,7 +4,8 @@
 #define NOTOOL 0
 #define BARRIER 1
 #define ROBOT 2
-#define BOMB 3
+#define BOMB 3 // 这个实际上就是财神
+
 
 #define BARRIER_POINTS 50
 #define ROBOT_POINTS 30

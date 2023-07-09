@@ -136,9 +136,15 @@ def group_process(in_dir):
     sorted(out_files)
     file_num = len(in_files)
     for num in range(file_num):
+<<<<<<< HEAD
         name_append = in_dir+"_{cnt}".format(cnt=num+1)
         dump_file_name = in_dir+"/dump"+"_{cnt}".format(cnt=num+1)
         log_file_name = in_dir+"/log"+"_{cnt}".format(cnt=num+1)
+=======
+        name_append = in_dir+"_{cnt}".format(cnt=num)
+        dump_file_name = in_dir+"/dump"+"_{cnt}".format(cnt=num)
+        log_file_name = in_dir+"/log"+"_{cnt}".format(cnt=num)
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
         dump_file = open(dump_file_name, "w+", encoding="utf-8")
         dump_file.truncate(0)
         in_file = open(in_dir+"/"+in_files[num], "r",encoding="utf-8")
@@ -146,17 +152,27 @@ def group_process(in_dir):
         log.truncate(0)
         demo = Popen([test_obj, dump_file_name], stdin=in_file, stdout=PIPE, stderr=STDOUT)
         test_cnt += 1
+<<<<<<< HEAD
         # input_test(in_file, demo)
         time.sleep(0.1)
         write_log(demo, log)
         if demo.poll() == None:
             time.sleep(3)
             if demo.poll() == None:
+=======
+    # input_test(in_file, demo)
+        time.sleep(0.1)
+        if demo.poll() == None:
+            time.sleep(1)
+            if demo.poll() == None:
+                write_log(demo, log)
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
                 demo.kill()
                 demo.wait()
                 print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
                 continue
             elif demo.poll() != 0:
+<<<<<<< HEAD
                 demo.wait()
                 print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
             else:
@@ -168,6 +184,13 @@ def group_process(in_dir):
         else:
             demo.wait()
             print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m") 
+=======
+                # demo.wait()
+                print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
+        elif demo.poll() == 0:
+            write_log(demo, log)
+            # demo.wait()
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
         out_file = open(in_dir+"/"+out_files[num], "r",encoding="utf-8")
         dump_file.seek(0,0)
         check_out(dump_file, out_file, name_append)
@@ -176,8 +199,14 @@ def group_process(in_dir):
 
 def group_3_test(in_dir):
     print("\n")
+<<<<<<< HEAD
     print("test "+"group 3")
     in_files = os.listdir(in_dir)
+=======
+    print("test "+"group 4")
+    in_files = os.listdir(in_dir)
+    global test_cnt
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
     for dir1_name in in_files:
         dir1_name = in_dir+"/"+dir1_name
         in_dir2s = os.listdir(dir1_name)
@@ -185,13 +214,16 @@ def group_3_test(in_dir):
             dir2_name = dir1_name+"/"+dir2_name
             if os.path.isfile(dir2_name):
                 group_process(dir1_name)
+<<<<<<< HEAD
                 break
+=======
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
             else:
                 group_process(dir2_name)
 
 def group_4_test(in_dir):
     print("\n")
-    print("test "+"group 4")
+    print("test "+"group 3")
     in_files = os.listdir(in_dir)
     global test_cnt
     for dir_name in in_files:
@@ -236,8 +268,13 @@ if os.path.exists(dump_dir) != True:
 if os.path.exists(log_dir) != True:
     os.mkdir(log_dir)
 
+<<<<<<< HEAD
 group_4_test(group_4_test_dir)
 print("test group 2")
+=======
+group_3_test(group_3_test_dir)
+group_4_test(group_4_test_dir)
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 input_all_test_file(test_input_dir, test_output_dir, "")
 group_3_test(group_3_test_dir)
 

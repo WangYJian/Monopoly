@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 user QA
 preuser Q
 Q
 alive 1
 money 12345
+=======
+user QS
+preuser Q
+Q
+alive 1
+money 10000
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 point 0
 item1 0
 item2 0
@@ -11,8 +19,13 @@ buff 0
 stop 0
 userloc 0
 A
+<<<<<<< HEAD
 alive 1
 money 12345
+=======
+alive 0
+money 10000
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 point 0
 item1 0
 item2 0
@@ -21,8 +34,13 @@ buff 0
 stop 0
 userloc 0
 S
+<<<<<<< HEAD
 alive 0
 money 0
+=======
+alive 1
+money 10000
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 point 0
 item1 0
 item2 0
@@ -32,7 +50,11 @@ stop 0
 userloc 0
 J
 alive 0
+<<<<<<< HEAD
 money 0
+=======
+money 10000
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 point 0
 item1 0
 item2 0
@@ -41,4 +63,8 @@ buff 0
 stop 0
 userloc 0
 MAP
+<<<<<<< HEAD
 mapuser 0 QA
+=======
+mapuser 0 QS
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156

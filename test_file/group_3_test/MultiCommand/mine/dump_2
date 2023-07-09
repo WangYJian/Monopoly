@@ -1,15 +1,27 @@
 user QA
+<<<<<<< HEAD
 preuser Q
 Q
 alive 1
 money 10000
 point 80
+=======
+preuser A
+Q
+alive 1
+money 10000
+point 100
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 item1 0
 item2 0
 item3 0
 buff 0
 stop 0
+<<<<<<< HEAD
 userloc 68
+=======
+userloc 69
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 A
 alive 1
 money 10000
@@ -41,5 +53,9 @@ buff 0
 stop 0
 userloc 0
 MAP
+<<<<<<< HEAD
 mapuser 68 Q
 mapuser 69 A
+=======
+mapuser 69 AQ
+>>>>>>> be442c4c3476a086aed875cc7c40b70845199156

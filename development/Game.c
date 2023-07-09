@@ -31,7 +31,7 @@ void print_player(Game *game, char name, FILE* file) {
         fprintf(file, "point %d\n", 0);
         fprintf(file, "item1 %d\n", 0);
         fprintf(file, "item2 %d\n", 0);
-        fprintf(file, "item3 %d\n", 0);
+        //fprintf(file, "item3 %d\n", 0);
         fprintf(file, "buff %d\n", 0);
         fprintf(file, "stop %d\n", 0);
         fprintf(file, "userloc %d\n", loc);
@@ -46,7 +46,7 @@ void print_player(Game *game, char name, FILE* file) {
         fprintf(file, "point %d\n", player->points);
         fprintf(file, "item1 %d\n", player->barrier_count);
         fprintf(file, "item2 %d\n", player->robot_count);
-        fprintf(file, "item3 %d\n", player->bomb_count);
+        //fprintf(file, "item3 %d\n", player->bomb_count);
         fprintf(file, "buff %d\n", player->god_rounds);
         fprintf(file, "stop %d\n", player->stop_rounds);
         fprintf(file, "userloc %d\n", player->position);
@@ -92,7 +92,8 @@ Game *GameInitialize(int initcash, char *player_nums) {
             // game->map[i]->property->price = 200;
             PropertyInitialize(game->map[i]->property, 200);
         } else if (i == 14) {
-            game->map[i]->land_type = HOSPITAL;
+            game->map[i]->land_type = PARK;
+            //game->map[i]->land_type = HOSPITAL;
         } else if (i < 28) {
             game->map[i]->land_type = SPACE;
             // game->map[i]->property->price = 200;
@@ -110,14 +111,16 @@ Game *GameInitialize(int initcash, char *player_nums) {
             // game->map[i]->property->price = 300;
             PropertyInitialize(game->map[i]->property, 300);
         } else if (i == 49) {
-            game->map[i]->land_type = PRISON;
+            game->map[i]->land_type = PARK;
+            //game->map[i]->land_type = PRISON;
         } else if (i < 63) {
             game->map[i]->land_type = SPACE;
             // game->map[i]->property->price = 300;
             PropertyInitialize(game->map[i]->property, 300);
         } else if (i == 63) {
-            game->map[i]->land_type = MAGIC;
-        } else if (i < 70) {
+            game->map[i]->land_type = PARK;
+        } else if (i < 70){
+
             game->map[i]->land_type = MINERAL;
         }
     }
@@ -125,7 +128,7 @@ Game *GameInitialize(int initcash, char *player_nums) {
     game->current_player_index = 0; // 这游戏开始确定当前回合的id
     for (i = 0; i < game->player_count; i++) {
         game->players[i] = malloc(sizeof(Player));
-        game->players[i]->bomb_count = 0;
+        //game->players[i]->bomb_count = 0;
         game->players[i]->barrier_count = 0;
         game->players[i]->robot_count = 0;
         game->players[i]->god_rounds = 0;
@@ -142,8 +145,6 @@ Game *GameInitialize(int initcash, char *player_nums) {
     // printf("final");
     //system("cls");
     return game;
-
-
 }
 
 Player *GameStart(struct Game *game) {
@@ -210,7 +211,8 @@ char Tool_char(int idx) {
             ch = '#';
             break;
         case 3:
-            ch = '@';
+            //ch = '@';
+            ch  = 'F'; // 修改成财神
             break;
         default:
             ch = '0';
@@ -439,17 +441,22 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 printf("你踩到了路障，无法前进\n");
                 break;
             }
-            case BOMB: // 有炸弹
+            case BOMB: // 有财神
             {
                 //  添加status
-                cur_player->status = INHOSPITAL;
+//                cur_player->status = INHOSPITAL;
+//                cur_map->is_tool = 0;
+//                free(cur_map->tool); // 删掉地图上的道具信息
+//                cur_map->tool = NULL;
+//                pos_next_map = 14; // 进入医院
+//                cur_player->stop_rounds += 3; // 添加轮空
+//                flag = 1;
+//                printf("你踩到了炸弹，进入医院休息三天\n");
                 cur_map->is_tool = 0;
+                cur_player->god_rounds = GIFT_GOD_ROUND;
                 free(cur_map->tool); // 删掉地图上的道具信息
                 cur_map->tool = NULL;
-                pos_next_map = 14; // 进入医院
-                cur_player->stop_rounds += 3; // 添加轮空
-                flag = 1;
-                printf("你踩到了炸弹，进入医院休息三天\n");
+                printf("你捡到财神，获得财神buff，生效共5轮\n");
                 break;
             }
         }
@@ -568,11 +575,12 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 while (player->robot_count < num) {
                     PlayerGetRobot(player);
                 }
-            } else if (item == 3) {
-                while (player->bomb_count < num) {
-                    PlayerGetBomb(player);
-                }
             }
+//            else if (item == 3) {
+//                while (player->bomb_count < num) {
+//                    PlayerGetBomb(player);
+//                }
+//            }
             continue;
         }
 
@@ -846,10 +854,10 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     num[0] = -1, num[1] = -1;
                     continue;
                 }
-                if (player->bomb_count == 0) {
-                    printf("你没有炸弹，无法使用该道具！\n");
-                    continue;
-                }
+//                if (player->bomb_count == 0) {
+//                    printf("你没有炸弹，无法使用该道具！\n");
+//                    continue;
+//                }
                 if ((symbol && pos_for_tool < -10) || !symbol && pos_for_tool > 10) {
                     printf("指令超过范围，请重新输入！\n");
                     wrong_input = 1;
@@ -913,6 +921,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     num[0] = -1, num[1] = -1;
                     continue;
                 }
+                
                 int sell_place;
                 // 获取相对位置
                 if (num[1] == -1) {
@@ -944,13 +953,16 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             player_next = GameRollDice(game, NODICE);
         }
         num[0] = -1, num[1] = -1; // 最后重置，因为sell里面还需要判断
+
     }
     // 触发地块
     GameTriggerEvent(game, player, player->position, GAME_INPUT);
 
+
     printf("玩家%c退出回合\n", player->name);
     GameDisplayMap(game);
     return player_next;
+
 }
 
 // 输入是否购买
@@ -1034,6 +1046,7 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
     if (map->land_type == SPACE) {
         // 如果是空地皮
         if (map->property->owner == NULL) {
+            printf("您现在拥有的现金：%d,这块地皮需要的金额：%d\n",player->cash,map->property->price);
             // 询问是否购买
             if (YesOrNo == GAME_INPUT) {
                 printf("是否购买该地皮？(y/n),其余键自动拒绝\n");

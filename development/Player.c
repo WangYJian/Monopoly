@@ -7,10 +7,10 @@
 #include "Map.h"
 
 // 获取炸弹
-void PlayerGetBomb(Player* player){
-    player->bomb[player->bomb_count] = BombInitialize(player);
-    player->bomb_count++;
-}
+//void PlayerGetBomb(Player* player){
+//    player->bomb[player->bomb_count] = BombInitialize(player);
+//    player->bomb_count++;
+//}
 
 // 获取路障
 void PlayerGetBarrier(Player* player){
@@ -55,7 +55,7 @@ int GetIntInput()
 void PlayerGiftHouse(Player* player)
 {
     int gift_id;
-    printf("欢迎光临礼品屋, 请选择一件您喜欢的礼品\n1.2000元奖金\n2.200点数卡\n3.财神附身\n输入其他自动退出\n请输入:");
+    printf("欢迎光临礼品屋, 请选择一件您喜欢的礼品\n1.2000元奖金\n2.200点数卡\n输入其他自动退出\n请输入:");
     gift_id = GetIntInput();
     if (gift_id == 1){
         player->cash += GIFT_CASH;
@@ -65,10 +65,10 @@ void PlayerGiftHouse(Player* player)
         player->points += GIFT_POINTS;
         printf("%c获得200点数！\n",player->name);
     }
-    else if (gift_id == 3){
-        player->god_rounds = GIFT_GOD_ROUND;
-        printf("%c财神附体！\n",player->name);
-    }
+//    else if (gift_id == 3){
+//        player->god_rounds = GIFT_GOD_ROUND;
+//        printf("%c财神附体！\n",player->name);
+//    }
     printf("%c退出了礼品屋.\n",player->name);
 }
 
@@ -108,7 +108,7 @@ void PlayerDisplayInfo(const Player* player){
     printf("玩家%c的信息:\n", player->name);
     printf("现金: %d元\n", player->cash);
     printf("点数: %d点\n", player->points);
-    printf("炸弹: %d个\n", player->bomb_count);
+    //printf("炸弹: %d个\n", player->bomb_count);
     printf("路障: %d个\n", player->barrier_count);
     printf("机器娃娃: %d个\n", player->robot_count);
     printf("财神附体: %d轮\n", player->god_rounds);
@@ -122,13 +122,13 @@ void PlayerTool(struct Player* player){
     printf("欢迎光临道具屋，请选择您需要的道具:\n");
     printf("1.路障 50点\n");
     printf("2.机器娃娃 30点\n");
-    printf("3.炸弹 50点\n");
+    //printf("3.炸弹 50点\n");
     printf("您当前拥有点数：%d点\n",player->points);
     printf("每个玩家最多可拥有10个道具，您当前拥有：\n");
-    printf("炸弹：%d个\n",player->bomb_count);
+    //printf("炸弹：%d个\n",player->bomb_count);
     printf("路障：%d个\n",player->barrier_count);
     printf("机器娃娃：%d个\n",player->robot_count);
-    printf("共计：%d个\n",player->bomb_count+player->barrier_count+player->robot_count);   
+    printf("共计：%d个\n",player->barrier_count+player->robot_count);//player->bomb_count+player->barrier_count+player->robot_count);
     if (player->points < 30){
         printf("您的点数不足以购买任何道具，自动退出道具屋\n");
         return;
@@ -153,8 +153,8 @@ void PlayerTool(struct Player* player){
 
             // 尝试将输入的字符串转换为数字
             tool_id = atoi(token);
-            if (tool_id < 1 || tool_id > 3) {
-                printf("输入的道具编号不合法！请输入1、2或3。\n");
+            if (tool_id < 1 || tool_id > 2) {
+                printf("输入的道具编号不合法！请输入1、2。\n");
             }
 
             // 购买道具
@@ -173,7 +173,7 @@ void PlayerTool(struct Player* player){
 
 void PlayerBuyTool(struct Player* player, int toolID){
     // 确保玩家所拥有的道具总数没有超过10个
-    int total_tool_count = player->bomb_count + player->barrier_count + player->robot_count;
+    int total_tool_count = player->barrier_count + player->robot_count;//player->bomb_count + player->barrier_count + player->robot_count;
 
     if (total_tool_count >= 10) {
         printf("您的道具箱已满，不能继续购买\n");
@@ -196,15 +196,16 @@ void PlayerBuyTool(struct Player* player, int toolID){
         } else {
             printf("积分不足，无法购买机器娃娃！\n");
         }
-    } else if (toolID == 3) {
-        if (player->points >= 50) {
-            player->points -= 50;
-            PlayerGetBomb(player);
-            printf("购买炸弹成功！\n");
-        } else {
-            printf("积分不足，无法购买炸弹！\n");
-        }
     }
+//    else if (toolID == 3) {
+//        if (player->points >= 50) {
+//            player->points -= 50;
+//            PlayerGetBomb(player);
+//            printf("购买炸弹成功！\n");
+//        } else {
+//            printf("积分不足，无法购买炸弹！\n");
+//        }
+//    }
 }
 
 
@@ -237,12 +238,12 @@ void PlayerUseBombOrBarrier(struct Player* player, int toolID, Map* map){
     // 玩家使用道具
     if (toolID == BOMB) {
         // 玩家使用炸弹
-        if (player->bomb_count > 0) {
-            // 玩家有炸弹
-            map->tool = player->bomb[player->bomb_count - 1];
-            map->is_tool = BOMB;
-            player->bomb_count--;
-        }
+//        if (player->bomb_count > 0) {
+//            // 玩家有炸弹
+//            map->tool = player->bomb[player->bomb_count - 1];
+//            map->is_tool = BOMB;
+//            player->bomb_count--;
+//        }
     } else if (toolID == BARRIER) {
         // 玩家使用路障
         if (player->barrier_count > 0) {
@@ -291,7 +292,7 @@ void PlayerHelp(){
     printf("|\troll\t|\t掷色子命令\t\t\t|\n");
     printf("|\tSell n\t|\t出售房产，售价=总投资*2\t\t|\n");
     printf("|\tBlock n\t|\t放置路障至前后10步的范围内\t|\n");
-    printf("|\tBomb n\t|\t放置炸弹至前后10步范围内\t|\n");
+    //printf("|\tBomb n\t|\t放置炸弹至前后10步范围内\t|\n");
     printf("|\tRobot\t|\t清扫前方路面上10步内任意道具\t|\n");
     printf("|\tQuery\t|\t显示自家资产\t\t\t|\n");
     printf("|\tHelp\t|\t查看命令帮助\t\t\t|\n");
