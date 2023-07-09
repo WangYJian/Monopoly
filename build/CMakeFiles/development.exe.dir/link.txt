@@ -1,3 +1,0 @@
-E:\make\cmake-3.24.1-windows-x86_64\bin\cmake.exe -E rm -f CMakeFiles\development.exe.dir/objects.a
-D:\My\MSYS2\mingw64\bin\ar.exe qc CMakeFiles\development.exe.dir/objects.a @CMakeFiles\development.exe.dir\objects1.rsp
-D:\My\MSYS2\mingw64\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\development.exe.dir/objects.a -Wl,--no-whole-archive -o development.exe.exe -Wl,--out-implib,libdevelopment.exe.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\development.exe.dir\linklibs.rsp

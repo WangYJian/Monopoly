@@ -6,3 +6,4 @@ development/cmake-build-debug/
 *.exe
 .idea/
 venv/
+build/
