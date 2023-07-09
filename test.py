@@ -20,17 +20,24 @@ pass_cnt = 0
 def input_test(file:io.TextIOWrapper, demo: Popen):
     iter_f = file.readlines()
     for line in iter_f:
+        line = line.replace("\n", "").replace("\r", "")
         if len(line) > 0:
+            line = line+'\n'
             demo.stdin.write(line.encode())
             demo.stdin.flush()
+            # time.sleep(0.01)
     # demo.stdin.write("dump".encode())
 
 
 def write_log(demo: Popen, dump_file: io.TextIOWrapper):
+    demo.stdout.flush()
     out = demo.stdout.readlines(max_log_file_line)
     # out = out.decode().replace("/r", "")
     for line in out: 
-        dump_file.write(line.decode())
+        line = line.decode()
+        line = line.replace("\n", "").replace("\r", "")
+        line = line+'\n'
+        dump_file.write(line)
 
 
 def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) -> bool:
@@ -89,9 +96,8 @@ def input_all_test_file(in_dir, out_dir, name_append)->bool:
             in_file = open(in_dir+"/"+file_name, "r",encoding="utf-8")
             log = open(log_file_name, "w+", encoding="utf-8")
             log.truncate(0)
-            demo = Popen([test_obj, dump_file_name], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+            demo = Popen([test_obj, dump_file_name], stdin=in_file, stdout=PIPE, stderr=STDOUT)
             test_cnt += 1
-            input_test(in_file, demo)
             time.sleep(0.1)
             if demo.poll() == None:
                 time.sleep(1)
@@ -142,21 +148,26 @@ def group_process(in_dir):
         test_cnt += 1
         # input_test(in_file, demo)
         time.sleep(0.1)
+        write_log(demo, log)
         if demo.poll() == None:
             time.sleep(3)
             if demo.poll() == None:
-                demo.stdout.flush()
                 demo.kill()
-                write_log(demo, log)
                 demo.wait()
                 print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
                 continue
             elif demo.poll() != 0:
                 demo.wait()
                 print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
+            else:
+                write_log(demo, log)
+                demo.wait()
         elif demo.poll() == 0:
             write_log(demo, log)
             demo.wait()
+        else:
+            demo.wait()
+            print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m") 
         out_file = open(in_dir+"/"+out_files[num], "r",encoding="utf-8")
         dump_file.seek(0,0)
         check_out(dump_file, out_file, name_append)
@@ -167,7 +178,6 @@ def group_3_test(in_dir):
     print("\n")
     print("test "+"group 3")
     in_files = os.listdir(in_dir)
-    global test_cnt
     for dir1_name in in_files:
         dir1_name = in_dir+"/"+dir1_name
         in_dir2s = os.listdir(dir1_name)
@@ -175,6 +185,7 @@ def group_3_test(in_dir):
             dir2_name = dir1_name+"/"+dir2_name
             if os.path.isfile(dir2_name):
                 group_process(dir1_name)
+                break
             else:
                 group_process(dir2_name)
 
@@ -197,6 +208,8 @@ def group_4_test(in_dir):
             demo = Popen([test_obj, dump_file_name], stdin=PIPE, stdout=PIPE, stderr=STDOUT)
             test_cnt += 1
             input_test(in_file, demo)
+            time.sleep(0.1)
+            write_log(demo, log)
             if demo.poll() == None:
                 time.sleep(1)
                 if demo.poll() == None:
@@ -223,8 +236,9 @@ if os.path.exists(dump_dir) != True:
 if os.path.exists(log_dir) != True:
     os.mkdir(log_dir)
 
-group_3_test(group_3_test_dir)
 group_4_test(group_4_test_dir)
+print("test group 2")
 input_all_test_file(test_input_dir, test_output_dir, "")
+group_3_test(group_3_test_dir)
 
 print("summary:\033[1;35m pass {cnt} / {total} \033[0m!".format(cnt = pass_cnt, total = test_cnt))

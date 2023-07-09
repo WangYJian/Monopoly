@@ -4,7 +4,7 @@ Q
 alive 1
 money 1000
 point 0
-item1 1
+item1 0
 item2 0
 item3 0
 buff 0
@@ -19,7 +19,7 @@ item2 0
 item3 0
 buff 0
 stop 0
-userloc 10
+userloc 5
 S
 alive 1
 money 1000
@@ -42,5 +42,5 @@ stop 0
 userloc 0
 MAP
 mapuser 0 SJ
-mapuser 10 A
+mapuser 5 A
 mapuser 16 Q

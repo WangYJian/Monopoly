@@ -533,8 +533,8 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         j = 0;
         symbol = 0;
         // TODO 读取处理问题
-        char line[100];
-        fgets(line, 100, stdin);
+        char line[200];
+        fgets(line, 200, stdin);
         printf("%s\n", line);
         fflush(stdout);
         // set money [Q|A|S|J] [value] 设置玩家的资金
@@ -659,27 +659,38 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             }
             names[game->player_count] = '\0';
             fprintf(output, "user %s\n", names);
+            fflush(output);
 
             // 目前玩家
             fprintf(output, "preuser %c\n", game->players[game->current_player_index]->name);
+            fflush(output);
 
             // Q的状态
             fprintf(output, "Q\n");
+            fflush(output);
             print_player(game, 'Q', output);
+            fflush(output);
 
             // A的状态
             fprintf(output, "A\n");
+            fflush(output);
             print_player(game, 'A', output);
+            fflush(output);
 
             // S的状态
             fprintf(output, "S\n");
+            fflush(output);
             print_player(game, 'S', output);
+            fflush(output);
 
             // J的状态
             fprintf(output, "J\n");
+            fflush(output);
             print_player(game, 'J', output);
+            fflush(output);
 
             fprintf(output, "MAP\n");
+            fflush(output);
             for (int i = 0; i < 70; i++) {
                 if (game->map[i]->player_nums != 0) {
                     // 获取所有玩家的名字
@@ -689,6 +700,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                     }
                     names[game->map[i]->player_nums] = '\0';
                     fprintf(output, "mapuser %d %s\n", i, names);
+                    fflush(output);
                 }
             }
             fflush(output);
@@ -696,17 +708,24 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             for(int i = 0; i < 70; i++){
                 if(game->map[i]->property->owner != NULL){
                     fprintf(output, "map %d %c %d\n", i, game->map[i]->property->owner->name, game->map[i]->property->level);
+                    fflush(output);
                 }
             }
             for(int i = 0; i < 70; i++){
                 if(game->map[i]->is_tool != NOTOOL){
                     fprintf(output, "item %d %d\n", i, game->map[i]->tool->id);
+                    fflush(output);
                 }
             }
+            fclose(output);
             continue;
         }
         else if(strncmp(line, "quit", 4) == 0){
+            printf("into quit\n");
+            fflush(stdout);
             exit(0);
+            printf("out quit\n");
+            fflush(stdout);
         }
         int n = 0;
         while ((ch = line[n++]) != '\n') {
