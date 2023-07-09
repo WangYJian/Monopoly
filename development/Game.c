@@ -146,7 +146,7 @@ Game *GameInitialize(int initcash, char *player_nums) {
     // printf("final");
     //system("cls");
     srand((unsigned) time(NULL));
-    game->god_incoming_round = (10 + (rand() % 10 + 1))*game->player_count;
+    game->god_incoming_round = (10 + (rand() % 10 + 1))*game->all_player;
     game->cur_god_round = 0;
     printf("财神还有%d玩家回合降临\n", (game->god_incoming_round - 1)/ game->all_player + 1);
     return game;
@@ -409,7 +409,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     if (cur_player->stop_rounds != 0) {
         printf("当前你(%c)还处于轮空状态，无法行动，进入下一个玩家回合\n", cur_player->name);
         cur_player->stop_rounds--;
-        game->current_player_index = (++game->current_player_index) % game->player_count;
+        game->current_player_index = (++game->current_player_index) % game->all_player;
         player_id = game->current_player_index;
         return game->players[player_id]; // 返回下一个玩家
     }
@@ -461,7 +461,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 cur_player->god_rounds = GIFT_GOD_ROUND;
                 free(cur_map->tool); // 删掉地图上的道具信息
                 cur_map->tool = NULL;
-                game->cur_god_round = 5* game->player_count; //如果捡到财神就应该将当前的财神在地图上的保留论数置为0
+                game->cur_god_round = 5* game->all_player; //如果捡到财神就应该将当前的财神在地图上的保留论数置为0
 
                 printf("你(%d)捡到财神，获得财神buff，生效共5轮\n",cur_player->name);
                 break;
@@ -512,7 +512,7 @@ void GameGodComing(struct Game *game) {
 
                     game->map[pos]->tool = GodInitialize(NULL);
 
-                    game->cur_god_round = 5 * game->player_count; // 如果财神出现就应该重置当前财神在地图上的保留轮数
+                    game->cur_god_round = 5 * game->all_player; // 如果财神出现就应该重置当前财神在地图上的保留轮数
                     printf("财神降临于%d,还将持续%d玩家回合!\n",pos,(game->cur_god_round - 1) / game->all_player + 1);
                     pos2 = pos;
                     GameDisplayMap(game);
@@ -539,7 +539,7 @@ void GameGodComing(struct Game *game) {
             free(game->map[pos2]->tool);
             game->map[pos2]->tool = NULL;
             srand((unsigned) time(NULL));
-            game->god_incoming_round = (rand() % 10 + 1)*game->player_count;
+            game->god_incoming_round = (rand() % 10 + 1)*game->all_player;
 
         }
     }
@@ -556,7 +556,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         player->god_rounds--;
 
     }
-    GameGodComing(game);
+
     if (player == NULL || game == NULL) {
         printf("NULL ptr!!");
         return NULL;
@@ -567,17 +567,17 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     if (player->stop_rounds != 0) {
         printf("当前你(%c)还处于轮空状态，还剩余%d轮，无法行动，进入下一个玩家回合\n", player->name, player->stop_rounds);
         player->stop_rounds--;
-        game->current_player_index = (++game->current_player_index) % game->player_count;
+        game->current_player_index = (++game->current_player_index) % game->all_player;
         player_next = game->players[game->current_player_index];
         return player_next; // 返回下一个玩家
     }
     else if(player->status == BANKRUPT){
-        printf("当前你(%c)已经破产，无法行动，进入下一个玩家回合\n", player->name);
-        game->current_player_index = (++game->current_player_index) % game->player_count;
+        //printf("当前你(%c)已经破产，无法行动，进入下一个玩家回合\n", player->name);
+        game->current_player_index = (++game->current_player_index) % game->all_player;
         player_next = game->players[game->current_player_index];
         return player_next; // 返回下一个玩家
     }
-
+    GameGodComing(game);
     char real_command[16];
     int symbol = 0;
 
@@ -635,7 +635,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             }
             game->map[value]->is_tool = BOMB;
             game->map[value]->tool = GodInitialize(player);
-            game->cur_god_round = game->player_count*GIFT_GOD_ROUND; // 设置财神的生效时间
+            game->cur_god_round = game->all_player*GIFT_GOD_ROUND; // 设置财神的生效时间
             continue;
         }
 
@@ -813,7 +813,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             for(int i = 0; i < 70; i++){
                 if(game->map[i]->is_tool != NOTOOL){
                     if(game->map[i]->is_tool == BOMB){
-                        int temp_round = game->cur_god_round/game->player_count;
+                        int temp_round = game->cur_god_round/game->all_player;
                         fprintf(output, "mapgod %d %d\n", i,temp_round); // 修改了dump中的财神显示
                     }
                     else
@@ -920,7 +920,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 // printf("玩家%c退出回合\n", player->name);
                 loop = 0;
 
-                game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
+                game->current_player_index = (++game->current_player_index) % game->all_player; // 更新游戏玩家的索引
                 player_next = game->players[game->current_player_index]; // 进入下一个玩家的回合
             } else if (strcmp(real_command, "step") == 0) {
                 // 获取数字
@@ -940,7 +940,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 //TODO 这里如果赋初值为负，就会有问题
                 // printf("玩家%c退出回合\n", player->name);
                 loop = 0;
-                game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
+                game->current_player_index = (++game->current_player_index) % game->all_player; // 更新游戏玩家的索引
                 player_next = game->players[game->current_player_index]; // 进入下一个玩家的回合
             }
 //            else if (strcmp(real_command, "bomb") == 0) {
