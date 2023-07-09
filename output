@@ -42,6 +42,5 @@ stop 0
 userloc 0
 MAP
 mapuser 0 AS
-mapuser 1 Q
 map 1 A 3
 map 2 S 3

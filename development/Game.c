@@ -68,6 +68,7 @@ Game *GameInitialize(int initcash, char *player_nums) {
     game->init_cash = initcash;
     game->player_count = strlen(player_nums);
     game->all_player = game->player_count;
+    game->is_in_10 = 1;
     printf("初始化地图 ...\n");
     for (i = 0; i < MAP_SIZE; i++) {
         game->map[i] = malloc(sizeof(Map));
@@ -144,6 +145,10 @@ Game *GameInitialize(int initcash, char *player_nums) {
     }
     // printf("final");
     //system("cls");
+    srand((unsigned) time(NULL));
+    game->god_incoming_round = (10 + (rand() % 10 + 1))*game->player_count;
+    game->cur_god_round = 0;
+    printf("财神还有%d玩家回合降临\n", (game->god_incoming_round - 1)/ game->all_player + 1);
     return game;
 }
 
@@ -456,7 +461,9 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 cur_player->god_rounds = GIFT_GOD_ROUND;
                 free(cur_map->tool); // 删掉地图上的道具信息
                 cur_map->tool = NULL;
-                printf("你捡到财神，获得财神buff，生效共5轮\n");
+                game->cur_god_round = 5* game->player_count; //如果捡到财神就应该将当前的财神在地图上的保留论数置为0
+
+                printf("你(%d)捡到财神，获得财神buff，生效共5轮\n",cur_player->name);
                 break;
             }
         }
@@ -477,18 +484,79 @@ Player *GameRollDice(struct Game *game, int dice_num) {
     AddPlayerMap(cur_map, cur_player); // 采用队列的形式添加
     DelPlayerMap(pre_map, cur_player); // 在之前地图上删掉这个玩家
     //game->map[cur_player->position]->player[] = cur_player; // 在地图的位置上更新玩家显示
-    GameDisplayMap(game); // 从新打印地图
+    //GameDisplayMap(game); // 从新打印地图
     if (!flag) {
         printf("你(%c)已经到达相应的位置。\n", cur_player->name);
     }
     return cur_player; // 这个玩家投完色子之后，返回当前玩家
 }
 
+void GameGodComing(struct Game *game) {
+    if (game->god_incoming_round > 0) {
+
+        printf("离财神降临还有%d玩家回合\n", (game->god_incoming_round - 1)/game->all_player + 1);
+        game->god_incoming_round--;
+    }
+    int pos;
+    static int pos2;
+    if(game->god_incoming_round == 0&&game->cur_god_round==0){
+        int flag = 0;
+        srand((unsigned) time(NULL));
+        while(1){
+
+            pos = rand() % 70;
+            if(game->map[pos]->is_tool == 0 && game->map[pos]->player_nums == 0){
+                if(game->map[pos]->land_type == SPACE||game->map[pos]->land_type == START
+                        ||game->map[pos]->land_type == MINERAL||game->map[pos]->land_type == PARK){
+                    game->map[pos]->is_tool = BOMB;
+
+                    game->map[pos]->tool = GodInitialize(NULL);
+
+                    game->cur_god_round = 5 * game->player_count; // 如果财神出现就应该重置当前财神在地图上的保留轮数
+                    printf("财神降临于%d,还将持续%d玩家回合!\n",pos,(game->cur_god_round - 1) / game->all_player + 1);
+                    pos2 = pos;
+                    GameDisplayMap(game);
+                    break;
+                }
+                else {
+                    continue;
+                }
+            }
+            else{
+                continue;
+            }
+        }
+    }else if(game->cur_god_round>0){
+        game->cur_god_round--;
+        printf("财神还将持续%d玩家回合!\n",(game->cur_god_round-1) / game->all_player + 1);
+        if(game->cur_god_round==0){
+            //重新赋值一个10以内的整数
+            printf("财神消失\n");
+
+            game->map[pos2]->is_tool = NOTOOL;
+            //printf("%d\n",pos2);
+            GameDisplayMap(game);
+            //free(game->map[pos2]->tool);
+            //game->map[pos]->tool = NULL;
+            srand((unsigned) time(NULL));
+            game->god_incoming_round = (rand() % 10 + 1)*game->player_count;
+
+        }
+    }
+
+
+}
+
 Player *GamePlayerRound(struct Game *game, struct Player *player) {
     // 如果有财神效果，减一
     if (player->god_rounds > 0) {
+        if(player->god_rounds == 1){
+            printf("(%d)财神效果结束\n",player->name);
+        }
         player->god_rounds--;
+
     }
+    GameGodComing(game);
     if (player == NULL || game == NULL) {
         printf("NULL ptr!!");
         return NULL;
@@ -551,7 +619,26 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             sscanf(line, "set money %c %d", &name, &value);
             GameGetPlayerByName(game, name)->cash = value;
             continue;
+        }else if (strncmp(line, "set round", 9) == 0) {
+            //char name;
+            //int value;
+            //sscanf(line, "set point %c %d", &name, &value);
+            //GameGetPlayerByName(game, name)->points = value;
+            game->god_incoming_round = 1; // 设置财神降临的回合数
+            continue;
+        }else if (strncmp(line, "set god", 7) == 0) {
+            int value;
+            sscanf(line, "set god %d", &value);
+            if(game->map[value]->player_nums != 0){
+                printf("该位置已经有玩家了\n");
+                continue;
+            }
+            game->map[value]->is_tool = BOMB;
+            game->map[value]->tool = GodInitialize(player);
+            game->cur_god_round = game->player_count*GIFT_GOD_ROUND; // 设置财神的生效时间
+            continue;
         }
+
         // set point [Q|A|S|J] [value] 设置玩家的点数
         else if (strncmp(line, "set point", 9) == 0) {
             char name;
@@ -615,13 +702,13 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
         }
 
         // set bomb [n] 在可放置炸弹的地皮n上放置炸弹
-        else if (strncmp(line, "set bomb", 8) == 0) {
-            int n;
-            sscanf(line, "set bomb %d", &n);
-            game->map[n]->tool = BombInitialize(NULL);
-            game->map[n]->is_tool = BOMB;
-            continue;
-        }
+//        else if (strncmp(line, "set bomb", 8) == 0) {
+//            int n;
+//            sscanf(line, "set bomb %d", &n);
+//            game->map[n]->tool = BombInitialize(NULL);
+//            game->map[n]->is_tool = BOMB;
+//            continue;
+//        }
 
         // set barrier [n] 在可放置障碍的地皮n上放置障碍
         else if (strncmp(line, "set barrier", 11) == 0) {
@@ -725,8 +812,12 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
             }
             for(int i = 0; i < 70; i++){
                 if(game->map[i]->is_tool != NOTOOL){
-                    fprintf(output, "item %d %d\n", i, game->map[i]->tool->id);
-                    fflush(output);
+                    if(game->map[i]->is_tool == BOMB){
+                        int temp_round = game->cur_god_round/game->player_count;
+                        fprintf(output, "mapgod %d %d\n", i,temp_round); // 修改了dump中的财神显示
+                    }
+                    else
+                        fprintf(output, "item %d %d\n", i, game->map[i]->tool->id);
                 }
             }
             fclose(output);
@@ -772,19 +863,19 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
 //        } // 检测问题
 
         //更新状态
-        if(player->stop_rounds == 0){
-            switch (player->status) {
-                case INHOSPITAL:
-                    printf("您(%c)已经出院！\n",player->name);
-                    break;
-                case INPRISON:
-                    printf("您(%c)已经出狱!\n",player->name);
-                    break;
-                default:
-                    break;
-            }
-            player->status = NORMAL;
-        }
+//        if(player->stop_rounds == 0){
+//            switch (player->status) {
+//                case INHOSPITAL:
+//                    printf("您(%c)已经出院！\n",player->name);
+//                    break;
+//                case INPRISON:
+//                    printf("您(%c)已经出狱!\n",player->name);
+//                    break;
+//                default:
+//                    break;
+//            }
+//            player->status = NORMAL;
+//        }
         // 上面读取完了指令
         if (player->stop_rounds == 0 && player->status == NORMAL) {
             pos_for_tool = 0, tool_place = 0;
@@ -851,31 +942,33 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 loop = 0;
                 game->current_player_index = (++game->current_player_index) % game->player_count; // 更新游戏玩家的索引
                 player_next = game->players[game->current_player_index]; // 进入下一个玩家的回合
-            } else if (strcmp(real_command, "bomb") == 0) {
-                // 获取数字
-                if (!is_dig) {
-                    printf("该指令需要附带数字，请重新输入!\n");
-                    num[0] = -1, num[1] = -1;
-                    continue;
-                }
-//                if (player->bomb_count == 0) {
-//                    printf("你没有炸弹，无法使用该道具！\n");
+            }
+//            else if (strcmp(real_command, "bomb") == 0) {
+//                // 获取数字
+//                if (!is_dig) {
+//                    printf("该指令需要附带数字，请重新输入!\n");
+//                    num[0] = -1, num[1] = -1;
 //                    continue;
 //                }
-                if ((symbol && pos_for_tool < -10) || !symbol && pos_for_tool > 10) {
-                    printf("指令超过范围，请重新输入！\n");
-                    wrong_input = 1;
-                    continue;
-                }
-                tool_place = (player->position + pos_for_tool + MAP_SIZE) % MAP_SIZE;
-                // 判断地皮是否可以放置道具
-                if (game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type == PRISON ||
-                    game->map[tool_place]->player_nums != 0) {
-                    printf("该地皮不能够放置道具，请重新指令！\n");
-                    continue;
-                }
-                PlayerUseBombOrBarrier(player, BOMB, game->map[tool_place]);
-            } else if (strcmp(real_command, "block") == 0) {
+////                if (player->bomb_count == 0) {
+////                    printf("你没有炸弹，无法使用该道具！\n");
+////                    continue;
+////                }
+//                if ((symbol && pos_for_tool < -10) || !symbol && pos_for_tool > 10) {
+//                    printf("指令超过范围，请重新输入！\n");
+//                    wrong_input = 1;
+//                    continue;
+//                }
+//                tool_place = (player->position + pos_for_tool + MAP_SIZE) % MAP_SIZE;
+//                // 判断地皮是否可以放置道具
+////                if (game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type == PRISON ||
+////                    game->map[tool_place]->player_nums != 0) {
+////                    printf("该地皮不能够放置道具，请重新指令！\n");
+////                    continue;
+////                }
+//                PlayerUseBombOrBarrier(player, BOMB, game->map[tool_place]);
+            //}
+            else if (strcmp(real_command, "block") == 0) {
                 // 获取数字
                 if (!is_dig) {
                     printf("该指令需要附带数字，请重新输入!\n");
@@ -894,11 +987,11 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
                 }
                 tool_place = (player->position + pos_for_tool + MAP_SIZE) % MAP_SIZE;
                 // 判断地皮是否可以放置道具
-                if (game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type == PRISON ||
-                    game->map[tool_place]->player_nums != 0) {
-                    printf("该地皮不能够放置道具，请重新指令！\n");
-                    continue;
-                }
+//                if (game->map[tool_place]->land_type == HOSPITAL || game->map[tool_place]->land_type == PRISON ||
+//                    game->map[tool_place]->player_nums != 0) {
+//                    printf("该地皮不能够放置道具，请重新指令！\n");
+//                    continue;
+//                }
                 PlayerUseBombOrBarrier(player, BARRIER, game->map[tool_place]);
             } else if (strcmp(real_command, "robot") == 0) {
                 // 判断是否有机器人
@@ -1106,7 +1199,9 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
                 // 破产
                 printf("你只有%d元，无法支付！\n", player->cash);
                 printf("你破产了！\n");
+                DelPlayerMap(game->map[player->position],player);
                 GameRemovePlayer(game, player);
+
             } else {
                 // 支付钱
                 printf("你当前有%d元\n", player->cash);
@@ -1129,9 +1224,9 @@ void GameTriggerEvent(struct Game* game, struct Player* player, int dice_num, in
     else if (map->land_type == MINERAL) {
         PlayerMineral(player);
     }
-    // 如果是监狱
-    else if (map->land_type == PRISON) {
-        PlayerPrison(player);
+     //如果是公园
+    else if (map->land_type == PARK) {
+        printf("你来到了公园！\n");
     }
 }
 

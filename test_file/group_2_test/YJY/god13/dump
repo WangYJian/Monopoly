@@ -2,17 +2,17 @@ user QA
 preuser A
 Q
 alive 1
-money 9800
+money 10000
 point 0
 item1 0
 item2 0
 item3 0
-buff 0
+buff 5
 stop 0
 userloc 2
 A
 alive 1
-money 10200
+money 10000
 point 0
 item1 0
 item2 0

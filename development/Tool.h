@@ -23,7 +23,7 @@ typedef struct Tool {
 
 // 方法
 void ToolInitialize(struct Tool* tool, int toolID, const char* name, int points, Player* owner);  // 初始化道具
-Tool *BombInitialize(Player *owner); // 初始化炸弹
+Tool *GodInitialize(Player *owner); // 初始化炸弹
 Tool *BarrierInitialize(Player *owner); // 初始化路障
 Tool *RobotInitialize(Player *owner); // 初始化机器娃娃
 void ToolActivate(struct Tool* tool, int playerID, int targetLocation);  // 激活道具
