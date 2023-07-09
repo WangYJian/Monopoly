@@ -31,8 +31,8 @@ buff 0
 stop 0
 userloc 0
 J
-alive 0
-money 0
+alive 1
+money 1
 point 0
 item1 0
 item2 0

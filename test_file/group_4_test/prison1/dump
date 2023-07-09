@@ -9,11 +9,7 @@ item2 0
 item3 0
 buff 0
 stop 0
-<<<<<<< HEAD
-userloc 50
-=======
 userloc 49
->>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 A
 alive 1
 money 1300
@@ -23,17 +19,10 @@ item2 0
 item3 0
 buff 0
 stop 0
-<<<<<<< HEAD
-userloc 2
-S
-alive 0
-money 1500
-=======
 userloc 3
 S
 alive 0
-money 0
->>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
+money 1500
 point 0
 item1 0
 item2 0
@@ -43,11 +32,7 @@ stop 0
 userloc 0
 J
 alive 0
-<<<<<<< HEAD
 money 1500
-=======
-money 0
->>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
 point 0
 item1 0
 item2 0
@@ -56,12 +41,6 @@ buff 0
 stop 0
 userloc 0
 MAP
-<<<<<<< HEAD
-mapuser 2 A
-mapuser 50 Q
-map 2 A 0
-=======
 mapuser 3 A
 mapuser 49 Q
 map 3 A 0
->>>>>>> 15fea955277bd81cddcda8f87e63948697b021ce
