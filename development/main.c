@@ -114,8 +114,15 @@ int main(int argc, char* argv[]) {
         //fflush(stdin);
         // printf("11\n");
         if(game->player_count == 1){
-            printf("游戏结束！！\n 玩家(%c)获得游戏胜利:\n",game->players[game->current_player_index]->name);
-            PlayerDisplayInfo(game->players[game->current_player_index]);
+            Player* player;
+            //遍历所有玩家找到存活玩家
+            for(int i = 0; i < game->all_player; i++){
+                if(game->players[i]->status == NORMAL){
+                    player = game->players[i];
+                    break;
+                }
+            }
+            PlayerDisplayInfo(player);
             break;
         }
         cur_player = GamePlayerRound(game,cur_player);
