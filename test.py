@@ -4,11 +4,7 @@ import io
 import re
 import time
 
-<<<<<<< HEAD
 group_1_test_dir = "./test_file/group_1_test"
-=======
-group_1_test_dir = "./test_file/group_1_test/test"
->>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
 group_2_test_dir = "./test_file/group_2_test"
 group_4_test_dir = "./test_file/group_4_test"
 group_3_test_dir = "./test_file/group_3_test"
@@ -74,14 +70,11 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) ->
     return True
 
 def group_1_test(in_dir):
-<<<<<<< HEAD
     dirs = os.listdir(in_dir)
     for dir in dirs:
         group_1_process(in_dir+"/"+dir)
 
 def group_1_process(in_dir):
-=======
->>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
     global test_cnt
     files = os.listdir(in_dir)
     in_files = []
@@ -91,11 +84,8 @@ def group_1_process(in_dir):
             in_files.append(file)
         elif "dump" in file:
             out_files.append(file)
-<<<<<<< HEAD
         elif "output" in file:
             out_files.append(file)
-=======
->>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
     sorted(in_files)
     sorted(out_files)
     file_num = len(in_files)
@@ -122,13 +112,8 @@ def group_1_process(in_dir):
                 print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
                 continue
             elif demo.poll() != 0:
-<<<<<<< HEAD
                 ret=demo.wait()
                 print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly return {arg}\n \033[0m".format(arg=ret))
-=======
-                demo.wait()
-                print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
->>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
             else:
                 write_log(demo, log)
                 demo.wait()
@@ -256,17 +241,10 @@ def group_4_test(in_dir):
             dump_file.close()
             out_file.close()
 
-<<<<<<< HEAD
 print("test "+"group 2")
 group_2_test(group_2_test_dir)
 print("test "+"group 1")
 group_1_test(group_1_test_dir)
-=======
-print("test "+"group 1")
-group_1_test(group_1_test_dir)
-print("test "+"group 2")
-group_2_test(group_2_test_dir)
->>>>>>> 433d2f1396ba76113a2414701e37ef4a3fc7b7b2
 print("test "+"group 3")
 group_3_test(group_3_test_dir)
 print("test "+"group 4")

@@ -1,0 +1,37 @@
+[
+{
+  "directory": "E:/c++/richman/Monopoly/build",
+  "command": "D:\\My\\MSYS2\\mingw64\\bin\\gcc.exe  @CMakeFiles/development.exe.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\development.exe.dir\\Game.c.obj -c E:\\c++\\richman\\Monopoly\\development\\Game.c",
+  "file": "E:/c++/richman/Monopoly/development/Game.c"
+},
+{
+  "directory": "E:/c++/richman/Monopoly/build",
+  "command": "D:\\My\\MSYS2\\mingw64\\bin\\gcc.exe  @CMakeFiles/development.exe.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\development.exe.dir\\Judge.c.obj -c E:\\c++\\richman\\Monopoly\\development\\Judge.c",
+  "file": "E:/c++/richman/Monopoly/development/Judge.c"
+},
+{
+  "directory": "E:/c++/richman/Monopoly/build",
+  "command": "D:\\My\\MSYS2\\mingw64\\bin\\gcc.exe  @CMakeFiles/development.exe.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\development.exe.dir\\main.c.obj -c E:\\c++\\richman\\Monopoly\\development\\main.c",
+  "file": "E:/c++/richman/Monopoly/development/main.c"
+},
+{
+  "directory": "E:/c++/richman/Monopoly/build",
+  "command": "D:\\My\\MSYS2\\mingw64\\bin\\gcc.exe  @CMakeFiles/development.exe.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\development.exe.dir\\Map.c.obj -c E:\\c++\\richman\\Monopoly\\development\\Map.c",
+  "file": "E:/c++/richman/Monopoly/development/Map.c"
+},
+{
+  "directory": "E:/c++/richman/Monopoly/build",
+  "command": "D:\\My\\MSYS2\\mingw64\\bin\\gcc.exe  @CMakeFiles/development.exe.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\development.exe.dir\\Player.c.obj -c E:\\c++\\richman\\Monopoly\\development\\Player.c",
+  "file": "E:/c++/richman/Monopoly/development/Player.c"
+},
+{
+  "directory": "E:/c++/richman/Monopoly/build",
+  "command": "D:\\My\\MSYS2\\mingw64\\bin\\gcc.exe  @CMakeFiles/development.exe.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\development.exe.dir\\Property.c.obj -c E:\\c++\\richman\\Monopoly\\development\\Property.c",
+  "file": "E:/c++/richman/Monopoly/development/Property.c"
+},
+{
+  "directory": "E:/c++/richman/Monopoly/build",
+  "command": "D:\\My\\MSYS2\\mingw64\\bin\\gcc.exe  @CMakeFiles/development.exe.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\development.exe.dir\\Tool.c.obj -c E:\\c++\\richman\\Monopoly\\development\\Tool.c",
+  "file": "E:/c++/richman/Monopoly/development/Tool.c"
+}
+]
