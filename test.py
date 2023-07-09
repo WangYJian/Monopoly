@@ -4,6 +4,7 @@ import io
 import re
 import time
 
+group_1_test_dir = "./test_file/group_1_test/test"
 group_2_test_dir = "./test_file/group_2_test"
 group_4_test_dir = "./test_file/group_4_test"
 group_3_test_dir = "./test_file/group_3_test"
@@ -53,10 +54,8 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) ->
             return False
         else:
             test_line = test_lines[i].replace(" ", "").replace("\n", "") 
-            test_line = ''.join(sorted(test_line))
-            expect_line = ''.join(sorted(expect_line))
-            expect_line = expect_line.replace(" ", "").replace("\n", "").replace("\r", "")
-            test_line = test_line.replace(" ", "").replace("\n", "").replace("\r", "")
+            expect_line = expect_line.replace(" ", "")
+            test_line = test_line.replace("\r", "")
             expect_lines[i] = expect_lines[i].replace("\n", "").replace("\r", "")
             test_lines[i] = test_lines[i].replace("\n", "").replace("\r", "")
             if test_line != expect_line:
@@ -69,6 +68,59 @@ def check_out(demo_out:io.TextIOWrapper, expect:io.TextIOWrapper, nameappend) ->
     print("\033[1;34m"+"test  "+nameappend+"\033[0m \033[1;32m pass \033[0m")
     pass_cnt += 1
     return True
+
+def group_1_test(in_dir):
+    global test_cnt
+    files = os.listdir(in_dir)
+    in_files = []
+    out_files = []
+    for file in files:
+        if "input" in file:
+            in_files.append(file)
+        elif "dump" in file:
+            out_files.append(file)
+    sorted(in_files)
+    sorted(out_files)
+    file_num = len(in_files)
+    for num in range(file_num):
+        suffix = re.sub("[A-Za-z.]","",in_files[num])
+        name_append = in_dir+suffix
+        dump_file_name = in_dir+"/out"+suffix
+        log_file_name = in_dir+"/log"+suffix
+        dump_file = open(dump_file_name, "w+", encoding="utf-8")
+        dump_file.truncate(0)
+        in_file = open(in_dir+"/"+in_files[num], "r",encoding="utf-8")
+        log = open(log_file_name, "w+", encoding="utf-8")
+        log.truncate(0)
+        demo = Popen([test_obj, dump_file_name], stdin=in_file, stdout=PIPE, stderr=STDOUT)
+        test_cnt += 1
+        # input_test(in_file, demo)
+        time.sleep(0.1)
+        write_log(demo, log)
+        if demo.poll() == None:
+            time.sleep(3)
+            if demo.poll() == None:
+                demo.kill()
+                demo.wait()
+                print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess timeout\n \033[0m")
+                continue
+            elif demo.poll() != 0:
+                demo.wait()
+                print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m")
+            else:
+                write_log(demo, log)
+                demo.wait()
+        elif demo.poll() == 0:
+            write_log(demo, log)
+            demo.wait()
+        else:
+            demo.wait()
+            print("\033[1;34m"+"test  "+name_append+"\033[0m"+"\033[1;34m proess exit incorrectly\n \033[0m") 
+        out_file = open(in_dir+"/"+out_files[num], "r",encoding="utf-8")
+        dump_file.seek(0,0)
+        check_out(dump_file, out_file, name_append)
+        dump_file.close()
+        out_file.close()
 
 def group_2_test(in_dir):
     dirs = os.listdir(in_dir)
@@ -130,7 +182,6 @@ def group_process(in_dir):
         out_file.close()
 
 def group_3_test(in_dir):
-    print("\n")
     in_files = os.listdir(in_dir)
     for dir1_name in in_files:
         dir1_name = in_dir+"/"+dir1_name
@@ -144,7 +195,6 @@ def group_3_test(in_dir):
                 group_process(dir2_name)
 
 def group_4_test(in_dir):
-    print("\n")
     in_files = os.listdir(in_dir)
     global test_cnt
     for dir_name in in_files:
@@ -184,6 +234,8 @@ def group_4_test(in_dir):
             dump_file.close()
             out_file.close()
 
+print("test "+"group 1")
+group_1_test(group_1_test_dir)
 print("test "+"group 2")
 group_2_test(group_2_test_dir)
 print("test "+"group 3")
