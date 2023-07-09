@@ -199,14 +199,8 @@ def group_process(in_dir):
 
 def group_3_test(in_dir):
     print("\n")
-<<<<<<< HEAD
     print("test "+"group 3")
     in_files = os.listdir(in_dir)
-=======
-    print("test "+"group 4")
-    in_files = os.listdir(in_dir)
-    global test_cnt
->>>>>>> be442c4c3476a086aed875cc7c40b70845199156
     for dir1_name in in_files:
         dir1_name = in_dir+"/"+dir1_name
         in_dir2s = os.listdir(dir1_name)
@@ -214,10 +208,7 @@ def group_3_test(in_dir):
             dir2_name = dir1_name+"/"+dir2_name
             if os.path.isfile(dir2_name):
                 group_process(dir1_name)
-<<<<<<< HEAD
                 break
-=======
->>>>>>> be442c4c3476a086aed875cc7c40b70845199156
             else:
                 group_process(dir2_name)
 
@@ -268,13 +259,8 @@ if os.path.exists(dump_dir) != True:
 if os.path.exists(log_dir) != True:
     os.mkdir(log_dir)
 
-<<<<<<< HEAD
 group_4_test(group_4_test_dir)
 print("test group 2")
-=======
-group_3_test(group_3_test_dir)
-group_4_test(group_4_test_dir)
->>>>>>> be442c4c3476a086aed875cc7c40b70845199156
 input_all_test_file(test_input_dir, test_output_dir, "")
 group_3_test(group_3_test_dir)
 
