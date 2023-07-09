@@ -28,7 +28,7 @@ item1 0
 item2 0
 item3 0
 buff 0
-stop 2
+stop 0
 userloc 49
 J
 alive 1
@@ -38,7 +38,7 @@ item1 0
 item2 0
 item3 0
 buff 0
-stop 2
+stop 0
 userloc 49
 MAP
 mapuser 28 QA
