@@ -463,7 +463,7 @@ Player *GameRollDice(struct Game *game, int dice_num) {
                 cur_map->tool = NULL;
                 game->cur_god_round = 5* game->player_count; //如果捡到财神就应该将当前的财神在地图上的保留论数置为0
 
-                printf("你捡到财神，获得财神buff，生效共5轮\n");
+                printf("你(%d)捡到财神，获得财神buff，生效共5轮\n",cur_player->name);
                 break;
             }
         }
@@ -536,8 +536,8 @@ void GameGodComing(struct Game *game) {
             game->map[pos2]->is_tool = NOTOOL;
             //printf("%d\n",pos2);
             GameDisplayMap(game);
-            free(game->map[pos2]->tool);
-            game->map[pos]->tool = NULL;
+            //free(game->map[pos2]->tool);
+            //game->map[pos]->tool = NULL;
             srand((unsigned) time(NULL));
             game->god_incoming_round = (rand() % 10 + 1)*game->player_count;
 
@@ -551,7 +551,7 @@ Player *GamePlayerRound(struct Game *game, struct Player *player) {
     // 如果有财神效果，减一
     if (player->god_rounds > 0) {
         if(player->god_rounds == 1){
-            printf("财神效果结束\n");
+            printf("(%d)财神效果结束\n",player->name);
         }
         player->god_rounds--;
 
